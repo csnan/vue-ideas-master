@@ -85,12 +85,8 @@
 </template>
 
 <script>
-import baseHeader from '../components/BaseHeader'
 export default {
   name: 'my',
-  components: {
-    baseHeader
-  },
   data() {
     return {
       opacityNum: 0,

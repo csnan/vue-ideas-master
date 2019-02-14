@@ -70,12 +70,8 @@
 
 <script>
 var h = window.innerHeight
-import baseHeader from '../components/BaseHeader'
 export default {
   name: 'login',
-  components: {
-    baseHeader
-  },
   data() {
     return {
       closeIcon: require('@/assets/images/close.png'),

@@ -5,10 +5,13 @@ import App from './App'
 import router from './router'
 import Vant from 'vant'
 import 'vant/lib/index.css'
-import VueParticles from 'vue-particles'    
+Vue.use(Vant)
 
-Vue.use(Vant);
+import VueParticles from 'vue-particles'    
 Vue.use(VueParticles)
+
+import baseHeader from './components/BaseHeader'
+Vue.component('base-header', baseHeader);
 
 Vue.config.productionTip = false
 

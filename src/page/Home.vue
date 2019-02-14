@@ -11,26 +11,32 @@
       >{{tab}}</div>
     </div>
     <div class="main-content">
+      <van-notice-bar
+        class="notice-bar"
+        text="足协杯战线连续第2年上演广州德比战，上赛季半决赛上恒大以两回合5-3的总比分淘汰富力。"
+        left-icon="volume-o"
+        mode="closeable"
+      />
       <div class="tab-first" v-show="nowTabIndex===0">
         <van-swipe :autoplay="3000" indicator-color="white">
           <van-swipe-item v-for="(imgSwipe, index) in imgSwipes" :key="index">
             <img :src="imgSwipe" class="img-swipe"/>
           </van-swipe-item>
         </van-swipe>
-        <van-row class="four-type">
+        <!-- <van-row class="four-type">
           <van-col span="6">
-            <div class="color-round1"></div>111
+            <div class="color-round"></div>111
           </van-col>
           <van-col span="6">
-            <div class="color-round2"></div>222
+            <div class="color-round"></div>222
           </van-col>
           <van-col span="6">
-            <div class="color-round3"></div>333
+            <div class="color-round"></div>333
           </van-col>
           <van-col span="6">
-            <div class="color-round4"></div>444
+            <div class="color-round"></div>444
           </van-col>
-        </van-row>
+        </van-row> -->
       </div>
       <div class="tab-second" v-show="nowTabIndex===1">22222</div>
     </div>
@@ -38,12 +44,8 @@
 </template>
 
 <script>
-import baseHeader from '../components/BaseHeader'
 export default {
   name: 'home',
-  components: {
-    baseHeader
-  },
   data() {
     return {
       searchIcon: require('@/assets/images/search.png'),
@@ -100,47 +102,27 @@ export default {
     }
   }
   .main-content {
+    .notice-bar {
+      height: 30px;
+      font-size: 12px;
+    }
     .tab-first {
       .img-swipe {
         width: 100%;
       }
-      .four-type {
-        margin-top: 10px;
-        text-align: center;
-        font-size: 12px;
-        .color-round1 {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: red;
-          margin: 0 auto;
-          margin-bottom: 5px;
-        }
-        .color-round2 {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: red;
-          margin: 0 auto;
-          margin-bottom: 5px;
-        }
-        .color-round3 {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: red;
-          margin: 0 auto;
-          margin-bottom: 5px;
-        }
-        .color-round4 {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: red;
-          margin: 0 auto;
-          margin-bottom: 5px;
-        }
-      }
+      // .four-type {
+      //   margin-top: 10px;
+      //   text-align: center;
+      //   font-size: 12px;
+      //   .color-round {
+      //     width: 50px;
+      //     height: 50px;
+      //     border-radius: 50%;
+      //     background: red;
+      //     margin: 0 auto;
+      //     margin-bottom: 5px;
+      //   }
+      // }
     }
   }
 }

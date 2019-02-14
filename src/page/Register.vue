@@ -76,12 +76,8 @@
 
 <script>
 var h = window.innerHeight
-import baseHeader from '../components/BaseHeader'
 export default {
   name: 'register',
-  components: {
-    baseHeader
-  },
   data() {
     return {
       backIcon: require('@/assets/images/back.png'),

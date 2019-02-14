@@ -20,8 +20,12 @@
           :right-width="65"
         >
           <van-cell-group>
-            <van-cell :title="cell.titleText" :value="cell.valueText">
-              <img slot="icon" src="../assets/images/1.jpeg" style="width:40px;height:40px;">
+            <van-cell :title="cell.titleText" :label="cell.labelText">
+              <div class="head-image" slot="icon">
+                <img :src="cell.headImg">
+              </div>
+              <div>{{cell.valueText}}</div>
+              <van-tag class="tag-number" type="danger" round>{{cell.num}}</van-tag>
             </van-cell>
           </van-cell-group>
           <span slot="right" @click="onDelete(index)">删除</span>
@@ -41,23 +45,84 @@
 </template>
 
 <script>
-import baseHeader from '../components/BaseHeader'
 export default {
   name: 'news',
-  components: {
-    baseHeader
-  },
   data() {
     return {
       searchIcon: require('@/assets/images/search.png'),
       nowTabIndex: 0,
       tabs: ["私信","评论","赞我","通知"],
       cellList: [
-        {titleText: '111', valueText: '222'},
-        {titleText: '321', valueText: '222'},
-        {titleText: '213', valueText: '222'},
-        {titleText: '555', valueText: '222'},
-        {titleText: '333', valueText: '222'},
+        {
+          titleText: 'OKOer', 
+          labelText: '1111111111111',
+          valueText: '16:11',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '321', 
+          labelText: '1111111111111',
+          valueText: '10:22',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '213', 
+          labelText: '1111111111111',
+          valueText: '03:11',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '555',
+          labelText: '1111111111111',
+          valueText: '05:55',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '333', 
+          labelText: '1111111111111',
+          valueText: '06:44',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '333', 
+          labelText: '1111111111111',
+          valueText: '06:44',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '333', 
+          labelText: '1111111111111',
+          valueText: '06:44',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '333', 
+          labelText: '1111111111111',
+          valueText: '06:44',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '333', 
+          labelText: '1111111111111',
+          valueText: '06:44',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
+        {
+          titleText: '333', 
+          labelText: '1111111111111',
+          valueText: '06:44',
+          num: '11',
+          headImg: require('@/assets/images/1.jpeg')
+        },
       ]
     }
   },
@@ -79,6 +144,7 @@ export default {
 
 <style lang="less" scoped>
 .news {
+  margin-bottom: 68px;
   .tab-box-wrap {
     width: 100%;
     height: 40px;
@@ -124,6 +190,19 @@ export default {
   }
   .content-news {
     margin-top: 86px;
+    .tab-first {
+      .head-image {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 50px;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
   }
 }
 </style>
@@ -133,10 +212,13 @@ export default {
     display: inline-block;
     width: 65px;
     font-size: 15px;
-    line-height: 44px;
+    line-height: 68px;
     color: #fff;
     text-align: center;
     background-color: #f44;
+  }
+  .van-cell__title {
+    font-size: 16px;
   }
 }
 </style>

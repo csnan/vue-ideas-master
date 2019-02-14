@@ -18,12 +18,8 @@
 </template>
 
 <script>
-import baseHeader from '../components/BaseHeader'
 export default {
   name: 'focus',
-  components: {
-    baseHeader
-  },
   data() {
     return {
       addFriendIcon: require('@/assets/images/addFriend.png'),
