@@ -23,6 +23,30 @@
             <img :src="imgSwipe" class="img-swipe"/>
           </van-swipe-item>
         </van-swipe>
+        <div class="home-cell-wrap">
+          <van-cell class="home-cell-top" title="按时发顺丰三分" label="20分钟前" :border="false" center>
+            <div class="head-image" slot="icon">
+              <img src="../assets/images/1.jpeg">
+            </div>
+          </van-cell>
+          <div class="home-cell-bottom">
+            <div class="home-cell-bottom-content">阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213</div>
+            <van-row class="home-cell-bottom-foot">
+              <van-col span="8">
+                <img src="../assets/images/forward.png">
+                <span>16</span>
+              </van-col>
+              <van-col span="8">
+                <img src="../assets/images/comment.png">
+                <span>16</span>
+              </van-col>
+              <van-col span="8">
+                <img src="../assets/images/forward.png">
+                <span>16</span>
+              </van-col>
+            </van-row>
+          </div>
+        </div>
         <!-- <van-row class="four-type">
           <van-col span="6">
             <div class="color-round"></div>111
@@ -109,6 +133,43 @@ export default {
     .tab-first {
       .img-swipe {
         width: 100%;
+      }
+      .home-cell-wrap {
+        .home-cell-top {
+          //background:red;
+          .head-image {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 50px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+        .home-cell-bottom {
+          padding: 0 15px;
+          .home-cell-bottom-content {
+            word-break: break-all;
+            font-size: 15px;
+          }
+          .home-cell-bottom-foot {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            img {
+              width: 13px;
+              height: 13px;
+              margin-right: 5px;
+              vertical-align: middle;
+            }
+            span {
+              vertical-align: middle;
+            }
+          }
+        }
       }
       // .four-type {
       //   margin-top: 10px;
