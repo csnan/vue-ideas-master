@@ -23,26 +23,33 @@
             <img :src="imgSwipe" class="img-swipe"/>
           </van-swipe-item>
         </van-swipe>
-        <div class="home-cell-wrap">
-          <van-cell class="home-cell-top" title="按时发顺丰三分" label="20分钟前" :border="false" center>
+        <div 
+          :class="index == 0 ? 'home-first-cell-wrap':'home-cell-wrap'"
+          v-for="(cell, index) in cellListHome"
+          :key="index"
+        >
+          <van-cell class="home-cell-top" :title="cell.name" :label="cell.time" :border="false" center>
             <div class="head-image" slot="icon">
-              <img src="../assets/images/1.jpeg">
+              <img :src="cell.headImg">
             </div>
           </van-cell>
           <div class="home-cell-bottom">
-            <div class="home-cell-bottom-content">阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213</div>
+            <div class="home-cell-bottom-content">{{cell.content}}</div>
+            <div class="home-cell-bottom-image">
+              <img :src="cell.contentImg">
+            </div>
             <van-row class="home-cell-bottom-foot">
               <van-col span="8">
                 <img src="../assets/images/forward.png">
-                <span>16</span>
+                <span>{{cell.forwardNum}}</span>
               </van-col>
               <van-col span="8">
-                <img src="../assets/images/comment.png">
-                <span>16</span>
+                <img src="../assets/images/comment2.png">
+                <span>{{cell.commentNum}}</span>
               </van-col>
               <van-col span="8">
-                <img src="../assets/images/forward.png">
-                <span>16</span>
+                <img src="../assets/images/like.png">
+                <span>{{cell.likeNum}}</span>
               </van-col>
             </van-row>
           </div>
@@ -80,6 +87,48 @@ export default {
         require('@/assets/images/moveImg/2.png'),
         require('@/assets/images/moveImg/3.png'),
         require('@/assets/images/moveImg/4.png')
+      ],
+      cellListHome: [
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer',
+          time: '20分钟前',
+          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
+          contentImg: require('@/assets/images/1.jpeg'),
+          forwardNum: '16',
+          commentNum: '16',
+          likeNum: '16'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer',
+          time: '20分钟前',
+          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
+          contentImg: require('@/assets/images/1.jpeg'),
+          forwardNum: '16',
+          commentNum: '16',
+          likeNum: '16'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer',
+          time: '20分钟前',
+          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
+          contentImg: require('@/assets/images/1.jpeg'),
+          forwardNum: '16',
+          commentNum: '16',
+          likeNum: '16'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer',
+          time: '20分钟前',
+          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
+          contentImg: require('@/assets/images/1.jpeg'),
+          forwardNum: '16',
+          commentNum: '16',
+          likeNum: '16'
+        }
       ]
     }
   },
@@ -134,9 +183,9 @@ export default {
       .img-swipe {
         width: 100%;
       }
-      .home-cell-wrap {
+      .home-first-cell-wrap {
+        margin-bottom: 10px;
         .home-cell-top {
-          //background:red;
           .head-image {
             width: 40px;
             height: 40px;
@@ -155,18 +204,84 @@ export default {
             word-break: break-all;
             font-size: 15px;
           }
+          .home-cell-bottom-image {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            margin-top: 8px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
           .home-cell-bottom-foot {
             margin-top: 10px;
             text-align: center;
             font-size: 12px;
             img {
-              width: 13px;
-              height: 13px;
-              margin-right: 5px;
+              width: 15px;
+              height: 15px;
               vertical-align: middle;
             }
             span {
               vertical-align: middle;
+              color: rgb(100, 100, 100);
+            }
+          }
+        }
+      }
+      .home-cell-wrap {
+        margin-bottom: 10px;
+        border-top: 6px solid rgb(240, 240, 240);
+        .home-cell-top {
+          .head-image {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 50px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+        .home-cell-bottom {
+          padding: 0 15px;
+          .home-cell-bottom-content {
+            word-break: break-all;
+            font-size: 15px;
+          }
+          .home-cell-bottom-image {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            margin-top: 8px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
+          .home-cell-bottom-foot {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            img {
+              width: 15px;
+              height: 15px;
+              vertical-align: middle;
+            }
+            span {
+              vertical-align: middle;
+              color: rgb(100, 100, 100);
             }
           }
         }
