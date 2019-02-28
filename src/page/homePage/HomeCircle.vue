@@ -2,7 +2,7 @@
   <div class="homeCircle">
     <div 
       :class="index == 0 ? 'home-first-cell-wrap':'home-cell-wrap'"
-      v-for="(cell, index) in cellListHome"
+      v-for="(cell, index) in cellListCircle"
       :key="index"
     >
       <van-cell class="home-cell-top" :title="cell.name" :label="cell.time" :border="false" center>
@@ -69,7 +69,7 @@ export default {
   name: 'homeCircle',
   data() {
     return {
-      cellListHome: [
+      cellListCircle: [
         {
           headImg: require('@/assets/images/1.jpeg'),
           name: 'OKOer1',
@@ -130,21 +130,21 @@ export default {
   methods: {
     onFocus(index, focus) {
       if(focus == 1){
-        this.cellListHome[index].focus = 2
+        this.cellListCircle[index].focus = 2
       }else{
-        this.cellListHome[index].focus = 1
+        this.cellListCircle[index].focus = 1
       }
     },
     onPopup(index) {
-      this.cellListHome[index].show = true
+      this.cellListCircle[index].show = true
     },
     // onDelete(index) {
-    //   this.cellListHome.splice(index, 1)
+    //   this.cellListCircle.splice(index, 1)
     //   //this.show = false
     // },
     onHandItem(index, indexPopup) {
       if(indexPopup == 0) {
-        this.cellListHome.splice(index, 1)
+        this.cellListCircle.splice(index, 1)
       }
     }
   }

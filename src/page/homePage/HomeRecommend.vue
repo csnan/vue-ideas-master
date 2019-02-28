@@ -64,6 +64,11 @@
         </div>
       </div>
     </div>
+    <div class="recommend-photo">
+      <van-cell class="recommend-photo-header" title="推荐图片" :border="false" center is-link>
+        <img src="../../assets/images/lineIcon.png" slot="icon">
+      </van-cell>
+    </div>
   </div>
 </template>
 
@@ -211,6 +216,7 @@ export default {
             }
             span {
               font-size: 10px;
+              color: rgb(128, 128, 128);
               vertical-align: middle;
             }
             .close-icon {
@@ -234,6 +240,17 @@ export default {
             transform: translate(-50%, -50%);
           }
         }
+      }
+    }
+  }
+  .recommend-photo {
+    .recommend-photo-header {
+      margin-top: 20px;
+      font-size: 16px;
+      img {
+        width: 10px;
+        height: 18px;
+        margin-right: 5px;
       }
     }
   }
