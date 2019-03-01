@@ -28,7 +28,7 @@
       </van-col>
     </van-row>
     <div class="recommend-article">
-      <van-cell class="recommend-article-header" title="推荐文章" :border="false" center is-link>
+      <van-cell class="recommend-article-header" title="推荐美文" :border="false" center is-link>
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
       <div class="recommend-article-content">
@@ -65,49 +65,66 @@
       </div>
     </div>
     <div class="recommend-photo">
-      <van-cell class="recommend-photo-header" title="推荐图片" :border="false" center is-link>
+      <van-cell class="recommend-photo-header" title="推荐图集" :border="false" center is-link>
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
       <div class="recommend-photo-content">
-        <div class="recommend-photo-cell">
-          <div class="recommend-photo-text">
-            风云变幻风云变幻风云变幻
-            风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻
-          </div>
+        <div 
+        class="recommend-photo-cell" 
+        v-for="(cellPhoto, index) in cellPhotoList"
+        :key="index"
+        >
+          <div class="recommend-photo-text">{{cellPhoto.title}}</div>
           <van-row class="recommend-photo-image" gutter="5">
             <van-col span="8">
               <div class="recommend-photo-image-box">
-                <img src="../../assets/images/1.jpeg">
+                <img :src="cellPhoto.img[0]">
               </div>
             </van-col>
             <van-col span="8">
               <div class="recommend-photo-image-box">
-                <img src="../../assets/images/1.jpeg">
+                <img :src="cellPhoto.img[1]">
               </div>
             </van-col>
             <van-col span="8">
               <div class="recommend-photo-image-box">
-                <img src="../../assets/images/1.jpeg">
+                <img :src="cellPhoto.img[2]">
               </div>
             </van-col>
           </van-row>
           <div class="recommend-photo-foot">
             <div>
               <img src="../../assets/images/like3.png">
-              <span>123</span>
+              <span>{{cellPhoto.likeNum}}</span>
             </div>
             <div>
               <img src="../../assets/images/comment.png">
-              <span>123</span>
+              <span>{{cellPhoto.commentNum}}</span>
             </div>
             <div>
               <img src="../../assets/images/look.png">
-              <span>123</span>
+              <span>{{cellPhoto.focusNum}}</span>
             </div>
             <div class="close-icon">
               <img src="../../assets/images/close.png">
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="recommend-music">
+      <van-cell class="recommend-music-header" title="推荐歌曲" :border="false" center is-link>
+        <img src="../../assets/images/lineIcon.png" slot="icon">
+      </van-cell>
+      <div class="recommend-music-content">
+        <div class="recommend-music-cell">
+          <div class="recommend-music-image">
+            <img class="music-cover" src="../../assets/images/1.jpeg">
+            <div class="music-cover-icon">
+              <img src="../../assets/images/play.png">
+            </div>
+          </div>
+          <div class="recommend-music-text"></div>
         </div>
       </div>
     </div>
@@ -138,6 +155,30 @@ export default {
           title: '《寻梦环游记》正确的生死',
           content: '电影《寻梦环游记》中，在亡灵世界里，被遗忘的人们将会面临第二次死亡，猪电影寻梦环游记中，在亡影寻梦环游记中，在亡',
           img: require('@/assets/images/1.jpeg'),
+          likeNum: 123,
+          commentNum: 123,
+          focusNum: 123
+        }
+      ],
+      cellPhotoList: [
+        {
+          title: '风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻',
+          img: [
+            require('@/assets/images/1.jpeg'),
+            require('@/assets/images/1.jpeg'),
+            require('@/assets/images/1.jpeg')
+          ],
+          likeNum: 123,
+          commentNum: 123,
+          focusNum: 123
+        },
+        {
+          title: '风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻',
+          img: [
+            require('@/assets/images/1.jpeg'),
+            require('@/assets/images/1.jpeg'),
+            require('@/assets/images/1.jpeg')
+          ],
           likeNum: 123,
           commentNum: 123,
           focusNum: 123
@@ -300,7 +341,8 @@ export default {
     .recommend-photo-content {
       padding: 0px 15px;
       .recommend-photo-cell {
-        padding: 5px 0;
+        padding-top: 10px;
+        padding-bottom: 5px;
         border-bottom: 1px solid rgb(240, 240, 240);
         .recommend-photo-text {
           font-size: 16px;
@@ -348,6 +390,54 @@ export default {
             float: right;
             margin-right: -3px;
           }
+        }
+      }
+    }
+  }
+  .recommend-music {
+    .recommend-music-header {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      img {
+        width: 10px;
+        height: 18px;
+        margin-right: 5px;
+      }
+    }
+    .recommend-music-content {
+      padding: 0px 15px;
+      .recommend-music-cell {
+        .recommend-music-image {
+          width: 34%;
+          height: 110px;
+          position: relative;
+          border-radius: 5px;
+          overflow: hidden;
+          .music-cover {
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+          .music-cover-icon {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50px;
+            background: rgba(66, 65, 65, 0.5);
+            img {
+              width: 30px;
+              height: 30px;
+            }
+          }
+        }
+        .recommend-music-text {
+
         }
       }
     }
