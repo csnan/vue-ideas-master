@@ -68,6 +68,48 @@
       <van-cell class="recommend-photo-header" title="推荐图片" :border="false" center is-link>
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
+      <div class="recommend-photo-content">
+        <div class="recommend-photo-cell">
+          <div class="recommend-photo-text">
+            风云变幻风云变幻风云变幻
+            风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻
+          </div>
+          <van-row class="recommend-photo-image" gutter="5">
+            <van-col span="8">
+              <div class="recommend-photo-image-box">
+                <img src="../../assets/images/1.jpeg">
+              </div>
+            </van-col>
+            <van-col span="8">
+              <div class="recommend-photo-image-box">
+                <img src="../../assets/images/1.jpeg">
+              </div>
+            </van-col>
+            <van-col span="8">
+              <div class="recommend-photo-image-box">
+                <img src="../../assets/images/1.jpeg">
+              </div>
+            </van-col>
+          </van-row>
+          <div class="recommend-photo-foot">
+            <div>
+              <img src="../../assets/images/like3.png">
+              <span>123</span>
+            </div>
+            <div>
+              <img src="../../assets/images/comment.png">
+              <span>123</span>
+            </div>
+            <div>
+              <img src="../../assets/images/look.png">
+              <span>123</span>
+            </div>
+            <div class="close-icon">
+              <img src="../../assets/images/close.png">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -168,6 +210,7 @@ export default {
   .recommend-article {
     .recommend-article-header {
       font-size: 16px;
+      font-weight: bold;
       img {
         width: 10px;
         height: 18px;
@@ -178,7 +221,7 @@ export default {
       padding: 0px 15px;
       margin-top: -5px;
       .recommend-article-cell {
-        height: 110px;
+        height: 115px;
         position: relative;
         padding-top: 10px;
         border-bottom: 1px solid rgb(240, 240, 240);
@@ -227,7 +270,7 @@ export default {
         }
         .recommend-article-image {
           width: 27%;
-          height: 80%;
+          height: 85px;
           position: relative;
           float: right;
           border-radius: 5px;
@@ -247,10 +290,65 @@ export default {
     .recommend-photo-header {
       margin-top: 20px;
       font-size: 16px;
+      font-weight: bold;
       img {
         width: 10px;
         height: 18px;
         margin-right: 5px;
+      }
+    }
+    .recommend-photo-content {
+      padding: 0px 15px;
+      .recommend-photo-cell {
+        padding: 5px 0;
+        border-bottom: 1px solid rgb(240, 240, 240);
+        .recommend-photo-text {
+          font-size: 16px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+        }
+        .recommend-photo-image {
+          margin-top: 8px;
+          .recommend-photo-image-box {
+            width: 100%;
+            height: 80px;
+            position: relative;
+            margin: 0 auto;
+            border-radius: 5px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
+        }
+        .recommend-photo-foot {
+          margin-top: 5px;
+          div {
+            display: inline-block;
+            margin-right: 10px;
+          }
+          img {
+            width: 10px;
+            height: 10px;
+            margin-right: 3px;
+            vertical-align: middle;
+          }
+          span {
+            font-size: 10px;
+            color: rgb(128, 128, 128);
+            vertical-align: middle;
+          }
+          .close-icon {
+            float: right;
+            margin-right: -3px;
+          }
+        }
       }
     }
   }
