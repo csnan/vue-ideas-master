@@ -117,14 +117,36 @@
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
       <div class="recommend-music-content">
-        <div class="recommend-music-cell">
+        <div class="recommend-music-cell clearfix">
           <div class="recommend-music-image">
             <img class="music-cover" src="../../assets/images/1.jpeg">
             <div class="music-cover-icon">
               <img src="../../assets/images/play.png">
             </div>
           </div>
-          <div class="recommend-music-text"></div>
+          <div class="recommend-music-text">
+            <div class="recommend-music-title">浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶</div>
+            <div class="recommend-music-summary">永远变换不定的世界浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶</div>
+            <div class="recommend-music-foot">
+              <div>
+                <img src="../../assets/images/play2.png">
+                <span>123</span>
+              </div>
+              <div>
+                <img src="../../assets/images/comment.png">
+                <span>123</span>
+              </div>
+            </div>
+            <div class="recommend-music-author">
+              <div>
+                <img src="../../assets/images/1.jpeg">
+              </div>
+              <span>OKOer</span>
+            </div>
+          </div>
+          <div class="close-icon">
+            <img src="../../assets/images/close.png">
+          </div>
         </div>
       </div>
     </div>
@@ -408,9 +430,12 @@ export default {
     .recommend-music-content {
       padding: 0px 15px;
       .recommend-music-cell {
+        position: relative;
+        padding-top: 10px;
         .recommend-music-image {
           width: 34%;
           height: 110px;
+          float: left;
           position: relative;
           border-radius: 5px;
           overflow: hidden;
@@ -437,8 +462,88 @@ export default {
           }
         }
         .recommend-music-text {
-
+          width: 64%;
+          margin-top: 4px;
+          float: right;
+          .recommend-music-title {
+            font-size: 16px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          .recommend-music-summary {
+            margin-top: 6px;
+            font-size: 12px;
+            color: rgb(133, 133, 133);
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          .recommend-music-foot {
+            padding-bottom: 2px;
+            border-bottom: 1px solid rgb(240, 240, 240);
+            div {
+              display: inline-block;
+              margin-right: 10px;
+            }
+            img {
+              width: 10px;
+              height: 10px;
+              vertical-align: middle;
+            }
+            span {
+              font-size: 10px;
+              color: rgb(128, 128, 128);
+              vertical-align: middle;
+            }
+            .close-icon {
+              float: right;
+              margin-right: -3px;
+            }
+          }
+          .recommend-music-author {
+            margin-top: 5px;
+            div {
+              width: 30px;
+              height: 30px;
+              position: relative;
+              display: inline-block;
+              vertical-align: middle;
+              border-radius: 50px;
+              overflow: hidden;
+              img {
+                width: 100%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              }
+            }
+            span {
+              font-size: 12px;
+            }
+          }
         }
+        .close-icon {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          img {
+            width: 10px;
+            height: 10px;
+          }
+        }
+      }
+      .clearfix::after {
+          content: ".";
+          clear: both;
+          display: block;
+          overflow: hidden;
+          font-size: 0;
+          height: 0;
+      }
+      .clearfix {
+        zoom: 1;
       }
     }
   }
