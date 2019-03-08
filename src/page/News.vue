@@ -1,6 +1,6 @@
 <template>
   <div class="news">
-    <base-header titleTop="消息" :rightIcon="searchIcon"></base-header>
+    <base-header titleTop="消息" :rightIcon="addFriendIcon"></base-header>
     <div class="tab-box-wrap">
       <div class="tab-box">
         <div
@@ -101,7 +101,7 @@ export default {
   name: 'news',
   data() {
     return {
-      searchIcon: require('@/assets/images/search.png'),
+      addFriendIcon: require('@/assets/images/addFriend.png'),
       nowTabIndex: 0,
       tabs: ["私信","评论","赞我","通知"],
       cellListFirst: [

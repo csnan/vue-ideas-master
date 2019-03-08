@@ -9,12 +9,12 @@
           :src="props.active ? homeIcon.active : homeIcon.normal"
         >
       </van-tabbar-item>
-      <van-tabbar-item to="/focus">
-        <span>关注</span>
+      <van-tabbar-item to="/found">
+        <span>发现</span>
         <img
           slot="icon"
           slot-scope="props"
-          :src="props.active ? focusIcon.active : focusIcon.normal"
+          :src="props.active ? foundIcon.active : foundIcon.normal"
         >
       </van-tabbar-item>
       <van-tabbar-item></van-tabbar-item>
@@ -53,9 +53,9 @@ export default {
         normal: require('@/assets/images/bottomNav/home1.png'),
         active: require('@/assets/images/bottomNav/home2.png')
       },
-      focusIcon: {
-        normal: require('@/assets/images/bottomNav/focus1.png'),
-        active: require('@/assets/images/bottomNav/focus2.png')
+      foundIcon: {
+        normal: require('@/assets/images/bottomNav/found1.png'),
+        active: require('@/assets/images/bottomNav/found2.png')
       },
       newsIcon: {
         normal: require('@/assets/images/bottomNav/news1.png'),
@@ -72,7 +72,7 @@ export default {
     if(this.$route.path == "/home") {
       this.active = 0
     }
-    if(this.$route.path == "/focus") {
+    if(this.$route.path == "/found") {
       this.active = 1
     }
     if(this.$route.path == "/news") {

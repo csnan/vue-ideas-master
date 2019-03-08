@@ -21,7 +21,7 @@
         <home-recommend></home-recommend>
       </div>
       <div class="tab-second" v-show="nowTabIndex===1">
-        <home-circle></home-circle>
+        <home-focus></home-focus>
       </div>
     </div>
   </div>
@@ -29,18 +29,18 @@
 
 <script>
 import homeRecommend from './homePage/HomeRecommend'
-import homeCircle from './homePage/HomeCircle'
+import homeFocus from './homePage/HomeFocus'
 export default {
   name: 'home',
   components: {
     homeRecommend, 
-    homeCircle
+    homeFocus
   },
   data() {
     return {
       searchIcon: require('@/assets/images/search.png'),
       nowTabIndex: 0,
-      tabs: ["推荐","圈子"]
+      tabs: ["推荐","关注"]
     }
   },
   methods: {

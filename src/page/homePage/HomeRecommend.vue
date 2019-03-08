@@ -36,6 +36,7 @@
         class="recommend-article-cell" 
         v-for="(cellArticle, index) in cellArticleList"
         :key="index"
+        @click="toArticlePage"
         >
           <div class="recommend-article-text">
             <span>{{cellArticle.title}}</span>
@@ -113,20 +114,30 @@
       </div>
     </div>
     <div class="recommend-music">
-      <van-cell class="recommend-music-header" title="推荐歌曲" :border="false" center is-link>
+      <van-cell 
+        class="recommend-music-header" 
+        title="推荐歌曲" 
+        :border="false" 
+        center 
+        is-link
+      >
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
       <div class="recommend-music-content">
-        <div class="recommend-music-cell clearfix">
+        <div 
+          class="recommend-music-cell clearfix"
+          v-for="(cellMusic, index) in cellMusicList"
+          :key="index"
+        >
           <div class="recommend-music-image">
-            <img class="music-cover" src="../../assets/images/1.jpeg">
+            <img class="music-cover" :src="cellMusic.coverImg">
             <div class="music-cover-icon">
               <img src="../../assets/images/play.png">
             </div>
           </div>
           <div class="recommend-music-text">
-            <div class="recommend-music-title">浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶</div>
-            <div class="recommend-music-summary">永远变换不定的世界浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶</div>
+            <div class="recommend-music-title">{{cellMusic.title}}</div>
+            <div class="recommend-music-summary">{{cellMusic.content}}</div>
             <div class="recommend-music-foot">
               <div>
                 <img src="../../assets/images/play2.png">
@@ -139,13 +150,45 @@
             </div>
             <div class="recommend-music-author">
               <div>
-                <img src="../../assets/images/1.jpeg">
+                <img :src="cellMusic.headImg">
               </div>
               <span>OKOer</span>
             </div>
           </div>
           <div class="close-icon">
             <img src="../../assets/images/close.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="recommend-video">
+      <van-cell 
+        class="recommend-video-header" 
+        title="推荐视频" 
+        :border="false" 
+        center 
+        is-link
+      >
+        <img src="../../assets/images/lineIcon.png" slot="icon">
+      </van-cell>
+      <div class="recommend-video-content">
+        <div 
+        v-for="(cellVideo, index) in cellVideoList"
+        :key="index"
+        :class="(index + 1) % 2==0?'recommend-video-cell-noright':'recommend-video-cell'"
+        @click="toVideoPage"
+        >
+          <div class="recommend-video-image">
+            <img class="video-cover" :src="cellVideo.coverImg">
+            <div class="video-cover-icon">
+              <img src="../../assets/images/video2.png">
+              <span>{{cellVideo.playNum}}</span>
+            </div>
+            <div class="video-cover-time">{{cellVideo.time}}</div>
+          </div>
+          <div class="recommend-video-text">
+            <div class="recommend-video-title">{{cellVideo.title}}</div>
+            <div class="recommend-video-name">{{cellVideo.name}}</div>
           </div>
         </div>
       </div>
@@ -205,13 +248,71 @@ export default {
           commentNum: 123,
           focusNum: 123
         }
+      ],
+      cellMusicList: [
+        {
+          title: '浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
+          content: '永远变换不定的世界浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
+          playNum: '123',
+          commentNum: '123',
+          coverImg: require('@/assets/images/1.jpeg'),
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer'
+        },
+        {
+          title: '浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
+          content: '永远变换不定的世界浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
+          playNum: '123',
+          commentNum: '123',
+          coverImg: require('@/assets/images/1.jpeg'),
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer'
+        }
+      ],
+      cellVideoList: [
+        {
+          coverImg: require('@/assets/images/1.jpeg'),
+          playNum: '1234',
+          time: '03:00',
+          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
+          name: 'sadsads'
+        },
+        {
+          coverImg: require('@/assets/images/1.jpeg'),
+          playNum: '1234',
+          time: '03:00',
+          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
+          name: 'sadsads'
+        },
+        {
+          coverImg: require('@/assets/images/1.jpeg'),
+          playNum: '1234',
+          time: '03:00',
+          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
+          name: 'sadsads'
+        },
+        {
+          coverImg: require('@/assets/images/1.jpeg'),
+          playNum: '1234',
+          time: '03:00',
+          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
+          name: 'sadsads'
+        },
       ]
+    }
+  },
+  methods: {
+    toArticlePage() {
+      this.$router.push('/articlePage')
+    },
+    toVideoPage() {
+      this.$router.push('/videoPage')
     }
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .homeRecommend {
   .img-swipe {
     width: 100%;
@@ -544,6 +645,131 @@ export default {
       }
       .clearfix {
         zoom: 1;
+      }
+    }
+  }
+  .recommend-video {
+    .recommend-video-header {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      img {
+        width: 10px;
+        height: 18px;
+        margin-right: 5px;
+      }
+    }
+    .recommend-video-content {
+      padding: 10px 15px;
+      .recommend-video-cell {
+        width: 49%;
+        display: inline-block;
+        padding-bottom: 5px;
+        .recommend-video-image {
+          width: 100%;
+          height: 100px;
+          position: relative;
+          border-radius: 5px;
+          overflow: hidden;
+          .video-cover {
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+          .video-cover-icon {
+            position: absolute;
+            right: 5px;
+            img {
+              width: 13px;
+              height: 13px;
+              vertical-align: middle;
+            }
+            span {
+              font-size: 12px;
+              color: #fff;
+            }
+          }
+          .video-cover-time {
+            position: absolute;
+            left: 5px;
+            bottom: 3px;
+            font-size: 12px;
+            color: #fff;
+          }
+        }
+        .recommend-video-text {
+          margin-top: 5px;
+          .recommend-video-title {
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          .recommend-video-name {
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            color: rgb(128, 128, 128);
+          }
+        }
+      }
+      .recommend-video-cell-noright {
+        width: 49%;
+        float: right;
+        padding-bottom: 5px;
+        .recommend-video-image {
+          width: 100%;
+          height: 100px;
+          position: relative;
+          border-radius: 5px;
+          overflow: hidden;
+          .video-cover {
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+          .video-cover-icon {
+            position: absolute;
+            right: 5px;
+            img {
+              width: 13px;
+              height: 13px;
+              vertical-align: middle;
+            }
+            span {
+              font-size: 12px;
+              color: #fff;
+            }
+          }
+          .video-cover-time {
+            position: absolute;
+            left: 5px;
+            bottom: 3px;
+            font-size: 12px;
+            color: #fff;
+          }
+        }
+        .recommend-video-text {
+          margin-top: 5px;
+          .recommend-video-title {
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          .recommend-video-name {
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            color: rgb(128, 128, 128);
+          }
+        }
       }
     }
   }

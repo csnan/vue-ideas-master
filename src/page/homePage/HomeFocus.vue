@@ -1,5 +1,5 @@
 <template>
-  <div class="homeCircle">
+  <div class="homeFocus">
     <div 
       :class="index == 0 ? 'home-first-cell-wrap':'home-cell-wrap'"
       v-for="(cell, index) in cellListCircle"
@@ -26,7 +26,7 @@
         </div>
         <van-row class="home-cell-bottom-foot">
           <van-col span="6">
-            <img src="../../assets/images/forward.png">
+            <img src="../../assets/images/share.png">
             <span>{{cell.forwardNum}}</span>
           </van-col>
           <van-col span="6">
@@ -66,7 +66,7 @@
 
 <script>
 export default {
-  name: 'homeCircle',
+  name: 'homeFocus',
   data() {
     return {
       cellListCircle: [
@@ -151,8 +151,8 @@ export default {
 }
 </script>
 
-<style lang="less">
-.homeCircle {
+<style lang="less" scoped>
+.homeFocus {
   .home-first-cell-wrap {
     margin-bottom: 10px;
     .home-cell-top {
@@ -271,7 +271,7 @@ export default {
 }
 </style>
 <style lang="less">
-.homeCircle{
+.homeFocus{
   .van-popup {
     width: 80%;
     border-radius: 10px;

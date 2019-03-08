@@ -20,11 +20,11 @@ export default new Router({
           name: 'home',
           component: _import('Home')
         },
-        //论坛
+        //发现
         {
-          path: 'focus',
-          name: 'focus',
-          component: _import('Focus')
+          path: 'found',
+          name: 'found',
+          component: _import('Found')
         },
         //消息
         {
@@ -39,6 +39,18 @@ export default new Router({
           component: _import('My')
         }
       ]
+    },
+    //文章详情
+    {
+      path: '/articlePage',
+      name: 'articlePage',
+      component: _import('detailPage/ArticlePage')
+    },
+    //视频详情
+    {
+      path: '/videoPage',
+      name: 'videoPage',
+      component: _import('detailPage/VideoPage')
     },
     //登录
     {
