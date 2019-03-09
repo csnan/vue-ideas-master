@@ -52,6 +52,12 @@ export default new Router({
       name: 'videoPage',
       component: _import('detailPage/VideoPage')
     },
+    //音乐详情
+    {
+      path: '/musicPage',
+      name: 'musicPage',
+      component: _import('detailPage/MusicPage')
+    },
     //登录
     {
       path: '/login',

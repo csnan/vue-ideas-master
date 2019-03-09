@@ -35,7 +35,8 @@
         </div>
       </div>
       <div class="gray-block"></div>
-      <div class="comment-wrap">
+      <comment-area :commentList="commentList"></comment-area>
+      <!-- <div class="comment-wrap">
         <div class="comment-header">
           <img src="../../assets/images/lineIcon.png">评论
           <span>（2011）</span>
@@ -81,7 +82,7 @@
             按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -92,7 +93,30 @@ export default {
   data() {
     return {
       backIcon: require('@/assets/images/back2.png'),
-      moreIcon: require('@/assets/images/more.png')
+      moreIcon: require('@/assets/images/more.png'),
+      commentList: [
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKO22er',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: '123213',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        }
+      ]
     }
   },
   methods: {
@@ -169,80 +193,80 @@ export default {
       margin-top: 10px;
       background: rgb(240, 240, 240);
     }
-    .comment-wrap {
-      .comment-header {
-        height: 40px;
-        padding: 0 15px;
-        background: rgb(252, 252, 252);
-        line-height: 40px;
-        font-weight: bold;
-        img {
-          width: 10px;
-          height: 18px;
-          margin-right: 5px;
-          vertical-align: middle;
-        }
-        span {
-          color: rgb(136, 136, 136);
-          font-weight: normal;
-        }
-      }
-      .comment-cell {
-        padding: 20px 15px 15px 15px;
-        border-top: 1px solid rgb(240, 240, 240);
-        .comment-author {
-          .comment-author-left {
-            float: left;
-            .head-image {
-              width: 30px;
-              height: 30px;
-              position: relative;
-              display: inline-block;
-              vertical-align: middle;
-              border-radius: 50px;
-              overflow: hidden;
-              img {
-                width: 100%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-              }
-            }
-            .head-text {
-              margin-left: 5px;
-              display: inline-block;
-              vertical-align: middle;
-              .text-author {
-                font-size: 14px;
-              }
-              .text-time {
-                font-size: 10px;
-                color: rgb(136, 136, 136);
-              }
-            }
-          }
-          .comment-author-right {
-            float: right;
-            img {
-              width: 15px;
-              height: 15px;
-              vertical-align: middle;
-            }
-            span {
-              font-size: 13px;
-              color: rgb(136, 136, 136);
-            }
-          }
-        }
-        .comment-content {
-          margin-top: 10px;
-          line-height: 20px;
-          letter-spacing: 2px;
-          color: rgb(80, 50, 50);
-        }
-      }
-    }
+    // .comment-wrap {
+    //   .comment-header {
+    //     height: 40px;
+    //     padding: 0 15px;
+    //     background: rgb(252, 252, 252);
+    //     line-height: 40px;
+    //     font-weight: bold;
+    //     img {
+    //       width: 10px;
+    //       height: 18px;
+    //       margin-right: 5px;
+    //       vertical-align: middle;
+    //     }
+    //     span {
+    //       color: rgb(136, 136, 136);
+    //       font-weight: normal;
+    //     }
+    //   }
+    //   .comment-cell {
+    //     padding: 20px 15px 15px 15px;
+    //     border-top: 1px solid rgb(240, 240, 240);
+    //     .comment-author {
+    //       .comment-author-left {
+    //         float: left;
+    //         .head-image {
+    //           width: 30px;
+    //           height: 30px;
+    //           position: relative;
+    //           display: inline-block;
+    //           vertical-align: middle;
+    //           border-radius: 50px;
+    //           overflow: hidden;
+    //           img {
+    //             width: 100%;
+    //             position: absolute;
+    //             top: 50%;
+    //             left: 50%;
+    //             transform: translate(-50%, -50%);
+    //           }
+    //         }
+    //         .head-text {
+    //           margin-left: 5px;
+    //           display: inline-block;
+    //           vertical-align: middle;
+    //           .text-author {
+    //             font-size: 14px;
+    //           }
+    //           .text-time {
+    //             font-size: 10px;
+    //             color: rgb(136, 136, 136);
+    //           }
+    //         }
+    //       }
+    //       .comment-author-right {
+    //         float: right;
+    //         img {
+    //           width: 15px;
+    //           height: 15px;
+    //           vertical-align: middle;
+    //         }
+    //         span {
+    //           font-size: 13px;
+    //           color: rgb(136, 136, 136);
+    //         }
+    //       }
+    //     }
+    //     .comment-content {
+    //       margin-top: 10px;
+    //       line-height: 20px;
+    //       letter-spacing: 2px;
+    //       color: rgb(80, 50, 50);
+    //     }
+    //   }
+    // }
   }
 }
 </style>

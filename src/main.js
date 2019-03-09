@@ -13,6 +13,9 @@ Vue.use(VueParticles)
 import baseHeader from './components/BaseHeader'
 Vue.component('base-header', baseHeader);
 
+import commentArea from './components/CommentArea'
+Vue.component('comment-area', commentArea);
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

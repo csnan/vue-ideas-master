@@ -17,7 +17,10 @@
       >  
        <source src="../../assets/images/video22.mp4" type="video/mp4">
       </video>
-      <div class="video-title">流浪地球前传哈哈哈哈</div>
+      <div class="video-title">
+        流浪地球前传哈哈哈哈
+        <van-icon :class="[rotate?'down-icon-rotate':'down-icon']" name="arrow-down" color="gray" @click="onRotate"/>
+      </div>
       <van-cell class="video-author" title="OKOer" :border="false" center>
         <div class="head-image" slot="icon">
           <img src="../../assets/images/1.jpeg">
@@ -34,6 +37,9 @@
       <div class="video-detail">
         <span>1142次播放</span>
         <span>2019-03-07</span>
+        <transition name="van-fade">
+          <div v-show="visible">按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨</div>
+        </transition>
       </div>
       <van-row class="video-four-handle">
         <van-col span="6">
@@ -58,22 +64,54 @@
         </van-col>
       </van-row>
       <div class="gray-block"></div>
+      <comment-area :commentList="commentList"></comment-area>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'videoPage',
   data() {
     return {
       backIcon: require('@/assets/images/back2.png'),
-      moreIcon: require('@/assets/images/more.png')
+      moreIcon: require('@/assets/images/more.png'),
+      rotate: false,
+      visible: false,
+      commentList: [
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKO22er',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: '123213',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        }
+      ]
     }
   },
   methods: {
     toBack() {
       this.$router.go(-1)
     },
+    //实现点击旋转图标180度以及出现简介内容
+    onRotate() {
+      this.rotate = !this.rotate
+      this.visible = !this.visible
+    }
   }
 }
 </script>
@@ -89,6 +127,17 @@ export default {
       margin-top: 15px;
       padding: 0 15px;
       font-size: 18px;
+      .down-icon {
+        vertical-align: top;
+        float: right;
+        transition: all 0.5s;
+      }
+      .down-icon-rotate {
+        vertical-align: top;
+        float: right;
+        transform:rotate(-180deg);
+        transition: all 0.5s;
+      }
     }
     .video-author {
       .head-image {
@@ -113,6 +162,9 @@ export default {
       color: rgb(136, 136, 136);
       span {
         margin-right: 10px;
+      }
+      div {
+        margin-top: 5px;
       }
     }
     .video-four-handle {

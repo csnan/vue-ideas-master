@@ -128,6 +128,7 @@
           class="recommend-music-cell clearfix"
           v-for="(cellMusic, index) in cellMusicList"
           :key="index"
+          @click="toMusicPage"
         >
           <div class="recommend-music-image">
             <img class="music-cover" :src="cellMusic.coverImg">
@@ -307,6 +308,9 @@ export default {
     },
     toVideoPage() {
       this.$router.push('/videoPage')
+    },
+    toMusicPage() {
+      this.$router.push('/musicPage')
     }
   }
 }

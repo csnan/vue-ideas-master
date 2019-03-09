@@ -1,0 +1,346 @@
+<template>
+  <div class="musicPage">
+    <base-header :leftLogo="false" :leftIcon="backIcon" :rightIcon="moreIcon" @goBack="toBack" ></base-header>
+    <div class="main-content">
+      <div class="music-wrap">
+        <img class="bg-cover" src="../../assets/images/3.jpg">
+        <div class="operate-button" @click="onChangeStatus">
+          <img :src="operateIcon">
+        </div>
+        <van-row class="music-foot">
+          <van-col span="3">
+            <span>{{time}}</span>
+          </van-col>
+          <van-col span="18">
+            <div class="dialogAudioProgress" ref="dialogAudioProgress" @mousedown="controlAudioProgress($event)">
+              <span class="progressDot" :style="dotStyle"></span>
+              <span class="bar" :style="progressStyle"></span>
+            </div>
+          </van-col>
+          <van-col class="right-time" span="3">
+            <span>{{duration}}</span>
+          </van-col>
+        </van-row>
+        <audio 
+          ref="recordAudio"  
+          type="audio/mp3" 
+          :src="audioUrl"
+          @canplay="canPlay" 
+          @timeupdate="timeUpdate" 
+          @ended="onEnded"
+        >
+        </audio>
+      </div>
+      <div class="music-title">
+        流浪地球前传哈哈哈哈
+        <van-icon :class="[rotate?'down-icon-rotate':'down-icon']" name="arrow-down" color="gray" @click="onRotate"/>
+      </div>
+      <van-cell class="music-author" title="OKOer" :border="false" center>
+        <div class="head-image" slot="icon">
+          <img src="../../assets/images/1.jpeg">
+        </div>
+        <van-button 
+          class="focus-button" 
+          slot="right-icon" 
+          size="small" 
+          type="primary"
+          @click="onFocus()" 
+          plain
+        >+ 关注</van-button>
+      </van-cell>
+      <div class="music-detail">
+        <span>1142次播放</span>
+        <span>2019-03-07</span>
+        <transition name="van-fade">
+          <div v-show="visible">按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨</div>
+        </transition>
+      </div>
+      <van-row class="music-four-handle">
+        <van-col span="6">
+          <div>
+            <img src="../../assets/images/like4.png">
+          </div>12345
+        </van-col>
+        <van-col span="6">
+          <div>
+            <img src="../../assets/images/collection2.png">
+          </div>5645
+        </van-col>
+        <van-col span="6">
+          <div>
+            <img src="../../assets/images/comment3.png">
+          </div>45612
+        </van-col>
+        <van-col span="6">
+          <div>
+            <img src="../../assets/images/share2.png">
+          </div>转发
+        </van-col>
+      </van-row>
+      <div class="gray-block"></div>
+      <comment-area :commentList="commentList"></comment-area>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'musicPage',
+  data() {
+    return {
+      backIcon: require('@/assets/images/back2.png'),
+      moreIcon: require('@/assets/images/more.png'),
+      operateIcon: require('@/assets/images/play3.png'),
+      audioUrl: require('@/assets/images/music22.mp3'),
+      time: "00:00",
+      duration: "00:00",
+      progressStyle: { width: "" },
+      dotStyle: { left: "" },
+      rotate: false,
+      visible: false,
+      commentList: [
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKOer',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: 'OKO22er',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        },
+        {
+          headImg: require('@/assets/images/1.jpeg'),
+          name: '123213',
+          time: '2019-.3-09 10:34',
+          likeNum: 12345,
+          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
+        }
+      ]
+    }
+  },
+  methods: {
+    toBack() {
+      this.$router.go(-1)
+    },
+
+    //播放暂停控制
+    onChangeStatus() {
+      let recordAudio = this.$refs.recordAudio; //获取audio元素
+      if (recordAudio.paused) {
+        this.operateIcon = require('@/assets/images/pause.png'),
+        recordAudio.play();
+      } else {
+        this.operateIcon = require('@/assets/images/play3.png')
+        recordAudio.pause();
+      }
+    },
+
+    //进度条更新
+    timeUpdate() {
+      this.duration = this.transTime(this.$refs.recordAudio.duration);
+      let timeStr = parseInt(this.$refs.recordAudio.currentTime);
+      this.time = this.transTime(timeStr);
+      let scales = this.$refs.recordAudio.currentTime / this.$refs.recordAudio.duration;
+      this.progressStyle.width = scales * 100 + '%';
+      this.dotStyle.left = scales * 100 + '%';
+    },
+
+    //播放结束
+    onEnded() {
+      this.operateIcon = require('@/assets/images/play3.png')
+      this.time = "00:00"
+      this.progressStyle.width = 0
+      this.dotStyle.left = 0
+    },
+
+    //用户可以开始播放audio
+    canPlay() {
+      //获取audio音频文件总时长 并设置到界面并解决出现 NAN 的问题
+      this.duration = this.transTime(this.$refs.recordAudio.duration);
+    },
+
+    //点击移动播放进度
+    controlAudioProgress(event) {
+      let audio = this.$refs.recordAudio;
+      let dialogAudioProgress = this.$refs.dialogAudioProgress;
+      if (!audio.paused || audio.currentTime != 0) {
+        let pgsWidth = parseFloat(window.getComputedStyle(dialogAudioProgress, null).width.replace('px', ''));
+        let rate = event.offsetX / pgsWidth;
+        audio.currentTime = audio.duration * rate;
+        this.timeUpdate();
+      }
+    },
+
+    //时间转换
+    transTime(value) {
+      let time = "";
+      let h = parseInt(value / 3600);
+      value %= 3600;
+      let m = parseInt(value / 60);
+      let s = parseInt(value % 60);
+      if (h > 0) {
+        time = this.formatTime(h + ":" + m + ":" + s);
+      } else {
+        time = this.formatTime(m + ":" + s);
+      }
+      return time;
+    },
+
+    //时间格式化
+    formatTime(value) {
+      let time = "";
+      let s = value.split(':');
+      let i = 0;
+      for (; i < s.length - 1; i++) {
+        time += s[i].length == 1 ? ("0" + s[i]) : s[i];
+        time += ":";
+      }
+      time += s[i].length == 1 ? ("0" + s[i]) : s[i];
+      return time;
+    },
+
+    //实现点击旋转图标180度以及出现简介内容
+    onRotate() {
+      this.rotate = !this.rotate
+      this.visible = !this.visible
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.musicPage {
+  .main-content {
+    .music-wrap {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      .bg-cover {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .operate-button {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .music-foot {
+        width: 90%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        color: #FFF;
+        font-size: 12px;
+        bottom: 10px;
+        display: flex;
+        align-items: center;
+        .dialogAudioProgress {
+          height: 2px;
+          background: rgba(212, 249, 232, 1);
+          border-radius: 1px;
+          position: relative;
+          .progressDot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            background-color: rgba(5, 180, 147, 1);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -5px;
+            margin-left: -5px;
+            cursor: pointer;
+          }
+          .bar {
+            height: 100%;
+            background: rgba(5, 180, 147, 1);
+            border-radius: 3px;
+            display: inline-block;
+            position: absolute;
+          }
+        }
+        .right-time {
+          text-align: right;
+        }
+      }
+    }
+    .music-title {
+      margin-top: 20px;
+      padding: 0 15px;
+      font-size: 18px;
+      .down-icon {
+        vertical-align: top;
+        float: right;
+        transition: all 0.5s;
+      }
+      .down-icon-rotate {
+        vertical-align: top;
+        float: right;
+        transform:rotate(-180deg);
+        transition: all 0.5s;
+      }
+    }
+    .music-author {
+      .head-image {
+        width: 35px;
+        height: 35px;
+        margin-right: 10px;
+        border-radius: 50px;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .focus-button {
+        border: 1px solid rgb(246, 131, 12);
+        color: rgb(246, 131, 12);
+      }
+    }
+    .music-detail {
+      padding: 0 15px;
+      font-size: 12px;
+      color: rgb(136, 136, 136);
+      span {
+        margin-right: 10px;
+      }
+      div {
+        margin-top: 5px;
+      }
+    }
+    .music-four-handle {
+      width: 90%;
+      margin: 25px auto 10px auto;
+      text-align: center;
+      font-size: 12px;
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    .gray-block {
+      height: 1px;
+      background: rgb(240, 240, 240);
+    }
+  }
+}
+</style>
