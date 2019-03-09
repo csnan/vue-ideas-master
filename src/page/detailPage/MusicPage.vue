@@ -8,16 +8,19 @@
           <img :src="operateIcon">
         </div>
         <van-row class="music-foot">
-          <van-col span="3">
+          <van-col span="4">
             <span>{{time}}</span>
           </van-col>
-          <van-col span="18">
-            <div class="dialogAudioProgress" ref="dialogAudioProgress" @mousedown="controlAudioProgress($event)">
+          <van-col span="16">
+            <!-- <div class="dialogAudioProgress" ref="dialogAudioProgress" @mousedown="controlAudioProgress($event)">
               <span class="progressDot" :style="dotStyle"></span>
               <span class="bar" :style="progressStyle"></span>
+            </div> -->
+            <div @touchstart.prevent="progressTouchStart" @touchmove.prevent="progressTouchMove" @touchend="progressTouchEnd">
+              <van-slider v-model="value" bar-height="4px" @change="controlAudioProgress" />
             </div>
           </van-col>
-          <van-col class="right-time" span="3">
+          <van-col class="right-time" span="4">
             <span>{{duration}}</span>
           </van-col>
         </van-row>
@@ -94,8 +97,10 @@ export default {
       audioUrl: require('@/assets/images/music22.mp3'),
       time: "00:00",
       duration: "00:00",
-      progressStyle: { width: "" },
-      dotStyle: { left: "" },
+      // progressStyle: { width: "" },
+      // dotStyle: { left: "" },
+      value: 0,
+      initiated: false,
       rotate: false,
       visible: false,
       commentList: [
@@ -146,16 +151,20 @@ export default {
       let timeStr = parseInt(this.$refs.recordAudio.currentTime);
       this.time = this.transTime(timeStr);
       let scales = this.$refs.recordAudio.currentTime / this.$refs.recordAudio.duration;
-      this.progressStyle.width = scales * 100 + '%';
-      this.dotStyle.left = scales * 100 + '%';
+      if(!this.initiated){
+        this.value = scales * 100
+      }
+      // this.progressStyle.width = scales * 100 + '%';
+      // this.dotStyle.left = scales * 100 + '%';
     },
 
     //播放结束
     onEnded() {
       this.operateIcon = require('@/assets/images/play3.png')
       this.time = "00:00"
-      this.progressStyle.width = 0
-      this.dotStyle.left = 0
+      this.value = 0
+      // this.progressStyle.width = 0
+      // this.dotStyle.left = 0
     },
 
     //用户可以开始播放audio
@@ -165,15 +174,35 @@ export default {
     },
 
     //点击移动播放进度
-    controlAudioProgress(event) {
-      let audio = this.$refs.recordAudio;
-      let dialogAudioProgress = this.$refs.dialogAudioProgress;
+    // controlAudioProgress(event) {
+    //   let audio = this.$refs.recordAudio;
+    //   let dialogAudioProgress = this.$refs.dialogAudioProgress;
+    //   if (!audio.paused || audio.currentTime != 0) {
+    //     let pgsWidth = parseFloat(window.getComputedStyle(dialogAudioProgress, null).width.replace('px', ''));
+    //     let rate = event.offsetX / pgsWidth;
+    //     audio.currentTime = audio.duration * rate;
+    //     this.timeUpdate();
+    //   }
+    // },
+
+    //改变播放进度
+    controlAudioProgress(value) {
+      let audio = this.$refs.recordAudio
       if (!audio.paused || audio.currentTime != 0) {
-        let pgsWidth = parseFloat(window.getComputedStyle(dialogAudioProgress, null).width.replace('px', ''));
-        let rate = event.offsetX / pgsWidth;
-        audio.currentTime = audio.duration * rate;
-        this.timeUpdate();
+        audio.currentTime = value * 2
+        this.timeUpdate()
       }
+    },
+
+    //触摸、移动、结束改变相应状态
+    progressTouchStart() {
+      this.initiated = true
+    },
+    progressTouchMove() {
+      this.initiated = true
+    },
+    progressTouchEnd() {
+      this.initiated = false
     },
 
     //时间转换
@@ -221,6 +250,7 @@ export default {
       height: 200px;
       position: relative;
       overflow: hidden;
+      background: rgb(0, 0, 0);
       .bg-cover {
         width: 100%;
         position: absolute;
@@ -251,33 +281,33 @@ export default {
         bottom: 10px;
         display: flex;
         align-items: center;
-        .dialogAudioProgress {
-          height: 2px;
-          background: rgba(212, 249, 232, 1);
-          border-radius: 1px;
-          position: relative;
-          .progressDot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            -moz-border-radius: 50%;
-            -webkit-border-radius: 50%;
-            background-color: rgba(5, 180, 147, 1);
-            position: absolute;
-            left: 0;
-            top: 50%;
-            margin-top: -5px;
-            margin-left: -5px;
-            cursor: pointer;
-          }
-          .bar {
-            height: 100%;
-            background: rgba(5, 180, 147, 1);
-            border-radius: 3px;
-            display: inline-block;
-            position: absolute;
-          }
-        }
+        // .dialogAudioProgress {
+        //   height: 2px;
+        //   background: rgba(212, 249, 232, 1);
+        //   border-radius: 1px;
+        //   position: relative;
+        //   .progressDot {
+        //     width: 8px;
+        //     height: 8px;
+        //     border-radius: 50%;
+        //     -moz-border-radius: 50%;
+        //     -webkit-border-radius: 50%;
+        //     background-color: rgba(5, 180, 147, 1);
+        //     position: absolute;
+        //     left: 0;
+        //     top: 50%;
+        //     margin-top: -5px;
+        //     margin-left: -5px;
+        //     cursor: pointer;
+        //   }
+        //   .bar {
+        //     height: 100%;
+        //     background: rgba(5, 180, 147, 1);
+        //     border-radius: 3px;
+        //     display: inline-block;
+        //     position: absolute;
+        //   }
+        // }
         .right-time {
           text-align: right;
         }
