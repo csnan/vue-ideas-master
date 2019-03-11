@@ -35,7 +35,7 @@
         >
       </van-tabbar-item>
     </van-tabbar>
-    <div class="add-button">
+    <div class="add-button" @click="toUploadPopup">
       <img src="../assets/images/edit.png" width="40">
     </div>
     <router-view> 
@@ -80,6 +80,11 @@ export default {
     }
     if(this.$route.path == "/my") {
       this.active = 4
+    }
+  },
+  methods: {
+    toUploadPopup() {
+      this.$router.push('/uploadPopup')
     }
   }
 }

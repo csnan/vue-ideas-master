@@ -7,6 +7,11 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 Vue.use(Vant)
 
+import { Button, Upload, Dialog } from 'element-ui'
+Vue.use(Button)
+Vue.use(Upload)
+Vue.use(Dialog)
+
 import VueParticles from 'vue-particles'    
 Vue.use(VueParticles)
 
