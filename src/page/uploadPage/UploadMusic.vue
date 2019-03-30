@@ -1,6 +1,13 @@
 <template>
   <div class="uploadMusic">
-    <base-header titleTop="上传音乐" :leftLogo="false" :leftIcon="backIcon" :rightIcon="completeIcon" @goBack="toBack" ></base-header>
+    <base-header 
+      titleTop="上传音乐" 
+      :leftLogo="false" 
+      :leftIcon="backIcon" 
+      :rightIcon="completeIcon" 
+      @goBack="toBack" 
+      @toPage="onPush"
+    ></base-header>
     <div class="main-content">
       <van-cell-group>
         <van-field class="title-box" v-model="valueTitle" placeholder="请输入标题" />
@@ -15,16 +22,16 @@
       <div class="music-upload">
         <el-upload
           class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :on-exceed="handleExceed"
-          :before-remove="beforeRemove"
+          action="http://localhost:3000/upload/upload"
+          :before-upload="beforeMusicUpload"
+          :on-exceed="handleMusicExceed"
+          :on-success="handleMusicSuccess"
+          :on-error="handleMusicError"
           :file-list="fileList"
           :limit="1"
-          >
+        >
           <el-button class="upload-botton" size="small" type="primary">点击上传音乐</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传mp3文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip">只能上传mp3文件</div>
         </el-upload>
       </div>
     </div>
@@ -32,6 +39,9 @@
 </template>
 
 <script>
+var param = new FormData()
+import { formatTimeToStr } from '@/utils/date'
+import { postAddIdea } from "@/api/index"
 export default {
   name: 'uploadMusic',
   data() {
@@ -42,7 +52,9 @@ export default {
       valueContent: '',
       show: true,
       photoImg: '',
-      fileList: []
+      fileList: [],
+      music: '',
+      pass: false
     }
   },
   methods: {
@@ -50,19 +62,52 @@ export default {
       this.$router.go(-1)
     },
     onRead(file) {
+      param = new FormData()
       this.show = false
       this.photoImg = file.content
+      param.append('file', file.file) 
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    beforeMusicUpload(file) {
+      const isMP3 = file.type === 'audio/mp3'
+      if (!isMP3) {
+        this.$toast('上传文件只能是 MP3 格式!')
+      }
+      return isMP3
     },
-    handlePreview(file) {
-      console.log(file);
+    handleMusicExceed(files, fileList) {
+      this.$toast('只能上传一个文件')
     },
-    handleExceed(files, fileList) {
+    handleMusicSuccess(res, file) {
+      this.music = 'http://localhost:3000/images/upload/' + res[0].filename
     },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${ file.name }？`);
+    handleMusicError() {
+      this.$toast('上传失败')
+    },
+    onPush() {
+      if(this.valueTitle == '' || this.valueContent == '' || this.photoImg == '' || this.music == '') {
+        this.$toast('标题、正文、封面或文件不能为空')
+      } else {
+        let date = new Date()
+        this.currentDate =  formatTimeToStr( date, "yyyy-MM-dd hh:mm" )
+        param.append('type', 'music') 
+        param.append('author_id', this.$store.state.idData)
+        param.append('author', this.$store.state.usernameData) 
+        param.append('author_img', this.$store.state.headImgData)
+        param.append('author_sex', this.$store.state.sexData)
+        param.append('author_introduction', this.$store.state.introductionData)
+        param.append('idea_title', this.valueTitle) 
+        param.append('idea_content', this.valueContent)
+        param.append('idea_file', this.music)
+        param.append('idea_time', this.currentDate)
+        param.append('pass', this.pass)
+        postAddIdea(param).then(res => {
+          if(res.success) {
+            param = new FormData()  //清空FormData数据
+            this.$toast('发布成功，请等待审核')
+            this.$router.push('/home')
+          }
+        })
+      }
     }
   }
 }

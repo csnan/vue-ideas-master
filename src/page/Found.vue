@@ -1,6 +1,6 @@
 <template>
   <div class="found">
-    <base-header titleTop="发现" :rightIcon="searchIcon"></base-header>
+    <base-header titleTop="发现" :rightIcon="searchIcon" @toPage="toSearch"></base-header>
     <!-- <div class="tab-box">
       <div
        class="tab-item"
@@ -84,6 +84,9 @@ export default {
     // onTabsSwitch(index) {
     //   this.nowTabIndex = index
     // },
+    toSearch() {
+      this.$router.push('/search')
+    },
   }
 }
 </script>

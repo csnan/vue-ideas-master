@@ -20,7 +20,7 @@
           :right-width="65"
         >
           <van-cell-group>
-            <van-cell :title="cell.titleText" :label="cell.labelText">
+            <van-cell :title="cell.titleText" :label="cell.labelText" @click="toChatPage">
               <div class="head-image" slot="icon">
                 <img :src="cell.headImg">
               </div>
@@ -413,6 +413,9 @@ export default {
         this.cellListFourth.splice(index, 1)
       }).catch(() => {
       })
+    },
+    toChatPage() {
+      this.$router.push('/chatPage')
     }
   },
 }

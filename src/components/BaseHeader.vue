@@ -1,5 +1,5 @@
 <template>
-  <div class="base-header">
+  <div class="baseHeader">
     <van-nav-bar 
       :title="titleTop" 
       :border="false" 
@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.base-header {
+.baseHeader {
   .logo-img {
     width: 50px;
     vertical-align: middle;

@@ -1,34 +1,43 @@
 <template>
   <div class="homeRecommend">
+    <loading-image :loadingShow="loadingShow"></loading-image>
     <van-swipe :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(imgSwipe, index) in imgSwipes" :key="index">
-        <img :src="imgSwipe" class="img-swipe"/>
+        <img :src="imgSwipe.swipe_image" class="img-swipe"/>
       </van-swipe-item>
     </van-swipe>
     <van-row class="four-type">
       <van-col span="6">
-        <div class="color-round1">
-          <img src="../../assets/images/article.png">
-        </div>文章
+        <div @click="toArticleList">
+          <div class="color-round1">
+            <img src="../../assets/images/article.png">
+          </div>文章
+        </div>
       </van-col>
       <van-col span="6">
-        <div class="color-round2">
-          <img src="../../assets/images/photo.png">
-        </div>图片
+        <div @click="toPhotoList">
+          <div class="color-round2">
+            <img src="../../assets/images/photo.png">
+          </div>图片
+        </div>
       </van-col>
       <van-col span="6">
-        <div class="color-round3">
-          <img src="../../assets/images/music.png">
-        </div>音乐
+        <div @click="toMusicList">
+          <div class="color-round3">
+            <img src="../../assets/images/music.png">
+          </div>音乐
+        </div>
       </van-col>
       <van-col span="6">
-        <div class="color-round4">
-          <img src="../../assets/images/video.png">
-        </div>视频
+        <div @click="toVideoList">
+          <div class="color-round4">
+            <img src="../../assets/images/video.png">
+          </div>视频
+        </div>
       </van-col>
     </van-row>
     <div class="recommend-article">
-      <van-cell class="recommend-article-header" title="推荐美文" :border="false" center is-link>
+      <van-cell class="recommend-article-header" title="推荐美文" :border="false" center>
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
       <div class="recommend-article-content">
@@ -36,77 +45,78 @@
         class="recommend-article-cell" 
         v-for="(cellArticle, index) in cellArticleList"
         :key="index"
-        @click="toArticlePage"
+        @click="toArticlePage(cellArticle._id)"
         >
           <div class="recommend-article-text">
-            <span>{{cellArticle.title}}</span>
-            <div class="recommend-article-summary">{{cellArticle.content}}</div>
+            <span>{{cellArticle.idea_title}}</span>
+            <div class="recommend-article-summary">{{cellArticle.idea_content}}</div>
             <div class="recommend-article-foot">
               <div>
                 <img src="../../assets/images/like3.png">
-                <span>{{cellArticle.likeNum}}</span>
+                <span>111</span>
               </div>
               <div>
                 <img src="../../assets/images/comment.png">
-                <span>{{cellArticle.commentNum}}</span>
+                <span>111</span>
               </div>
               <div>
                 <img src="../../assets/images/look.png">
-                <span>{{cellArticle.focusNum}}</span>
+                <span>111</span>
               </div>
-              <div class="close-icon">
+              <div class="close-icon" @click.stop="closeArticle(index)">
                 <img src="../../assets/images/close.png">
               </div>
             </div>
           </div>
           <div class="recommend-article-image">
-            <img :src="cellArticle.img">
+            <img :src="cellArticle.idea_img">
           </div>
         </div>
       </div>
     </div>
     <div class="recommend-photo">
-      <van-cell class="recommend-photo-header" title="推荐图集" :border="false" center is-link>
+      <van-cell class="recommend-photo-header" title="推荐图集" :border="false" center>
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
       <div class="recommend-photo-content">
         <div 
-        class="recommend-photo-cell" 
-        v-for="(cellPhoto, index) in cellPhotoList"
-        :key="index"
+          class="recommend-photo-cell" 
+          v-for="(cellPhoto, index) in cellPhotoList"
+          :key="index"
+          @click="toPhotoPage(cellPhoto._id)"
         >
-          <div class="recommend-photo-text">{{cellPhoto.title}}</div>
+          <div class="recommend-photo-text">{{cellPhoto.idea_title}}</div>
           <van-row class="recommend-photo-image" gutter="5">
             <van-col span="8">
               <div class="recommend-photo-image-box">
-                <img :src="cellPhoto.img[0]">
+                <img :src="cellPhoto.idea_images[0]">
               </div>
             </van-col>
             <van-col span="8">
               <div class="recommend-photo-image-box">
-                <img :src="cellPhoto.img[1]">
+                <img :src="cellPhoto.idea_images[1]">
               </div>
             </van-col>
             <van-col span="8">
               <div class="recommend-photo-image-box">
-                <img :src="cellPhoto.img[2]">
+                <img :src="cellPhoto.idea_images[2]">
               </div>
             </van-col>
           </van-row>
           <div class="recommend-photo-foot">
             <div>
               <img src="../../assets/images/like3.png">
-              <span>{{cellPhoto.likeNum}}</span>
+              <span>111</span>
             </div>
             <div>
               <img src="../../assets/images/comment.png">
-              <span>{{cellPhoto.commentNum}}</span>
+              <span>111</span>
             </div>
             <div>
               <img src="../../assets/images/look.png">
-              <span>{{cellPhoto.focusNum}}</span>
+              <span>111</span>
             </div>
-            <div class="close-icon">
+            <div class="close-icon" @click.stop="closePhoto(index)">
               <img src="../../assets/images/close.png">
             </div>
           </div>
@@ -119,7 +129,6 @@
         title="推荐歌曲" 
         :border="false" 
         center 
-        is-link
       >
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
@@ -128,17 +137,17 @@
           class="recommend-music-cell clearfix"
           v-for="(cellMusic, index) in cellMusicList"
           :key="index"
-          @click="toMusicPage"
+          @click="toMusicPage(cellMusic._id)"
         >
           <div class="recommend-music-image">
-            <img class="music-cover" :src="cellMusic.coverImg">
+            <img class="music-cover" :src="cellMusic.idea_img">
             <div class="music-cover-icon">
               <img src="../../assets/images/play.png">
             </div>
           </div>
           <div class="recommend-music-text">
-            <div class="recommend-music-title">{{cellMusic.title}}</div>
-            <div class="recommend-music-summary">{{cellMusic.content}}</div>
+            <div class="recommend-music-title">{{cellMusic.idea_title}}</div>
+            <div class="recommend-music-summary">{{cellMusic.idea_content}}</div>
             <div class="recommend-music-foot">
               <div>
                 <img src="../../assets/images/play2.png">
@@ -151,12 +160,12 @@
             </div>
             <div class="recommend-music-author">
               <div>
-                <img :src="cellMusic.headImg">
+                <img :src="cellMusic.author_img">
               </div>
-              <span>OKOer</span>
+              <span>{{cellMusic.author}}</span>
             </div>
           </div>
-          <div class="close-icon">
+          <div class="close-icon" @click.stop="closeMusic(index)">
             <img src="../../assets/images/close.png">
           </div>
         </div>
@@ -168,28 +177,30 @@
         title="推荐视频" 
         :border="false" 
         center 
-        is-link
       >
         <img src="../../assets/images/lineIcon.png" slot="icon">
       </van-cell>
       <div class="recommend-video-content">
         <div 
-        v-for="(cellVideo, index) in cellVideoList"
-        :key="index"
-        :class="(index + 1) % 2==0?'recommend-video-cell-noright':'recommend-video-cell'"
-        @click="toVideoPage"
+          v-for="(cellVideo, index) in cellVideoList"
+          :key="index"
+          :class="(index + 1) % 2==0?'recommend-video-cell-noright':'recommend-video-cell'"
+          @click="toVideoPage(cellVideo._id)"
         >
           <div class="recommend-video-image">
-            <img class="video-cover" :src="cellVideo.coverImg">
+            <img class="video-cover" :src="cellVideo.idea_img">
             <div class="video-cover-icon">
               <img src="../../assets/images/video2.png">
-              <span>{{cellVideo.playNum}}</span>
+              <span>111</span>
             </div>
-            <div class="video-cover-time">{{cellVideo.time}}</div>
+            <div class="video-cover-time">{{cellVideo.idea_time}}</div>
           </div>
           <div class="recommend-video-text">
-            <div class="recommend-video-title">{{cellVideo.title}}</div>
-            <div class="recommend-video-name">{{cellVideo.name}}</div>
+            <div class="recommend-video-title">{{cellVideo.idea_title}}</div>
+            <div class="recommend-video-name">
+              {{cellVideo.author}}
+              <img src="../../assets/images/close.png" @click.stop="closeVideo(index)">
+            </div>
           </div>
         </div>
       </div>
@@ -198,119 +209,167 @@
 </template>
 
 <script>
+import { postFindRecommendType } from "@/api/index"
+import { postFindSwipeImages } from "@/api/index"
 export default {
   name: 'homeRecommend',
   data() {
     return {
+      loadingShow: false,
       imgSwipes: [
         require('@/assets/images/moveImg/1.png'),
         require('@/assets/images/moveImg/2.png'),
         require('@/assets/images/moveImg/3.png'),
         require('@/assets/images/moveImg/4.png')
       ],
-      cellArticleList: [
-        {
-          title: '《寻梦环游记》正确的生死',
-          content: '电影《寻梦环游记》中，在亡灵世界里，被遗忘的人们将会面临第二次死亡，猪电影寻梦环游记中，在亡影寻梦环游记中，在亡',
-          img: require('@/assets/images/1.jpeg'),
-          likeNum: 123,
-          commentNum: 123,
-          focusNum: 123
-        },
-        {
-          title: '《寻梦环游记》正确的生死',
-          content: '电影《寻梦环游记》中，在亡灵世界里，被遗忘的人们将会面临第二次死亡，猪电影寻梦环游记中，在亡影寻梦环游记中，在亡',
-          img: require('@/assets/images/1.jpeg'),
-          likeNum: 123,
-          commentNum: 123,
-          focusNum: 123
-        }
-      ],
-      cellPhotoList: [
-        {
-          title: '风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻',
-          img: [
-            require('@/assets/images/1.jpeg'),
-            require('@/assets/images/1.jpeg'),
-            require('@/assets/images/1.jpeg')
-          ],
-          likeNum: 123,
-          commentNum: 123,
-          focusNum: 123
-        },
-        {
-          title: '风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻风云变幻',
-          img: [
-            require('@/assets/images/1.jpeg'),
-            require('@/assets/images/1.jpeg'),
-            require('@/assets/images/1.jpeg')
-          ],
-          likeNum: 123,
-          commentNum: 123,
-          focusNum: 123
-        }
-      ],
-      cellMusicList: [
-        {
-          title: '浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
-          content: '永远变换不定的世界浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
-          playNum: '123',
-          commentNum: '123',
-          coverImg: require('@/assets/images/1.jpeg'),
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKOer'
-        },
-        {
-          title: '浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
-          content: '永远变换不定的世界浪人琵琶浪人琵琶浪人琵琶浪人琵琶浪人琵琶',
-          playNum: '123',
-          commentNum: '123',
-          coverImg: require('@/assets/images/1.jpeg'),
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKOer'
-        }
-      ],
-      cellVideoList: [
-        {
-          coverImg: require('@/assets/images/1.jpeg'),
-          playNum: '1234',
-          time: '03:00',
-          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
-          name: 'sadsads'
-        },
-        {
-          coverImg: require('@/assets/images/1.jpeg'),
-          playNum: '1234',
-          time: '03:00',
-          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
-          name: 'sadsads'
-        },
-        {
-          coverImg: require('@/assets/images/1.jpeg'),
-          playNum: '1234',
-          time: '03:00',
-          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
-          name: 'sadsads'
-        },
-        {
-          coverImg: require('@/assets/images/1.jpeg'),
-          playNum: '1234',
-          time: '03:00',
-          title: '浪人琵琶是哈哈哈哈哈的方法的方法的方法',
-          name: 'sadsads'
-        },
-      ]
+      cellArticleList: [],
+      cellPhotoList: [],
+      cellMusicList: [],
+      cellVideoList: []
     }
   },
+  mounted() {
+    this.getSwipeImages()
+    this.getRecommendArticle()
+    this.getRecommendPhoto()
+    this.getRecommendMusic()
+    this.getRecommendVideo()
+  },
   methods: {
-    toArticlePage() {
-      this.$router.push('/articlePage')
+    getSwipeImages() {
+      postFindSwipeImages().then(res => {
+        if(res.success) {
+          this.imgSwipes = res.resultList
+        }
+      })
     },
-    toVideoPage() {
-      this.$router.push('/videoPage')
+    getRecommendArticle() {
+      postFindRecommendType({
+        type: 'article'
+      }).then(res => {
+        if(res.success) {
+          this.cellArticleList = res.resultList.reverse()
+        }
+      })
     },
-    toMusicPage() {
-      this.$router.push('/musicPage')
+    getRecommendPhoto() {
+      postFindRecommendType({
+        type: 'photo'
+      }).then(res => {
+        if(res.success) {
+          this.cellPhotoList = res.resultList.reverse()
+        }
+      })
+    },
+    getRecommendMusic() {
+      postFindRecommendType({
+        type: 'music'
+      }).then(res => {
+        if(res.success) {
+          this.cellMusicList = res.resultList.reverse()
+        }
+      })
+    },
+    getRecommendVideo() {
+      postFindRecommendType({
+        type: 'video'
+      }).then(res => {
+        if(res.success) {
+          this.cellVideoList = res.resultList.reverse()
+        }
+      })
+    },
+    toArticleList() {
+      this.$router.push('/articleList')
+    },
+    toPhotoList() {
+      this.$router.push('/photoList')
+    },
+    toMusicList() {
+      this.$router.push('/musicList')
+    },
+    toVideoList() {
+      this.$router.push('/videoList')
+    },
+    toArticlePage(article_id) {
+      this.$router.push({
+        name: 'articlePage',
+        query: {
+          article_id: article_id
+        }
+      })
+    },
+    toPhotoPage(photo_id) {
+      this.$router.push({
+        name: 'photoPage',
+        query: {
+          photo_id: photo_id
+        }
+      })
+    },
+    toMusicPage(music_id) {
+      this.$router.push({
+        name: 'musicPage',
+        query: {
+          music_id: music_id
+        }
+      })
+    },
+    toVideoPage(video_id) {
+      this.$router.push({
+        name: 'videoPage',
+        query: {
+          video_id: video_id
+        }
+      })
+    },
+    closeArticle(index) {
+      this.loadingShow = true
+      setTimeout(() => {
+        this.loadingShow = false
+        if(this.cellArticleList.length <= 2) {
+          this.$toast('没有更多推荐')
+        } else {
+          this.cellArticleList.splice(index, 1)
+          this.$toast('已为您重新推荐')
+        }
+      },1000)
+    },
+    closePhoto(index) {
+      this.loadingShow = true
+      setTimeout(() => {
+        this.loadingShow = false
+        if(this.cellPhotoList.length <= 2) {
+          this.$toast('没有更多推荐')
+        } else {
+          this.cellPhotoList.splice(index, 1)
+          this.$toast('已为您重新推荐')
+        }
+      },1000)
+    },
+    closeMusic(index) {
+      this.loadingShow = true
+      setTimeout(() => {
+        this.loadingShow = false
+        if(this.cellMusicList.length <= 2) {
+          this.$toast('没有更多推荐')
+        } else {
+          this.cellMusicList.splice(index, 1)
+          this.$toast('已为您重新推荐')
+        }
+      },1000)
+    },
+    closeVideo(index) {
+      this.loadingShow = true
+      setTimeout(() => {
+        this.loadingShow = false
+        if(this.cellVideoList.length <= 4) {
+          this.$toast('没有更多推荐')
+        } else {
+          this.cellVideoList.splice(index, 1)
+          this.$toast('已为您重新推荐')
+        }
+      },1000)
     }
   }
 }
@@ -386,8 +445,10 @@ export default {
       }
     }
     .recommend-article-content {
+      height: 260px;
       padding: 0px 15px;
       margin-top: -5px;
+      overflow: hidden;
       .recommend-article-cell {
         height: 115px;
         position: relative;
@@ -466,7 +527,9 @@ export default {
       }
     }
     .recommend-photo-content {
+      height: 310px;
       padding: 0px 15px;
+      overflow: hidden;
       .recommend-photo-cell {
         padding-top: 10px;
         padding-bottom: 5px;
@@ -488,7 +551,7 @@ export default {
             border-radius: 5px;
             overflow: hidden;
             img {
-              width: 100%;
+              width: 120%;
               position: absolute;
               top: 50%;
               left: 50%;
@@ -617,7 +680,7 @@ export default {
               border-radius: 50px;
               overflow: hidden;
               img {
-                width: 100%;
+                width: 120%;
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -664,7 +727,9 @@ export default {
       }
     }
     .recommend-video-content {
+      height: 280px;
       padding: 10px 15px;
+      overflow: hidden;
       .recommend-video-cell {
         width: 49%;
         display: inline-block;
@@ -705,6 +770,7 @@ export default {
         }
         .recommend-video-text {
           margin-top: 5px;
+          position: relative;
           .recommend-video-title {
             font-size: 14px;
             overflow: hidden;
@@ -717,6 +783,14 @@ export default {
             text-overflow:ellipsis;
             white-space: nowrap;
             color: rgb(128, 128, 128);
+            img {
+              position: absolute;
+              right: 0px;
+              bottom: 2px;
+              vertical-align: middle;
+              width: 10px;
+              height: 10px;
+            }
           }
         }
       }
@@ -760,6 +834,7 @@ export default {
         }
         .recommend-video-text {
           margin-top: 5px;
+          position: relative;
           .recommend-video-title {
             font-size: 14px;
             overflow: hidden;
@@ -772,6 +847,14 @@ export default {
             text-overflow:ellipsis;
             white-space: nowrap;
             color: rgb(128, 128, 128);
+            img {
+              position: absolute;
+              right: 0px;
+              bottom: 2px;
+              vertical-align: middle;
+              width: 10px;
+              height: 10px;
+            }
           }
         }
       }

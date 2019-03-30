@@ -1,32 +1,33 @@
 <template>
-  <div class="homeFocus">
+  <div class="myUpdatings">
     <div 
       :class="index == 0 ? 'home-first-cell-wrap':'home-cell-wrap'"
       v-for="(cell, index) in cellListCircle"
       :key="index"
+      @click="toDetailPage(cell.type, cell._id)"
     >
-      <van-cell class="home-cell-top" :title="cell.name" :label="cell.time" :border="false" center>
+      <van-cell class="home-cell-top" :title="cell.author" :label="cell.idea_time" :border="false" center>
         <div class="head-image" slot="icon">
-          <img :src="cell.headImg">
+          <img :src="cell.author_img">
         </div>
       </van-cell>
       <div class="home-cell-bottom">
-        <div class="home-cell-bottom-content">{{cell.content}}</div>
+        <div class="home-cell-bottom-content">{{cell.idea_title}}</div>
         <div class="home-cell-bottom-image">
-          <img :src="cell.contentImg">
+          <img :src="cell.idea_img">
         </div>
         <van-row class="home-cell-bottom-foot">
           <van-col span="6">
             <img src="../../assets/images/share.png">
-            <span>{{cell.forwardNum}}</span>
+            <span>123</span>
           </van-col>
           <van-col span="6">
             <img src="../../assets/images/comment2.png">
-            <span>{{cell.commentNum}}</span>
+            <span>123</span>
           </van-col>
           <van-col span="6">
             <img src="../../assets/images/like.png">
-            <span>{{cell.likeNum}}</span>
+            <span>123</span>
           </van-col>
           <van-col class="foot-more" span="6">
             <van-icon 
@@ -37,7 +38,7 @@
           </van-col>
         </van-row>
       </div>
-      <van-popup v-model="cell.show"> 
+      <van-popup v-model="cell.showPopup"> 
         <van-cell-group>
           <!-- <van-cell title="不再看到此条微博" @click="onDelete(index)"/>
           <van-cell title="减少此人的微博" />
@@ -56,56 +57,12 @@
 </template>
 
 <script>
+import { postFindAuthorIdea } from "@/api/index"
 export default {
-  name: 'homeFocus',
+  name: 'myUpdatings',
   data() {
     return {
-      cellListCircle: [
-        {
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKOer1',
-          time: '20分钟前',
-          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
-          contentImg: require('@/assets/images/1.jpeg'),
-          forwardNum: '16',
-          commentNum: '16',
-          likeNum: '16',
-          show: false,
-        },
-        {
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKOer2',
-          time: '20分钟前',
-          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
-          contentImg: require('@/assets/images/1.jpeg'),
-          forwardNum: '16',
-          commentNum: '16',
-          likeNum: '16',
-          show: false,
-        },
-        {
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKOer3',
-          time: '20分钟前',
-          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
-          contentImg: require('@/assets/images/1.jpeg'),
-          forwardNum: '16',
-          commentNum: '16',
-          likeNum: '16',
-          show: false,
-        },
-        {
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKOer4',
-          time: '20分钟前',
-          content: '阿送给非国大送给颠三倒四单色光单色光单色光速度阿斯顿发送到广东省1231232132111232221232213123123213',
-          contentImg: require('@/assets/images/1.jpeg'),
-          forwardNum: '16',
-          commentNum: '16',
-          likeNum: '16',
-          show: false,
-        }
-      ],
+      cellListCircle: [],
       cellPopupList: [
         '不再看到此条微博',
         '减少此人的微博',
@@ -114,13 +71,62 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.getAuthorIdea()
+  },
   methods: {
+    getAuthorIdea() {
+      postFindAuthorIdea({
+        author_id: this.$store.state.idData
+      }).then(res => {
+        this.cellListCircle = res.resultList.reverse()
+        for(let i = 0; i < this.cellListCircle.length; i++){
+          if(this.cellListCircle[i].type == 'photo') {
+            this.cellListCircle[i].idea_img = this.cellListCircle[i].idea_images[0]
+          }
+        }
+      })
+    },
     onPopup(index) {
-      this.cellListCircle[index].show = true
+      this.cellListCircle[index].showPopup = true
     },
     onHandItem(index, indexPopup) {
       if(indexPopup == 0) {
         this.cellListCircle.splice(index, 1)
+      }
+    },
+    toDetailPage(type, idea_id) {
+      if(type == 'article') {
+        this.$router.push({
+          name: 'articlePage',
+          query: {
+            article_id: idea_id
+          }
+        })
+      }
+      if(type == 'photo') {
+        this.$router.push({
+          name: 'photoPage',
+          query: {
+            photo_id: idea_id
+          }
+        })
+      }
+      if(type == 'music') {
+        this.$router.push({
+          name: 'musicPage',
+          query: {
+            music_id: idea_id
+          }
+        })
+      }
+      if(type == 'video') {
+        this.$router.push({
+          name: 'videoPage',
+          query: {
+            video_id: idea_id
+          }
+        })
       }
     }
   }
@@ -128,7 +134,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.homeFocus {
+.myUpdatings {
   .home-first-cell-wrap {
     margin-bottom: 10px;
     .home-cell-top {
@@ -239,7 +245,7 @@ export default {
 }
 </style>
 <style lang="less">
-.homeFocus{
+.myUpdatings{
   .van-popup {
     width: 80%;
     border-radius: 10px;

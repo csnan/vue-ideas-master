@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <base-header :rightIcon="searchIcon" @toPage="toLogin"></base-header>
+    <base-header :rightIcon="searchIcon" @toPage="toSearch"></base-header>
     <div class="tab-box">
       <div
        class="tab-item"
@@ -47,8 +47,8 @@ export default {
     onTabsSwitch(index) {
       this.nowTabIndex = index
     },
-    toLogin() {
-      this.$router.push('/login')
+    toSearch() {
+      this.$router.push('/search')
     },
   }
 }

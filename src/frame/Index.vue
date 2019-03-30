@@ -84,7 +84,11 @@ export default {
   },
   methods: {
     toUploadPopup() {
-      this.$router.push('/uploadPopup')
+      if(this.$store.state.memberData) {
+        this.$router.push('/uploadPopup')
+      } else {
+        this.$toast.fail('请先登录')
+      }
     }
   }
 }

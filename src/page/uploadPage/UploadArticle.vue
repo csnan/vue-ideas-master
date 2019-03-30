@@ -1,6 +1,13 @@
 <template>
   <div class="uploadArticle">
-    <base-header titleTop="上传文章" :leftLogo="false" :leftIcon="backIcon" :rightIcon="completeIcon" @goBack="toBack" ></base-header>
+    <base-header 
+      titleTop="上传文章" 
+      :leftLogo="false" 
+      :leftIcon="backIcon" 
+      :rightIcon="completeIcon" 
+      @goBack="toBack" 
+      @toPage="onPush"
+    ></base-header>
     <div class="main-content">
       <van-cell-group>
         <van-field class="title-box" v-model="valueTitle" placeholder="请输入标题" />
@@ -17,6 +24,9 @@
 </template>
 
 <script>
+var param = new FormData()
+import { formatTimeToStr } from '@/utils/date'
+import { postAddIdea } from "@/api/index"
 export default {
   name: 'uploadArticle',
   data() {
@@ -26,7 +36,9 @@ export default {
       valueTitle: '',
       valueContent: '',
       show: true,
-      photoImg: ''
+      photoImg: '',
+      currentDate: '',
+      pass: false
     }
   },
   methods: {
@@ -34,8 +46,36 @@ export default {
       this.$router.go(-1)
     },
     onRead(file) {
+      param = new FormData()
       this.show = false
       this.photoImg = file.content
+      param.append('file', file.file) 
+    },
+    onPush() {
+      if(this.valueTitle == '' || this.valueContent == '' || this.photoImg == '') {
+        this.$toast('标题、正文或封面不能为空')
+      } else {
+        let date = new Date()
+        this.currentDate =  formatTimeToStr( date, "yyyy-MM-dd hh:mm" )
+        param.append('type', 'article')
+        param.append('author_id', this.$store.state.idData)
+        param.append('author', this.$store.state.usernameData) 
+        param.append('author_img', this.$store.state.headImgData)
+        param.append('author_sex', this.$store.state.sexData)
+        param.append('author_introduction', this.$store.state.introductionData)
+        param.append('idea_title', this.valueTitle) 
+        param.append('idea_content', this.valueContent)
+        param.append('idea_time', this.currentDate)
+        param.append('pass', this.pass)
+        postAddIdea(param).then(res => {
+          if(res.success) {
+            param = new FormData()  //清空FormData数据
+            this.$toast('发布成功，请等待审核')
+            this.$router.push('/home')
+            console.log(res)
+          }
+        })
+      }
     }
   }
 }

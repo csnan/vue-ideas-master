@@ -40,6 +40,12 @@ export default new Router({
         }
       ]
     },
+    //搜索
+    {
+      path: '/search',
+      name: 'search',
+      component: _import('Search')
+    },
     //上传弹出
     {
       path: '/uploadPopup',
@@ -70,11 +76,41 @@ export default new Router({
       name: 'uploadVideo',
       component: _import('uploadPage/UploadVideo')
     },
+    //文章列表
+    {
+      path: '/articleList',
+      name: 'articleList',
+      component: _import('typeListPage/ArticleList')
+    },
+    //图片列表
+    {
+      path: '/photoList',
+      name: 'photoList',
+      component: _import('typeListPage/PhotoList')
+    },
+    //音乐列表
+    {
+      path: '/musicList',
+      name: 'musicList',
+      component: _import('typeListPage/MusicList')
+    },
+    //视频列表
+    {
+      path: '/videoList',
+      name: 'videoList',
+      component: _import('typeListPage/VideoList')
+    },
     //文章详情
     {
       path: '/articlePage',
       name: 'articlePage',
       component: _import('detailPage/ArticlePage')
+    },
+    //图片详情
+    {
+      path: '/photoPage',
+      name: 'photoPage',
+      component: _import('detailPage/PhotoPage')
     },
     //音乐详情
     {
@@ -88,6 +124,12 @@ export default new Router({
       name: 'videoPage',
       component: _import('detailPage/VideoPage')
     },
+    //聊天
+    {
+      path: '/chatPage',
+      name: 'chatPage',
+      component: _import('detailPage/ChatPage')
+    },
     //登录
     {
       path: '/login',
@@ -99,6 +141,36 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: _import('Register')
+    },
+    //忘记密码（1）
+    {
+      path: '/forgetPasswordFirst',
+      name: 'forgetPasswordFirst',
+      component: _import('forgetPasswordPage/ForgetPasswordFirst')
+    },
+    //忘记密码（2）
+    {
+      path: '/forgetPasswordSecond',
+      name: 'forgetPasswordSecond',
+      component: _import('forgetPasswordPage/ForgetPasswordSecond')
+    },
+    //个人主页
+    {
+      path: '/userCenter',
+      name: 'userCenter',
+      component: _import('detailPage/UserCenter')
+    },
+    //编辑资料
+    {
+      path: '/editInfo',
+      name: 'editInfo',
+      component: _import('detailPage/EditInfo')
+    },
+    //关注
+    {
+      path: '/focusPage',
+      name: 'focusPage',
+      component: _import('detailPage/FocusPage')
     }
   ]
 })

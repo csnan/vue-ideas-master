@@ -6,25 +6,29 @@
     ></base-header>
     <div
      class="personal-card"
-     :style="{ 'background': 'url(' + bgImg + ') no-repeat center center', 'background-size': '100%' }"
+     :style="{ 'background': 'url(' + coverImg + ') center center / 100% no-repeat ' }"
      >
       <div class="head-image">
-        <img src="../assets/images/1.jpeg">
+        <img :src="headImg">
       </div>
     </div>
     <div class="content-my">
-      <div class="content-one">
-        <span class="user-name">OKOer</span>
+      <div class="content-one" v-show="!showOne" @click="toLogin">
+        <span class="user-name">点击登录</span>
       </div>
-      <div class="content-two">
+      <div class="content-one" v-show="showOne"  @click="toUserCenter">
+        <span class="user-name">{{myName}}</span>
+        <img :src="sexIcon" alt="">
+      </div>
+      <div class="content-two" v-show="showTwo">
         <van-row class="interact-number">
-          <van-col span="8">1</van-col>
-          <van-col span="8">1</van-col>
-          <van-col span="8">1</van-col>
+          <van-col span="8"><span @click="toFocusPage">{{focusNum}}</span></van-col>
+          <van-col span="8">0</van-col>
+          <van-col span="8">0</van-col>
         </van-row>
         <van-row class="interact-name">
+          <van-col span="8"><span @click="toFocusPage">关注</span></van-col>
           <van-col span="8">粉丝</van-col>
-          <van-col span="8">关注</van-col>
           <van-col span="8">访客</van-col>
         </van-row>
       </div>
@@ -73,10 +77,10 @@
           :title="tab"
         >
           <div class="tab-first" v-show="active === 0">
-            0000
+            <my-updatings></my-updatings>
           </div>
           <div class="tab-second" v-show="active === 1">
-            1111
+            <my-works></my-works>
           </div>
         </van-tab>
       </van-tabs>
@@ -85,19 +89,42 @@
 </template>
 
 <script>
+import myUpdatings from './myPage/MyUpdatings'
+import myWorks from './myPage/MyWorks'
+import { postObtainUserInfo } from "@/api/index"
 export default {
   name: 'my',
+  components: {
+    myUpdatings,
+    myWorks
+  },
   data() {
     return {
       opacityNum: 0,
       setIcon: require('@/assets/images/set.png'),
-      bgImg: require('@/assets/images/1.jpeg'),
+      coverImg: this.$store.state.coverImgData,
+      headImg: this.$store.state.headImgData,
+      myName: this.$store.state.usernameData,
+      sex: this.$store.state.sexData,
+      sexIcon: '',
+      introduction: this.$store.state.introductionData,
+      showOne: this.$store.state.memberData,
+      showTwo: this.$store.state.memberData,
       active: 0,
-      tabList: [ '动态', '作品' ]
+      tabList: [ '动态', '作品' ],
+      focusNum: this.$store.state.focusNumData
     }
   },
   mounted() {
     window.addEventListener('scroll', this.onHandleScroll)
+    if(this.sex == 'male') {
+      this.sexIcon = require('@/assets/images/male.png')
+    } else {
+      this.sexIcon = require('@/assets/images/female.png')
+    }
+    if(this.$store.state.memberData) {
+      this.getUserInformation()
+    }
   },
   methods: {
     //滚动时顶部导航背景透明度变化
@@ -111,6 +138,54 @@ export default {
       } else {
         this.opacityNum = 0
       }
+    },
+
+    //根据用户id获取用户个人信息
+    getUserInformation() {
+      postObtainUserInfo({
+        _id: this.$store.state.idData
+      }).then(res => {
+        if(res.success) {
+          if(res.resultList.headImg) {
+            this.headImg = res.resultList.headImg
+            this.$store.state.headImgData = res.resultList.headImg
+          }
+
+          if(res.resultList.coverImg) {
+            this.coverImg = res.resultList.coverImg
+            this.$store.state.coverImgData = res.resultList.coverImg
+          }
+
+          if(res.resultList.username) {
+            this.myName = res.resultList.username
+            this.$store.state.usernameData = res.resultList.username
+          }
+
+          if(res.resultList.sex) {
+            this.$store.state.sexData = res.resultList.sex
+            if(res.resultList.sex == 'female') {
+              this.sexIcon = require('@/assets/images/female.png')
+            } else {
+              this.sexIcon = require('@/assets/images/male.png')
+            }
+          }
+
+          if(res.resultList.introduction) {
+            this.introduction = res.resultList.introduction
+            this.$store.state.introductionData = res.resultList.introduction
+          }
+        }
+      })
+    },
+    
+    toLogin() {
+      this.$router.push('/login')
+    },
+    toUserCenter() {
+      this.$router.push('/userCenter')
+    },
+    toFocusPage() {
+      this.$router.push('/focusPage') 
     }
   },
 }
@@ -145,8 +220,11 @@ export default {
     overflow: hidden;
     z-index: 3;
     img {
-      width: 80px;
-      height: 80px;
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
   .content-my {
@@ -156,6 +234,13 @@ export default {
         margin-left: 110px;
         line-height: 50px;
         font-size: 18px;
+        vertical-align: middle;
+      }
+      img {
+        width: 15px;
+        height: 15px;
+        margin-left: 5px;
+        vertical-align: middle;
       }
     }
     .content-two {
@@ -188,10 +273,12 @@ export default {
     }
     .tab-box {
       .tab-first {
-        padding: 5px 15px;
+        padding: 5px 0px;
+        margin-bottom: 68px;
       }
       .tab-second {
-        padding: 5px 15px;
+        padding: 5px 0px;
+        margin-bottom: 68px;
       }
     }
   }

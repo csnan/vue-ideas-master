@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './vuex/store'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 Vue.use(Vant)
@@ -15,11 +16,19 @@ Vue.use(Dialog)
 import VueParticles from 'vue-particles'    
 Vue.use(VueParticles)
 
+
+//公共组件
 import baseHeader from './components/BaseHeader'
-Vue.component('base-header', baseHeader);
+Vue.component('base-header', baseHeader)
 
 import commentArea from './components/CommentArea'
-Vue.component('comment-area', commentArea);
+Vue.component('comment-area', commentArea)
+
+import rightDialog from './components/RightDialog'
+Vue.component('right-dialog', rightDialog)
+
+import loadingImage from './components/LoadingImage'
+Vue.component('loading-image', loadingImage)
 
 Vue.config.productionTip = false
 
@@ -27,6 +36,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

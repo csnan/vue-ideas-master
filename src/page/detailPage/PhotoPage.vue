@@ -1,13 +1,13 @@
 <template>
-  <div class="articlePage">
+  <div class="photoPage">
     <loading-image :loadingShow="loadingShow"></loading-image>
     <right-dialog v-show="showDialog"></right-dialog>
     <base-header :leftLogo="false" :leftIcon="backIcon" :rightIcon="moreIcon" @goBack="toBack" @toPage="onOpenDialog"></base-header>
-    <div class="main-content" @click="onCloseDialog"> 
-      <div class="article-title">{{article.idea_title}}</div>
-      <van-cell class="article-author" :title="article.author" :label="article.idea_time" :border="false" center>
+    <div class="main-content"  @click="onCloseDialog">
+      <div class="photo-title">{{photo.idea_title}}</div>
+      <van-cell class="photo-author" :title="photo.author" :label="photo.idea_time" :border="false" center>
         <div class="head-image" slot="icon">
-          <img :src="article.author_img">
+          <img :src="photo.author_img">
         </div>
         <van-button 
           class="focus-button" 
@@ -19,8 +19,17 @@
           plain
         >+ 关注</van-button>
       </van-cell>
-      <div class="article-content">{{article.idea_content}}</div>
-      <div class="article-foot clearfix">
+      <div class="photo-content">
+        <div class="photo-summary">{{photo.idea_content}}</div>
+        <div 
+          class="photo-cell-wrap"
+          v-for="(photoCell, index) in photoList"
+          :key="index"
+        >
+          <img :src="photoCell" alt="">
+        </div>
+      </div>
+      <div class="photo-foot clearfix">
         <div class="read-number">阅读 1215</div>
         <div class="like-number">
           <img src="../../assets/images/like.png">
@@ -37,7 +46,7 @@
 import { postFindOneIdea } from "@/api/index"
 import { postAddFocus } from "@/api/index"
 export default {
-  name: 'articlePage',
+  name: 'photoPage',
   data() {
     return {
       backIcon: require('@/assets/images/back2.png'),
@@ -45,8 +54,9 @@ export default {
       showDialog: false,
       loadingShow: false,
       showFocus: true,
-      article: {},
-      idea_id: this.$route.query.article_id,
+      photo: {},
+      photoList: [],
+      idea_id: this.$route.query.photo_id,
       author_id: '',
       author: '',
       author_img: '',
@@ -55,7 +65,7 @@ export default {
     }
   },
   mounted() {
-    this.getArticleDetail()
+    this.getPhotoDetail()
   },
   methods: {
     toBack() {
@@ -67,14 +77,15 @@ export default {
     onCloseDialog() {
       this.showDialog = false
     },
-    getArticleDetail() {
+    getPhotoDetail() {
       this.loadingShow = true
       postFindOneIdea({
-        _id: this.$route.query.article_id
+        _id: this.$route.query.photo_id
       }).then(res => {
         if(res.success) {
           this.loadingShow = false
-          this.article = res.resultList
+          this.photo = res.resultList
+          this.photoList = this.photo.idea_images
           this.author_id = res.resultList.author_id
           this.author = res.resultList.author
           this.author_img = res.resultList.author_img
@@ -113,15 +124,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.articlePage {
+.photoPage {
   .main-content {
-    .article-title {
+    .photo-title {
       padding: 0 15px;
       padding-top: 25px;
       font-size: 25px;
       font-weight: bold;
     }
-    .article-author {
+    .photo-author {
       .head-image {
         width: 40px;
         height: 40px;
@@ -138,14 +149,25 @@ export default {
         color: rgb(246, 131, 12);
       }
     }
-    .article-content {
+    .photo-content {
       margin-top: 10px;
       padding: 0 15px;
-      font-size: 17px;
-      line-height: 28px;
-      letter-spacing: 2px;
+      .photo-summary {
+        font-size: 14px;
+        color: #888888;
+        margin-bottom: 10px;
+      }
+      .photo-cell-wrap {
+        margin-bottom: 20px;
+        border: 2px solid rgb(0, 0, 0);
+        box-shadow: 5px 5px 10px #888888;
+        img {
+          display: block;
+          width: 100%;
+        }
+      }
     }
-    .article-foot {
+    .photo-foot {
       margin-top: 30px;
       padding: 0 15px;
       color: rgb(136, 136, 136);

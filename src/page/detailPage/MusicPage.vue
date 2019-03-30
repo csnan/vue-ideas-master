@@ -1,9 +1,11 @@
 <template>
   <div class="musicPage">
-    <base-header :leftLogo="false" :leftIcon="backIcon" :rightIcon="moreIcon" @goBack="toBack" ></base-header>
-    <div class="main-content">
+    <loading-image :loadingShow="loadingShow"></loading-image>
+    <right-dialog v-show="showDialog"></right-dialog>
+    <base-header :leftLogo="false" :leftIcon="backIcon" :rightIcon="moreIcon" @goBack="toBack" @toPage="onOpenDialog"></base-header>
+    <div class="main-content" @click="onCloseDialog">
       <div class="music-wrap">
-        <img class="bg-cover" src="../../assets/images/3.jpg">
+        <img class="bg-cover" :src="music.idea_img">
         <div class="operate-button" @click="onChangeStatus">
           <img :src="operateIcon">
         </div>
@@ -27,7 +29,7 @@
         <audio 
           ref="recordAudio"  
           type="audio/mp3" 
-          :src="audioUrl"
+          :src="music.idea_file"
           @canplay="canPlay" 
           @timeupdate="timeUpdate" 
           @ended="onEnded"
@@ -35,15 +37,16 @@
         </audio>
       </div>
       <div class="music-title">
-        流浪地球前传哈哈哈哈
+        {{music.idea_title}}
         <van-icon :class="[rotate?'down-icon-rotate':'down-icon']" name="arrow-down" color="gray" @click="onRotate"/>
       </div>
-      <van-cell class="music-author" title="OKOer" :border="false" center>
+      <van-cell class="music-author" :title="music.author" :border="false" center>
         <div class="head-image" slot="icon">
-          <img src="../../assets/images/1.jpeg">
+          <img :src="music.author_img">
         </div>
         <van-button 
           class="focus-button" 
+          v-show="showFocus"
           slot="right-icon" 
           size="small" 
           type="primary"
@@ -53,9 +56,9 @@
       </van-cell>
       <div class="music-detail">
         <span>1142次播放</span>
-        <span>2019-03-07</span>
+        <span>{{music.idea_time}}</span>
         <transition name="van-fade">
-          <div v-show="visible">按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨按时发生发生范德萨范德萨</div>
+          <div v-show="visible">{{music.idea_content}}</div>
         </transition>
       </div>
       <van-row class="music-four-handle">
@@ -81,20 +84,24 @@
         </van-col>
       </van-row>
       <div class="gray-block"></div>
-      <comment-area :commentList="commentList"></comment-area>
+      <comment-area :idea_id="idea_id"></comment-area>
     </div>
   </div>
 </template>
 
 <script>
+import { postFindOneIdea } from "@/api/index"
+import { postAddFocus } from "@/api/index"
 export default {
   name: 'musicPage',
   data() {
     return {
       backIcon: require('@/assets/images/back2.png'),
       moreIcon: require('@/assets/images/more.png'),
+      showDialog: false,
+      loadingShow: false,
+      showFocus: true,
       operateIcon: require('@/assets/images/play3.png'),
-      audioUrl: require('@/assets/images/music22.mp3'),
       time: "00:00",
       duration: "00:00",
       // progressStyle: { width: "" },
@@ -103,36 +110,75 @@ export default {
       initiated: false,
       rotate: false,
       visible: false,
-      commentList: [
-        {
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKOer',
-          time: '2019-.3-09 10:34',
-          likeNum: 12345,
-          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
-        },
-        {
-          headImg: require('@/assets/images/1.jpeg'),
-          name: 'OKO22er',
-          time: '2019-.3-09 10:34',
-          likeNum: 12345,
-          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
-        },
-        {
-          headImg: require('@/assets/images/1.jpeg'),
-          name: '123213',
-          time: '2019-.3-09 10:34',
-          likeNum: 12345,
-          content: '撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发撒发生飞洒飞洒发的发射点发射点发射点发'
-        }
-      ]
+      music: {},
+      idea_id: this.$route.query.music_id,
+      author_id: '',
+      author: '',
+      author_img: '',
+      author_sex: '',
+      author_introduction: ''
     }
+  },
+  mounted() {
+    this.getMusicDetail()
   },
   methods: {
     toBack() {
+      let recordAudio = this.$refs.recordAudio; //获取audio元素
+      recordAudio.pause()
       this.$router.go(-1)
     },
 
+    onOpenDialog() {
+      this.showDialog = !this.showDialog
+    },
+    onCloseDialog() {
+      this.showDialog = false
+    },
+
+    getMusicDetail() {
+      this.loadingShow = true
+      postFindOneIdea({
+        _id: this.$route.query.music_id
+      }).then(res => {
+        if(res.success) {
+          this.loadingShow = false
+          this.music = res.resultList
+          this.author_id = res.resultList.author_id
+          this.author = res.resultList.author
+          this.author_img = res.resultList.author_img
+          this.author_sex = res.resultList.author_sex
+          this.author_introduction = res.resultList.author_introduction
+          if(this.author_id == this.$store.state.idData) {
+            this.showFocus = false
+          }
+          for(let i = 0; i < this.$store.state.focusData.length; i++) {
+            if(this.author_id == this.$store.state.focusData[i].focus_id) {
+              this.showFocus = false
+            }
+          }
+        }
+      })
+    },
+
+    onFocus() {
+      postAddFocus({
+        _id: this.$store.state.idData,
+        focus_id: this.author_id,
+        focus_username: this.author,
+        focus_headImg: this.author_img,
+        focus_sex: this.author_sex,
+        focus_introduction: this.author_introduction
+      }).then(res => {
+        if(res.success) {
+          this.$store.state.focusData = res.resultList.focus
+          this.$store.state.focusNumData = res.resultList.focus.length
+          this.showFocus = false
+          this.$toast.success('已关注该作者')
+        }
+      })
+    },
+    
     //播放暂停控制
     onChangeStatus() {
       let recordAudio = this.$refs.recordAudio; //获取audio元素

@@ -28,12 +28,11 @@
     <div class="form-login">
       <van-field
         :class="isUserLight ? 'van-field2' : 'van-field'"
-        v-model="username"
-        icon="question-o"
-        placeholder="请输入用户名"
+        v-model="userId"
+        type="tel"
+        placeholder="请输入手机号"
         @focus="onUserLight"
         @blur="onUserDark"
-        @click-icon="$toast('question')"
         clearable
       />
       <br>
@@ -46,10 +45,10 @@
         @blur="onPasswordDark"
       />
       <div class="self-service">
-        <span class="forgot-password">找回密码</span>
+        <span class="forgot-password" @click="toForgetPasswordFirst">忘记密码</span>
         <span class="immediate-register" @click="toRegister">立即注册</span>
       </div>
-      <van-button>登录</van-button>
+      <van-button @click="onLogin">登录</van-button>
     </div>
     <div class="foot-login">
       <div class="tag-warn">或从以下方式登录</div>
@@ -69,6 +68,7 @@
 </template>
 
 <script>
+import { postLogin } from "@/api/index"
 var h = window.innerHeight
 export default {
   name: 'login',
@@ -77,7 +77,7 @@ export default {
       closeIcon: require('@/assets/images/close.png'),
       isUserLight: false,
       isPasswordLight: false,
-      username: '',
+      userId: '',
       password: ''
     }
   },
@@ -102,8 +102,44 @@ export default {
     onPasswordDark() {
       this.isPasswordLight = false
     },
+    toForgetPasswordFirst() {
+      this.$router.push('/forgetPasswordFirst')
+    },
     toRegister() {
       this.$router.push('/register')
+    },
+    onLogin () {
+      if (this.userId == '') {
+        this.$toast('手机号不能为空')
+      } else if (this.password == '') {
+        this.$toast('密码不能为空')
+      } else {
+        postLogin({
+          userId: this.userId,
+          password: this.password
+        }).then(res => {
+          if (res.success) {
+            if(res.resultList.length == 0) {
+              this.$toast('请输入正确的用户名和密码')
+            } else {
+              this.$store.state.usernameData = this.userId
+              this.$store.state.idData = res.resultList[0]._id
+              this.$store.state.focusData = res.resultList[0].focus
+              this.$store.state.focusNumData = res.resultList[0].focus.length
+              this.$store.commit('upDateMemberData')
+              this.$toast.success('登陆成功')
+              this.$router.push('/my')
+            }
+          }
+        })
+      }
+      // } else if (this.userId == this.$store.state.userIdData && this.password == this.$store.state.passwordData) {
+      //   this.$store.commit('upDateMemberData')
+      //   this.$toast.success('登陆成功')
+      //   this.$router.push('/home')
+      // } else {
+      //   this.$toast('请输入正确的用户名和密码')
+      // }
     }
   }
 }
