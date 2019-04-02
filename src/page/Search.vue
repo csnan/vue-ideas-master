@@ -22,6 +22,7 @@
           class="search-hot-content"
           v-for="(hotSearch, index) in hotSearchList"
           :key="index"
+          @click="onPushHot(hotSearch)"
         >{{hotSearch}}</div>
       </div>
       <div class="search-record">
@@ -30,10 +31,11 @@
           class="search-record-content"
           v-for="(recordSearch, index) in recordSearchList" 
           :key="index"
-          :title="recordSearch" 
+          :title="recordSearch.history_content" 
           center
+          @click="onPushHistory(recordSearch.history_content)"
         >
-          <img src="../assets/images/close.png" alt="">
+          <img src="../assets/images/close.png" alt="" @click.stop="deleteHistory(recordSearch._id)">
         </van-cell>
       </div>
     </div>
@@ -41,22 +43,77 @@
 </template>
 
 <script>
+import { postAddHistory } from "@/api/index"
+import { postFindAllHistory } from "@/api/index"
+import { postDeleteHistory } from "@/api/index"
 export default {
   name: 'search',
   data() {
     return {
       searchValue: '',
       hotSearchList: ['遇见晴天', '叫我宫主大人', '知否知否', '沙漠骆驼', '往后余生', '琵琶行'],
-      recordSearchList: ['遇见晴天', '叫我宫主大人', '知否知否', '沙漠骆驼', '往后余生', '琵琶行'],
+      recordSearchList: [],
     }
+  },
+  mounted() {
+    this.findAllHistory()
   },
   methods: {
     toBack() {
       this.$router.go(-1)
     },
-    onSearch() {
 
-    } 
+    //查找所有搜索历史
+    findAllHistory() {
+      postFindAllHistory().then(res => {
+        if(res.success) {
+          this.recordSearchList = res.resultList.reverse()
+        }
+      })
+    },
+
+    onSearch() {
+      if(this.searchValue != ''){
+        //添加历史记录
+        postAddHistory({
+          history_content: this.searchValue
+        }).then(res => {
+          if(res.success) {
+            this.findAllHistory()
+          }
+        })
+
+        this.$router.push({
+          name: 'searchPage',
+          query: {
+            idea_title: this.searchValue
+          }
+        })
+      } else {
+        this.$toast('请输入搜索内容')
+      }
+    },
+
+    //点击热门搜索使其到搜索框
+    onPushHot(hotSearch) {
+      this.searchValue = hotSearch
+    },
+
+    //点击搜索历史使其到搜索框
+    onPushHistory(history_content) {
+      this.searchValue = history_content
+    },
+
+    //删除历史记录
+    deleteHistory(history_id) {
+      postDeleteHistory({
+        history_id: history_id
+      }).then(res => {
+        if(res.success) {
+          this.findAllHistory()
+        }
+      })
+    }
   }
 }
 </script>

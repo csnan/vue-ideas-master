@@ -166,11 +166,23 @@ export default new Router({
       name: 'editInfo',
       component: _import('detailPage/EditInfo')
     },
+    //设置
+    {
+      path: '/setPage',
+      name: 'setPage',
+      component: _import('detailPage/SetPage')
+    },
     //关注
     {
       path: '/focusPage',
       name: 'focusPage',
       component: _import('detailPage/FocusPage')
+    },
+    //搜索内容
+    {
+      path: '/searchPage',
+      name: 'searchPage',
+      component: _import('detailPage/SearchPage')
     }
   ]
 })

@@ -12,7 +12,7 @@
         </div>
       </van-cell>
       <div class="home-cell-bottom">
-        <div class="home-cell-bottom-content">{{cell.idea_title}}</div>
+        <div class="home-cell-bottom-content">{{cell.idea_content}}</div>
         <div class="home-cell-bottom-image">
           <img :src="cell.idea_img">
         </div>
@@ -30,28 +30,10 @@
             <span>123</span>
           </van-col>
           <van-col class="foot-more" span="6">
-            <van-icon 
-              name="ellipsis" 
-              color="rgb(180, 180, 180)"
-              @click="onPopup(index)"
-            />
+            <img src="../../assets/images/close.png" alt="" @click.stop="onDelete(index)">
           </van-col>
         </van-row>
       </div>
-      <van-popup v-model="cell.showPopup"> 
-        <van-cell-group>
-          <!-- <van-cell title="不再看到此条微博" @click="onDelete(index)"/>
-          <van-cell title="减少此人的微博" />
-          <van-cell title="标题党、假新闻" />
-          <van-cell title="投诉" /> -->
-          <van-cell 
-          v-for="(cellPopup, indexPopup) in cellPopupList"
-          :key="indexPopup"
-          :title="cellPopup"
-          @click="onHandItem(index, indexPopup)"
-          />
-        </van-cell-group>
-      </van-popup>
     </div>
   </div>
 </template>
@@ -60,15 +42,10 @@
 import { postFindAuthorIdea } from "@/api/index"
 export default {
   name: 'myUpdatings',
+  props: ['author_id'],
   data() {
     return {
-      cellListCircle: [],
-      cellPopupList: [
-        '不再看到此条微博',
-        '减少此人的微博',
-        '标题党、假新闻',
-        '投诉'
-      ]
+      cellListCircle: []
     }
   },
   mounted() {
@@ -77,7 +54,7 @@ export default {
   methods: {
     getAuthorIdea() {
       postFindAuthorIdea({
-        author_id: this.$store.state.idData
+        author_id: this.author_id
       }).then(res => {
         this.cellListCircle = res.resultList.reverse()
         for(let i = 0; i < this.cellListCircle.length; i++){
@@ -87,13 +64,13 @@ export default {
         }
       })
     },
-    onPopup(index) {
-      this.cellListCircle[index].showPopup = true
-    },
-    onHandItem(index, indexPopup) {
-      if(indexPopup == 0) {
+    onDelete(index) {
+      this.$dialog.confirm({
+        title: '确定删除吗'
+      }).then(() => {
         this.cellListCircle.splice(index, 1)
-      }
+      }).catch(() => {
+      });
     },
     toDetailPage(type, idea_id) {
       if(type == 'article') {
@@ -155,6 +132,10 @@ export default {
       .home-cell-bottom-content {
         word-break: break-all;
         font-size: 15px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
       }
       .home-cell-bottom-image {
         width: 100%;
@@ -209,6 +190,10 @@ export default {
       .home-cell-bottom-content {
         word-break: break-all;
         font-size: 15px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
       }
       .home-cell-bottom-image {
         width: 100%;
@@ -241,17 +226,6 @@ export default {
         }
       }
     }
-  }
-}
-</style>
-<style lang="less">
-.myUpdatings{
-  .van-popup {
-    width: 80%;
-    border-radius: 10px;
-  }
-  .van-cell__value {
-    text-align: left;
   }
 }
 </style>

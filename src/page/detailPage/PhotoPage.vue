@@ -57,11 +57,7 @@ export default {
       photo: {},
       photoList: [],
       idea_id: this.$route.query.photo_id,
-      author_id: '',
-      author: '',
-      author_img: '',
-      author_sex: '',
-      author_introduction: ''
+      author_id: ''
     }
   },
   mounted() {
@@ -87,15 +83,11 @@ export default {
           this.photo = res.resultList
           this.photoList = this.photo.idea_images
           this.author_id = res.resultList.author_id
-          this.author = res.resultList.author
-          this.author_img = res.resultList.author_img
-          this.author_sex = res.resultList.author_sex
-          this.author_introduction = res.resultList.author_introduction
           if(this.author_id == this.$store.state.idData) {
             this.showFocus = false
           }
           for(let i = 0; i < this.$store.state.focusData.length; i++) {
-            if(this.author_id == this.$store.state.focusData[i].focus_id) {
+            if(this.author_id == this.$store.state.focusData[i]) {
               this.showFocus = false
             }
           }
@@ -105,15 +97,11 @@ export default {
     onFocus() {
       postAddFocus({
         _id: this.$store.state.idData,
-        focus_id: this.author_id,
-        focus_username: this.author,
-        focus_headImg: this.author_img,
-        focus_sex: this.author_sex,
-        focus_introduction: this.author_introduction
+        focus_id: this.author_id
       }).then(res => {
         if(res.success) {
-          this.$store.state.focusData = res.resultList.focus
-          this.$store.state.focusNumData = res.resultList.focus.length
+          this.$store.state.focusData = res.resultList.focus_id
+          this.$store.state.focusNumData = res.resultList.focus_id.length
           this.showFocus = false
           this.$toast.success('已关注该作者')
         }

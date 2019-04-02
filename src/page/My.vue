@@ -3,6 +3,7 @@
     <base-header 
       :bgColor="'rgba(27, 190, 231,' + opacityNum + ')'"
       :rightIcon="setIcon"
+      @toPage="toSetPage"
     ></base-header>
     <div
      class="personal-card"
@@ -77,10 +78,10 @@
           :title="tab"
         >
           <div class="tab-first" v-show="active === 0">
-            <my-updatings></my-updatings>
+            <my-updatings :author_id="author_id"></my-updatings>
           </div>
           <div class="tab-second" v-show="active === 1">
-            <my-works></my-works>
+            <my-works :author_id="author_id"></my-works>
           </div>
         </van-tab>
       </van-tabs>
@@ -112,7 +113,8 @@ export default {
       showTwo: this.$store.state.memberData,
       active: 0,
       tabList: [ '动态', '作品' ],
-      focusNum: this.$store.state.focusNumData
+      focusNum: this.$store.state.focusNumData,
+      author_id: this.$store.state.idData
     }
   },
   mounted() {
@@ -121,9 +123,6 @@ export default {
       this.sexIcon = require('@/assets/images/male.png')
     } else {
       this.sexIcon = require('@/assets/images/female.png')
-    }
-    if(this.$store.state.memberData) {
-      this.getUserInformation()
     }
   },
   methods: {
@@ -139,44 +138,6 @@ export default {
         this.opacityNum = 0
       }
     },
-
-    //根据用户id获取用户个人信息
-    getUserInformation() {
-      postObtainUserInfo({
-        _id: this.$store.state.idData
-      }).then(res => {
-        if(res.success) {
-          if(res.resultList.headImg) {
-            this.headImg = res.resultList.headImg
-            this.$store.state.headImgData = res.resultList.headImg
-          }
-
-          if(res.resultList.coverImg) {
-            this.coverImg = res.resultList.coverImg
-            this.$store.state.coverImgData = res.resultList.coverImg
-          }
-
-          if(res.resultList.username) {
-            this.myName = res.resultList.username
-            this.$store.state.usernameData = res.resultList.username
-          }
-
-          if(res.resultList.sex) {
-            this.$store.state.sexData = res.resultList.sex
-            if(res.resultList.sex == 'female') {
-              this.sexIcon = require('@/assets/images/female.png')
-            } else {
-              this.sexIcon = require('@/assets/images/male.png')
-            }
-          }
-
-          if(res.resultList.introduction) {
-            this.introduction = res.resultList.introduction
-            this.$store.state.introductionData = res.resultList.introduction
-          }
-        }
-      })
-    },
     
     toLogin() {
       this.$router.push('/login')
@@ -186,6 +147,9 @@ export default {
     },
     toFocusPage() {
       this.$router.push('/focusPage') 
+    },
+    toSetPage() {
+      this.$router.push('/setPage') 
     }
   },
 }
@@ -198,17 +162,17 @@ export default {
     position: relative;
     z-index: 1;
   }
-  .personal-card::after {
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: inherit;
-    filter: blur(2px);
-    z-index: 2;
-  }
+  // .personal-card::after {
+  //   content: "";
+  //   width: 100%;
+  //   height: 100%;
+  //   position: absolute;
+  //   left: 0;
+  //   top: 0;
+  //   background: inherit;
+  //   filter: blur(2px);
+  //   z-index: 2;
+  // }
   .head-image {
     width: 80px;
     height: 80px;

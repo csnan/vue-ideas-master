@@ -15,7 +15,7 @@
           @click="toArticlePage(cellArticle._id)"
           >
             <div class="recommend-article-text">
-              <span>{{cellArticle.idea_title}}</span>
+              <div class="recommend-article-title">{{cellArticle.idea_title}}</div>
               <div class="recommend-article-summary">{{cellArticle.idea_content}}</div>
               <div class="recommend-article-foot">
                 <div>
@@ -109,7 +109,7 @@ export default {
         .recommend-article-text {
           width: 70%;
           display: inline-block;
-          span {
+          .recommend-article-title {
             font-size: 16px;
             overflow: hidden;
             text-overflow:ellipsis;
@@ -157,7 +157,7 @@ export default {
           border-radius: 5px;
           overflow: hidden;
           img {
-            width: 100%;
+            width: 120%;
             position: absolute;
             top: 50%;
             left: 50%;

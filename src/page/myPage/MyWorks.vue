@@ -25,6 +25,7 @@
 import { postFindAuthorIdea } from "@/api/index"
 export default {
   name: 'myWorks',
+  props: ['author_id'],
   data() {
     return {
       cellListIdea: []
@@ -56,7 +57,7 @@ export default {
   methods: {
     getAuthorIdea() {
       postFindAuthorIdea({
-        author_id: this.$store.state.idData
+        author_id: this.author_id
       }).then(res => {
         this.cellListIdea = res.resultList.reverse()
         for(let i = 0; i < this.cellListIdea.length; i++){

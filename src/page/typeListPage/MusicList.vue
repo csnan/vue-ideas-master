@@ -122,7 +122,7 @@ export default {
           border-radius: 5px;
           overflow: hidden;
           .music-cover {
-            width: 100%;
+            width: 120%;
             position: absolute;
             top: 50%;
             left: 50%;

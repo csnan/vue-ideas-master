@@ -122,11 +122,15 @@ export default {
             if(res.resultList.length == 0) {
               this.$toast('请输入正确的用户名和密码')
             } else {
-              this.$store.state.usernameData = this.userId
               this.$store.state.idData = res.resultList[0]._id
-              this.$store.state.focusData = res.resultList[0].focus
-              this.$store.state.focusNumData = res.resultList[0].focus.length
-              this.$store.commit('upDateMemberData')
+              this.$store.state.usernameData = res.resultList[0].username
+              this.$store.state.headImgData = res.resultList[0].headImg
+              this.$store.state.coverImgData = res.resultList[0].coverImg
+              this.$store.state.sexData = res.resultList[0].sex
+              this.$store.state.introductionData = res.resultList[0].introduction
+              this.$store.state.focusData = res.resultList[0].focus_id
+              this.$store.state.focusNumData = res.resultList[0].focus_id.length
+              this.$store.commit('loginMemberData')
               this.$toast.success('登陆成功')
               this.$router.push('/my')
             }

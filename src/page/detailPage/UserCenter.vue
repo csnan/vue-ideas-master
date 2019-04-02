@@ -38,7 +38,7 @@
         <div class="introduction-title">个人简介</div>
         <div class="introduction-content">{{introduction}}</div>
       </div>
-      <div class="edit-button-box">
+      <div class="edit-button-box" v-show="showEdit">
         <van-button class="edit-button" size="normal" @click="toEditInfo">
           <img src="../../assets/images/edit2.png" alt="">
           <span>编辑个人资料</span>
@@ -61,10 +61,10 @@
           :title="tab"
         >
           <div class="tab-first" v-show="active === 0">
-            0000
+            <my-updatings :author_id="author_id"></my-updatings>
           </div>
           <div class="tab-second" v-show="active === 1">
-            1111
+            <my-works :author_id="author_id"></my-works>
           </div>
         </van-tab>
       </van-tabs>
@@ -73,30 +73,34 @@
 </template>
 
 <script>
+import myUpdatings from '../myPage/MyUpdatings'
+import myWorks from '../myPage/MyWorks'
 import { postObtainUserInfo } from "@/api/index"
 export default {
   name: 'userCenter',
+  components: {
+    myUpdatings,
+    myWorks
+  },
   data() {
     return {
       backIcon: require('@/assets/images/back2.png'),
       opacityNum: 0,
-      coverImg: this.$store.state.coverImgData,
+      coverImg: '',
       active: 0,
+      showEdit: false,
+      author_id: '',
       tabList: [ '动态', '作品' ],
-      headImg: this.$store.state.headImgData,
-      myName: this.$store.state.usernameData,
-      sex: this.$store.state.sexData,
+      headImg: '',
+      myName: '',
+      sex: '',
       sexIcon: '',
-      introduction: this.$store.state.introductionData
+      introduction: ''
     }
   },
   mounted() {
     window.addEventListener('scroll', this.onHandleScroll)
-    if(this.sex == 'male') {
-      this.sexIcon = require('@/assets/images/male.png')
-    } else {
-      this.sexIcon = require('@/assets/images/female.png')
-    }
+    this.getUserInformation()
   },
   methods: {
     toBack() {
@@ -117,7 +121,47 @@ export default {
     
     toEditInfo() {
       this.$router.push('/editInfo')
-    }
+    },
+
+    //根据用户id获取用户个人信息
+    getUserInformation() {
+      if(!this.$route.query.author_id) {
+        this.showEdit = true
+        this.author_id = this.$store.state.idData
+        postObtainUserInfo({
+          _id: this.$store.state.idData
+        }).then(res => {
+          if(res.success) {
+              this.headImg = res.resultList.headImg
+              this.coverImg = res.resultList.coverImg
+              this.myName = res.resultList.username
+              if(res.resultList.sex == 'female') {
+                this.sexIcon = require('@/assets/images/female.png')
+              } else {
+                this.sexIcon = require('@/assets/images/male.png')
+              }
+              this.introduction = res.resultList.introduction
+          }
+        })
+      } else {
+        this.author_id = this.$route.query.author_id
+        postObtainUserInfo({
+          _id: this.$route.query.author_id
+        }).then(res => {
+          if(res.success) {
+            this.headImg = res.resultList.headImg
+            this.coverImg = res.resultList.coverImg
+            this.myName = res.resultList.username
+            if(res.resultList.sex == 'female') {
+              this.sexIcon = require('@/assets/images/female.png')
+            } else {
+              this.sexIcon = require('@/assets/images/male.png')
+            }
+            this.introduction = res.resultList.introduction
+          }
+        })
+      }
+    },
   }
 }
 </script>
@@ -129,17 +173,17 @@ export default {
     position: relative;
     z-index: 1;
   }
-  .personal-card::after {
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: inherit;
-    filter: blur(2px);
-    z-index: 2;
-  }
+  // .personal-card::after {
+  //   content: "";
+  //   width: 100%;
+  //   height: 100%;
+  //   position: absolute;
+  //   left: 0;
+  //   top: 0;
+  //   background: inherit;
+  //   filter: blur(2px);
+  //   z-index: 2;
+  // }
   .head-image {
     width: 80px;
     height: 80px;
@@ -225,10 +269,10 @@ export default {
     }
     .tab-box {
       .tab-first {
-        padding: 5px 15px;
+        padding: 5px 0px;
       }
       .tab-second {
-        padding: 5px 15px;
+        padding: 5px 0px;
       }
     }
   }

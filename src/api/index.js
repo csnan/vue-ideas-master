@@ -135,10 +135,64 @@ export function postAddFocus(data = {}) {
   }))
 }
 
+//查找所有关注的用户
+export function postFindFocus(data = {}) {
+  return fetch(Object.assign({
+    url: '/users/findFocus',
+    method: 'post',
+    data: data
+  }))
+}
+
+//查找所有关注的用户作品
+export function postFindFocusIdea(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/findFocusIdea',
+    method: 'post',
+    data: data
+  }))
+}
+
 //发布评论
 export function postAddComment(data = {}) {
   return fetch(Object.assign({
     url: '/comment/addComment',
+    method: 'post',
+    data: data
+  }))
+}
+
+//模糊搜索
+export function postFindIdeaName(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/findIdeaName',
+    method: 'post',
+    data: data
+  }))
+}
+
+//添加历史记录
+export function postAddHistory(data = {}) {
+  return fetch(Object.assign({
+    url: '/history/addHistory',
+    method: 'post',
+    data: data
+  }))
+}
+
+//查找所有历史记录
+export function postFindAllHistory(data = {}) {
+  return fetch(Object.assign({
+    url: '/history/findAllHistory',
+    method: 'post',
+    data: data
+  }))
+}
+
+//删除历史记录
+export function postDeleteHistory(data = {}) {
+  return fetch(Object.assign({
+    url: '/history/delHistory',
     method: 'post',
     data: data
   }))

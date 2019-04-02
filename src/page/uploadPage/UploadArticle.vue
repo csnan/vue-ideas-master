@@ -72,7 +72,6 @@ export default {
             param = new FormData()  //清空FormData数据
             this.$toast('发布成功，请等待审核')
             this.$router.push('/home')
-            console.log(res)
           }
         })
       }

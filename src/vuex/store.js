@@ -11,14 +11,28 @@ export default new Vuex.Store({
     headImgData: require('@/assets/images/defaultImg.jpg'),  //用户头像
     coverImgData: require('@/assets/images/defaultImg.jpg'),  //个人主页背景
     usernameData: '',  //用户昵称
-    sexData: 'male',  //用户性别
-    introductionData: '一个有想法的人',  //个人简介
+    sexData: '',  //用户性别
+    introductionData: '',  //个人简介
     focusData: [],  //关注
     focusNumData: 0  //关注数
   },
   mutations: {
-    upDateMemberData (state) {
+    loginMemberData (state) {
       state.memberData = true
+    },
+    quitMemberData (state) {
+      state.memberData = false,
+      state.idData = '',
+      state.userIdData = '',
+      state.passwordData = '',
+      state.memberData = false,
+      state.headImgData = require('@/assets/images/defaultImg.jpg'),
+      state.coverImgData = require('@/assets/images/defaultImg.jpg'),
+      state.usernameData = '',
+      state.sexData = '',
+      state.introductionData = '',
+      state.focusData = [],
+      state.focusNumData = 0
     }
   }
 })

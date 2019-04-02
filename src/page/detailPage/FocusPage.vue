@@ -13,11 +13,11 @@
         :right-width="65"
       >
         <van-cell-group>
-          <van-cell :title="cell.focus_username" :label="cell.focus_introduction">
+          <van-cell :title="cell.username" :label="cell.introduction"  @click="toFocusPage(cell._id)">
             <div class="head-image" slot="icon">
-              <img :src="cell.focus_headImg">
+              <img :src="cell.headImg">
             </div>
-            <img class="sex-icon" :src="cell.focus_sex | toImage" alt="">
+            <img class="sex-icon" :src="cell.sex | toImage" alt="">
           </van-cell>
         </van-cell-group>
         <span slot="right" @click="onDeleteFirst(index)">取关</span>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { postObtainUserInfo } from "@/api/index"
+import { postFindFocus } from "@/api/index"
 export default {
   name: 'focusPage',
   data() {
@@ -55,11 +55,19 @@ export default {
       this.$router.go(-1)
     },
     getUserFocus() {
-      postObtainUserInfo({
-        _id: this.$store.state.idData
+      postFindFocus({
+        _ids: this.$store.state.focusData
       }).then(res => {
         if(res.success) {
-          this.cellListFocus = res.resultList.focus
+          this.cellListFocus = res.resultList
+        }
+      })
+    },
+    toFocusPage(focus_id) {
+       this.$router.push({
+        name: 'userCenter',
+        query: {
+          author_id: focus_id
         }
       })
     },
