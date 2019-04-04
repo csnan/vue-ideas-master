@@ -42,7 +42,7 @@
             <div>VIP</div>
           </van-col>
           <van-col span="6">
-            <div>
+            <div @click="toCollectionPage">
               <img src="../assets/images/collection.png">
             </div>
             <div>收藏</div>
@@ -150,6 +150,9 @@ export default {
     },
     toSetPage() {
       this.$router.push('/setPage') 
+    },
+    toCollectionPage() {
+      this.$router.push('/collectionPage')
     }
   },
 }

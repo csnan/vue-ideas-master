@@ -178,6 +178,12 @@ export default new Router({
       name: 'focusPage',
       component: _import('detailPage/FocusPage')
     },
+    //收藏
+    {
+      path: '/collectionPage',
+      name: 'collectionPage',
+      component: _import('detailPage/CollectionPage')
+    },
     //搜索内容
     {
       path: '/searchPage',

@@ -23,11 +23,11 @@
           </van-col>
           <van-col span="6">
             <img src="../../assets/images/comment2.png">
-            <span>123</span>
+            <span>{{cell.comments.length}}</span>
           </van-col>
           <van-col span="6">
-            <img src="../../assets/images/like.png">
-            <span>123</span>
+            <img src="../../assets/images/like2.png">
+            <span>{{cell.like_num}}</span>
           </van-col>
           <van-col class="foot-more" span="6">
             <img src="../../assets/images/close.png" alt="" @click.stop="onDelete(index)">
@@ -40,6 +40,7 @@
 
 <script>
 import { postFindAuthorIdea } from "@/api/index"
+import { postFindArrayIdUser } from "@/api/index"
 export default {
   name: 'myUpdatings',
   props: ['author_id'],
@@ -57,6 +58,25 @@ export default {
         author_id: this.author_id
       }).then(res => {
         this.cellListCircle = res.resultList.reverse()
+        let author_ids = []
+        for(let i = 0; i < this.cellListCircle.length; i++) {
+          author_ids.push(this.cellListCircle[i].author_id)
+        }
+        postFindArrayIdUser({
+          _ids: author_ids
+        }).then(res => {
+          if(res.success) {
+            let authorList = res.resultList
+            for(let i = 0; i < this.cellListCircle.length; i++) {
+              for(let j = 0; j < authorList.length; j++) {
+                if(this.cellListCircle[i].author_id == authorList[j]._id) {
+                  this.cellListCircle[i].author = authorList[j].username
+                  this.cellListCircle[i].author_img = authorList[j].headImg
+                }
+              }
+            }
+          }
+        })
         for(let i = 0; i < this.cellListCircle.length; i++){
           if(this.cellListCircle[i].type == 'photo') {
             this.cellListCircle[i].idea_img = this.cellListCircle[i].idea_images[0]
@@ -118,12 +138,16 @@ export default {
       .head-image {
         width: 40px;
         height: 40px;
+        position: relative;
         margin-right: 10px;
         border-radius: 50px;
         overflow: hidden;
         img {
           width: 100%;
-          height: 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
     }
@@ -176,12 +200,16 @@ export default {
       .head-image {
         width: 40px;
         height: 40px;
+        position: relative;
         margin-right: 10px;
         border-radius: 50px;
         overflow: hidden;
         img {
           width: 100%;
-          height: 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
     }

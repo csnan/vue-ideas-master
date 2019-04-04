@@ -23,7 +23,7 @@
         </div>
         <div class="content-two">
           <van-row class="interact-number">
-            <van-col span="8">1</van-col>
+            <van-col span="8">{{focusNum}}</van-col>
             <van-col span="8">1</van-col>
             <van-col span="8">1</van-col>
           </van-row>
@@ -95,7 +95,8 @@ export default {
       myName: '',
       sex: '',
       sexIcon: '',
-      introduction: ''
+      introduction: '',
+      focusNum: 0
     }
   },
   mounted() {
@@ -141,6 +142,7 @@ export default {
                 this.sexIcon = require('@/assets/images/male.png')
               }
               this.introduction = res.resultList.introduction
+              this.focusNum = res.resultList.focus_id.length
           }
         })
       } else {
@@ -158,6 +160,7 @@ export default {
               this.sexIcon = require('@/assets/images/male.png')
             }
             this.introduction = res.resultList.introduction
+            this.focusNum = res.resultList.focus_id.length
           }
         })
       }

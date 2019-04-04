@@ -82,10 +82,8 @@ export default {
         postAddPhoto({
           type: 'photo',
           author_id: this.$store.state.idData,
-          author: this.$store.state.usernameData,
-          author_img: this.$store.state.headImgData,
-          author_sex: this.$store.state.sexData,
-          author_introduction: this.$store.state.introductionData,
+          author: '',
+          author_img: '',
           idea_title: this.valueTitle,
           idea_content: this.valueContent,
           idea_img: '',

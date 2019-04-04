@@ -130,6 +130,7 @@ export default {
               this.$store.state.introductionData = res.resultList[0].introduction
               this.$store.state.focusData = res.resultList[0].focus_id
               this.$store.state.focusNumData = res.resultList[0].focus_id.length
+              this.$store.state.collectionData = res.resultList[0].collection_id
               this.$store.commit('loginMemberData')
               this.$toast.success('登陆成功')
               this.$router.push('/my')

@@ -57,6 +57,7 @@
 
 <script>
 import { postFindIdeaType } from "@/api/index"
+import { postFindArrayIdUser } from "@/api/index"
 export default {
   name: 'musicList',
   data() {
@@ -89,6 +90,25 @@ export default {
         if(res.success) {
           this.loadingShow = false
           this.cellMusicList = res.resultList.reverse()
+          let author_ids = []
+          for(let i = 0; i < this.cellMusicList.length; i++) {
+            author_ids.push(this.cellMusicList[i].author_id)
+          }
+          postFindArrayIdUser({
+            _ids: author_ids
+          }).then(res => {
+            if(res.success) {
+              let authorList = res.resultList
+              for(let i = 0; i < this.cellMusicList.length; i++) {
+                for(let j = 0; j < authorList.length; j++) {
+                  if(this.cellMusicList[i].author_id == authorList[j]._id) {
+                    this.cellMusicList[i].author = authorList[j].username
+                    this.cellMusicList[i].author_img = authorList[j].headImg
+                  }
+                }
+              }
+            }
+          })
         }
       })
     }

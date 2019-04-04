@@ -82,8 +82,12 @@ export default {
         if(res.success) {
           this.commentNum = res.resultList.comments.length
           this.commentList = res.resultList.comments.reverse()
+          this.getCommentNum()
         }
       })
+    },
+    getCommentNum() {
+      this.$emit('commentNum', this.commentNum)
     },
     onPush() {
       if(this.commentContent == '') {

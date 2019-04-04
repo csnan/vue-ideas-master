@@ -40,6 +40,7 @@
 
 <script>
 import { postFindIdeaType } from "@/api/index"
+import { postFindArrayIdUser } from "@/api/index"
 export default {
   name: 'videoList',
   data() {
@@ -72,6 +73,25 @@ export default {
         if(res.success) {
           this.loadingShow = false
           this.cellVideoList = res.resultList.reverse()
+          let author_ids = []
+          for(let i = 0; i < this.cellVideoList.length; i++) {
+            author_ids.push(this.cellVideoList[i].author_id)
+          }
+          postFindArrayIdUser({
+            _ids: author_ids
+          }).then(res => {
+            if(res.success) {
+              let authorList = res.resultList
+              for(let i = 0; i < this.cellVideoList.length; i++) {
+                for(let j = 0; j < authorList.length; j++) {
+                  if(this.cellVideoList[i].author_id == authorList[j]._id) {
+                    this.cellVideoList[i].author = authorList[j].username
+                    this.cellVideoList[i].author_img = authorList[j].headImg
+                  }
+                }
+              }
+            }
+          })
         }
       })
     }

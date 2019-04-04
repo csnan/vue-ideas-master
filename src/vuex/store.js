@@ -14,7 +14,8 @@ export default new Vuex.Store({
     sexData: '',  //用户性别
     introductionData: '',  //个人简介
     focusData: [],  //关注
-    focusNumData: 0  //关注数
+    focusNumData: 0,  //关注数
+    collectionData: [],  //收藏
   },
   mutations: {
     loginMemberData (state) {

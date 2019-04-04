@@ -53,11 +53,11 @@
             <div class="recommend-article-foot">
               <div>
                 <img src="../../assets/images/like3.png">
-                <span>111</span>
+                <span>{{cellArticle.like_num}}</span>
               </div>
               <div>
                 <img src="../../assets/images/comment.png">
-                <span>111</span>
+                <span>{{cellArticle.comments.length}}</span>
               </div>
               <div>
                 <img src="../../assets/images/look.png">
@@ -106,11 +106,11 @@
           <div class="recommend-photo-foot">
             <div>
               <img src="../../assets/images/like3.png">
-              <span>111</span>
+              <span>{{cellPhoto.like_num}}</span>
             </div>
             <div>
               <img src="../../assets/images/comment.png">
-              <span>111</span>
+              <span>{{cellPhoto.comments.length}}</span>
             </div>
             <div>
               <img src="../../assets/images/look.png">
@@ -155,7 +155,7 @@
               </div>
               <div>
                 <img src="../../assets/images/comment.png">
-                <span>123</span>
+                <span>{{cellMusic.comments.length}}</span>
               </div>
             </div>
             <div class="recommend-music-author">
@@ -211,6 +211,7 @@
 <script>
 import { postFindRecommendType } from "@/api/index"
 import { postFindSwipeImages } from "@/api/index"
+import { postFindArrayIdUser } from "@/api/index"
 export default {
   name: 'homeRecommend',
   data() {
@@ -267,6 +268,25 @@ export default {
       }).then(res => {
         if(res.success) {
           this.cellMusicList = res.resultList.reverse()
+          let author_ids = []
+          for(let i = 0; i < this.cellMusicList.length; i++) {
+            author_ids.push(this.cellMusicList[i].author_id)
+          }
+          postFindArrayIdUser({
+            _ids: author_ids
+          }).then(res => {
+            if(res.success) {
+              let authorList = res.resultList
+              for(let i = 0; i < this.cellMusicList.length; i++) {
+                for(let j = 0; j < authorList.length; j++) {
+                  if(this.cellMusicList[i].author_id == authorList[j]._id) {
+                    this.cellMusicList[i].author = authorList[j].username
+                    this.cellMusicList[i].author_img = authorList[j].headImg
+                  }
+                }
+              }
+            }
+          })
         }
       })
     },
@@ -276,6 +296,25 @@ export default {
       }).then(res => {
         if(res.success) {
           this.cellVideoList = res.resultList.reverse()
+          let author_ids = []
+          for(let i = 0; i < this.cellVideoList.length; i++) {
+            author_ids.push(this.cellVideoList[i].author_id)
+          }
+          postFindArrayIdUser({
+            _ids: author_ids
+          }).then(res => {
+            if(res.success) {
+              let authorList = res.resultList
+              for(let i = 0; i < this.cellVideoList.length; i++) {
+                for(let j = 0; j < authorList.length; j++) {
+                  if(this.cellVideoList[i].author_id == authorList[j]._id) {
+                    this.cellVideoList[i].author = authorList[j].username
+                    this.cellVideoList[i].author_img = authorList[j].headImg
+                  }
+                }
+              }
+            }
+          })
         }
       })
     },
@@ -705,12 +744,12 @@ export default {
         }
       }
       .clearfix::after {
-          content: ".";
-          clear: both;
-          display: block;
-          overflow: hidden;
-          font-size: 0;
-          height: 0;
+        content: ".";
+        clear: both;
+        display: block;
+        overflow: hidden;
+        font-size: 0;
+        height: 0;
       }
       .clearfix {
         zoom: 1;

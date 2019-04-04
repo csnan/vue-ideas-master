@@ -1,7 +1,7 @@
 <template>
   <div class="focusPage">
     <base-header 
-      titleTop="关注" 
+      :titleTop="titleTop" 
       :leftLogo="false" 
       :leftIcon="backIcon" 
       @goBack="toBack"
@@ -27,13 +27,15 @@
 </template>
 
 <script>
-import { postFindFocus } from "@/api/index"
+import { postFindArrayIdUser } from "@/api/index"
 export default {
   name: 'focusPage',
   data() {
     return {
+      titleTop: '',
       backIcon: require('@/assets/images/back2.png'),
-      cellListFocus: []
+      cellListFocus: [],
+      focusNum: 0
     }
   },
   filters: {
@@ -55,11 +57,13 @@ export default {
       this.$router.go(-1)
     },
     getUserFocus() {
-      postFindFocus({
+      postFindArrayIdUser({
         _ids: this.$store.state.focusData
       }).then(res => {
         if(res.success) {
           this.cellListFocus = res.resultList
+          this.focusNum = this.cellListFocus.length
+          this.titleTop = '关注' + '（' + this.focusNum + ')'
         }
       })
     },

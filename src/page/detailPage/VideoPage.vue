@@ -1,7 +1,7 @@
 <template>
   <div class="videoPage">
     <loading-image :loadingShow="loadingShow"></loading-image>
-    <right-dialog v-show="showDialog"></right-dialog>
+    <right-dialog v-show="showDialog" :collectionShow="collectionShow" @collection="onCollection"></right-dialog>
     <base-header :leftLogo="false" :leftIcon="backIcon" :rightIcon="moreIcon" @goBack="toBack" @toPage="onOpenDialog"></base-header>
     <div class="main-content" @click="onCloseDialog">
       <video
@@ -22,9 +22,9 @@
         {{video.idea_title}}
         <van-icon :class="[rotate?'down-icon-rotate':'down-icon']" name="arrow-down" color="gray" @click="onRotate"/>
       </div>
-      <van-cell class="video-author" :title="video.author" :border="false" center>
+      <van-cell class="video-author" :title="author.username" :border="false" center>
         <div class="head-image" slot="icon">
-          <img :src="video.author_img">
+          <img :src="author.headImg">
         </div>
         <van-button 
           class="focus-button" 
@@ -44,29 +44,29 @@
         </transition>
       </div>
       <van-row class="video-four-handle">
-        <van-col span="6">
-          <div>
-            <img src="../../assets/images/like4.png">
-          </div>12345
+        <van-col span="8">
+          <div @click="addLikeNum">
+            <img :src="likeStatus">
+          </div>{{likeNum}}
         </van-col>
-        <van-col span="6">
+        <!-- <van-col span="6">
           <div>
             <img src="../../assets/images/collection2.png">
           </div>5645
-        </van-col>
-        <van-col span="6">
+        </van-col> -->
+        <van-col span="8">
           <div>
             <img src="../../assets/images/comment3.png">
-          </div>45612
+          </div>{{commentNum}}
         </van-col>
-        <van-col span="6">
+        <van-col span="8">
           <div>
             <img src="../../assets/images/share2.png">
-          </div>转发
+          </div>{{readNum}}
         </van-col>
       </van-row>
       <div class="gray-block"></div>
-      <comment-area :idea_id="idea_id"></comment-area>
+      <comment-area :idea_id="idea_id" @commentNum="getCommentNum"></comment-area>
     </div>
   </div>
 </template>
@@ -74,12 +74,19 @@
 <script>
 import { postFindOneIdea } from "@/api/index"
 import { postAddFocus } from "@/api/index"
+import { postObtainUserInfo } from "@/api/index"
+import { postUpdateLikeNum } from "@/api/index"
+import { postAddLikeUser } from "@/api/index"
+import { postReduceLikeUser } from "@/api/index"
+import { postAddCollection } from "@/api/index"
+import { postUpdateReadNum } from "@/api/index"
 export default {
   name: 'videoPage',
   data() {
     return {
       backIcon: require('@/assets/images/back2.png'),
       moreIcon: require('@/assets/images/more.png'),
+      collectionShow: true,
       showDialog: false,
       loadingShow: false,
       showFocus: true,
@@ -87,7 +94,12 @@ export default {
       visible: false,
       video: {},
       idea_id: this.$route.query.video_id,
-      author_id: ''
+      author_id: '',
+      author: [],
+      commentNum: 0,
+      likeStatus: require('@/assets/images/like4.png'),
+      likeNum: 0,
+      readNum: 0
     }
   },
   mounted() {
@@ -117,12 +129,50 @@ export default {
           this.loadingShow = false
           this.video = res.resultList
           this.author_id = res.resultList.author_id
+          this.likeNum = this.video.like_num
+          this.readNum = this.video.read_num
+          this.readNum++
+
+          //作者信息
+          postObtainUserInfo({
+            _id: this.author_id
+          }).then(res => {
+            this.author = res.resultList
+          })
+
+          //访问量
+          postUpdateReadNum({
+            idea_id: this.$route.query.video_id,
+            read_num: this.readNum
+          }).then(res => {
+            if(res.success) {
+            }
+          })
+
+          //当作者为用户本身或者已经关注该作者则隐藏关注按钮
           if(this.author_id == this.$store.state.idData) {
             this.showFocus = false
           }
           for(let i = 0; i < this.$store.state.focusData.length; i++) {
             if(this.author_id == this.$store.state.focusData[i]) {
               this.showFocus = false
+            }
+          }
+
+          //当作者为用户本身或者已经收藏该作者则隐藏收藏按钮
+          if(this.author_id == this.$store.state.idData) {
+            this.collectionShow = false
+          }
+          for(let i = 0; i < this.$store.state.collectionData.length; i++) {
+            if(this.$route.query.video_id == this.$store.state.collectionData[i]) {
+              this.collectionShow = false
+            }
+          }
+
+          //点赞按钮状态
+          for(let i = 0; i < this.video.like_user.length; i++) {
+            if(this.$store.state.idData == this.video.like_user[i]) {
+              this.likeStatus = require('@/assets/images/like44.png')
             }
           }
         }
@@ -140,6 +190,54 @@ export default {
           this.$toast.success('已关注该作者')
         }
       })
+    },
+    addLikeNum() {
+      if(this.likeStatus == require('@/assets/images/like4.png')) {
+        this.likeNum++
+        this.likeStatus = require('@/assets/images/like44.png')
+        postAddLikeUser({
+          idea_id: this.$route.query.video_id,
+          like_user: this.$store.state.idData
+        }).then(res => {
+          if(res.success) {
+          }
+        })
+      } else {
+        this.likeNum--
+        this.likeStatus = require('@/assets/images/like4.png')
+        postReduceLikeUser({
+          idea_id: this.$route.query.video_id,
+          like_user: this.$store.state.idData
+        }).then(res => {
+          if(res.success) {
+          }
+        })
+      }
+
+      postUpdateLikeNum({
+        idea_id: this.$route.query.video_id,
+        like_num: this.likeNum
+      }).then(res => {
+        if(res.success) {
+        }
+      })
+
+    },
+    onCollection() {
+      this.showDialog = false
+      postAddCollection({
+        user_id: this.$store.state.idData,
+        collection_id: this.$route.query.video_id
+      }).then(res => {
+        if(res.success) {
+          this.$store.state.collectionData = res.resultList.collection_id
+          this.collectionShow = false
+          this.$toast('已收藏此作品')
+        }
+      })
+    },
+    getCommentNum(data) {
+      this.commentNum = data
     }
   }
 }
@@ -172,12 +270,16 @@ export default {
       .head-image {
         width: 35px;
         height: 35px;
+        position: relative;
         margin-right: 10px;
         border-radius: 50px;
         overflow: hidden;
         img {
           width: 100%;
-          height: 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
       .focus-button {

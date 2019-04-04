@@ -135,19 +135,28 @@ export function postAddFocus(data = {}) {
   }))
 }
 
-//查找所有关注的用户
-export function postFindFocus(data = {}) {
+//通过用户id数组查找多个用户信息
+export function postFindArrayIdUser(data = {}) {
   return fetch(Object.assign({
-    url: '/users/findFocus',
+    url: '/users/findArrayIdUser',
     method: 'post',
     data: data
   }))
 }
 
-//查找所有关注的用户作品
-export function postFindFocusIdea(data = {}) {
+//通过用户id数组查找多个用户的作品
+export function postFindArrayIdIdea(data = {}) {
   return fetch(Object.assign({
-    url: '/idea/findFocusIdea',
+    url: '/idea/findArrayIdIdea',
+    method: 'post',
+    data: data
+  }))
+}
+
+//通过作品id数组查找多个作品信息
+export function postFindArrayIdea(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/findArrayIdea',
     method: 'post',
     data: data
   }))
@@ -193,6 +202,60 @@ export function postFindAllHistory(data = {}) {
 export function postDeleteHistory(data = {}) {
   return fetch(Object.assign({
     url: '/history/delHistory',
+    method: 'post',
+    data: data
+  }))
+}
+
+//更新点赞数
+export function postUpdateLikeNum(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/updateLikeNum',
+    method: 'post',
+    data: data
+  }))
+}
+
+//增加点赞用户
+export function postAddLikeUser(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/addLikeUser',
+    method: 'post',
+    data: data
+  }))
+}
+
+//减少点赞用户
+export function postReduceLikeUser(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/reduceLikeUser',
+    method: 'post',
+    data: data
+  }))
+}
+
+//添加收藏
+export function postAddCollection(data = {}) {
+  return fetch(Object.assign({
+    url: '/users/addCollection',
+    method: 'post',
+    data: data
+  }))
+}
+
+//删除收藏
+export function postDelCollection(data = {}) {
+  return fetch(Object.assign({
+    url: '/users/delCollection',
+    method: 'post',
+    data: data
+  }))
+}
+
+//更新访问量
+export function postUpdateReadNum(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/updateReadNum',
     method: 'post',
     data: data
   }))

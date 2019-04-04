@@ -1,7 +1,7 @@
 <template>
   <div class="rightDialog">
     <div class="dialog-box">
-      <div class="dialog-content">
+      <div class="dialog-content" v-if="collectionShow" @click="onCollection">
         <img src="../assets/images/dialogImg/collection.png" alt="">
         <span>收藏</span>
       </div>
@@ -20,9 +20,19 @@
 <script>
 export default {
   name: 'rightDialog',
+  props: {
+    collectionShow: {
+      type: Boolean
+    }, 
+  },
   data() {
     return {
 
+    }
+  },
+  methods: {
+    onCollection() {
+      this.$emit('collection')
     }
   }
 }
