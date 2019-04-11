@@ -15,7 +15,7 @@
       <van-field v-model="valueContent" type="textarea" :border="false" placeholder="请输入简介" autosize/>
       <div class="photo-upload">
         <el-upload
-          action="http://localhost:3000/upload/upload"
+          :action="this.customConfig.baseUrl + '/upload/upload'"
           list-type="picture-card"
           accept="image/*"
           :on-preview="handlePictureCardPreview"
@@ -65,7 +65,7 @@ export default {
       this.$toast('只能上传九张图片')
     },
     handlePictureSuccess(res, file) {
-      this.photo = 'http://localhost:3000/images/upload/' + res[0].filename
+      this.photo = this.customConfig.baseUrl + '/images/upload/' + res[0].filename
       this.photoList.push(this.photo)
     },
     handlePictureError() {
@@ -82,6 +82,7 @@ export default {
         postAddPhoto({
           type: 'photo',
           author_id: this.$store.state.idData,
+          author_phone: this.$store.state.userIdData,
           author: '',
           author_img: '',
           idea_title: this.valueTitle,

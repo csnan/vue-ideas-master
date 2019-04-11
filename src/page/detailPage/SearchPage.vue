@@ -10,7 +10,7 @@
     <div class="main-content">
       <div class="noSearch-icon" v-if="showNoSearch">
         <img src="../../assets/images/noSearch.png" alt="">
-        <div>哈哈哈傻了吧!!!</div>
+        <div>呜呜呜啥都没有~</div>
       </div>
       <div class="recommend-history">
         <div class="recommend-history-content">
@@ -26,15 +26,15 @@
               <div class="recommend-history-foot">
                 <div>
                   <img src="../../assets/images/like3.png">
-                  <span>111</span>
+                  <span>{{cellHistory.like_num}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/comment.png">
-                  <span>111</span>
+                  <span>{{cellHistory.comments.length}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/look.png">
-                  <span>111</span>
+                  <span>{{cellHistory.read_num}}</span>
                 </div>
                 <div class="foot-time">
                   <span>{{cellHistory.idea_time}}</span>

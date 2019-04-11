@@ -81,6 +81,15 @@ export function postAddPhoto(data = {}) {
   }))
 }
 
+//删除作品
+export function postDelIdea(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/delIdea',
+    method: 'post',
+    data: data
+  }))
+}
+
 //获取首页轮播图
 export function postFindSwipeImages(data = {}) {
   return fetch(Object.assign({
@@ -130,6 +139,15 @@ export function postFindAuthorIdea(data = {}) {
 export function postAddFocus(data = {}) {
   return fetch(Object.assign({
     url: '/users/addFocus',
+    method: 'post',
+    data: data
+  }))
+}
+
+//取消关注
+export function postDelFocus(data = {}) {
+  return fetch(Object.assign({
+    url: '/users/delFocus',
     method: 'post',
     data: data
   }))

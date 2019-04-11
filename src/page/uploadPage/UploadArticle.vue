@@ -59,6 +59,7 @@ export default {
         this.currentDate =  formatTimeToStr( date, "yyyy-MM-dd hh:mm" )
         param.append('type', 'article')
         param.append('author_id', this.$store.state.idData)
+        param.append('author_phone', this.$store.state.userIdData)
         param.append('author', '') 
         param.append('author_img', '')
         param.append('idea_title', this.valueTitle) 

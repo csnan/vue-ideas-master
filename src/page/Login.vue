@@ -123,6 +123,7 @@ export default {
               this.$toast('请输入正确的用户名和密码')
             } else {
               this.$store.state.idData = res.resultList[0]._id
+              this.$store.state.userIdData = res.resultList[0].userId
               this.$store.state.usernameData = res.resultList[0].username
               this.$store.state.headImgData = res.resultList[0].headImg
               this.$store.state.coverImgData = res.resultList[0].coverImg

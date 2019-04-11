@@ -22,7 +22,7 @@
       <div class="music-upload">
         <el-upload
           class="upload-demo"
-          action="http://localhost:3000/upload/upload"
+          :action="this.customConfig.baseUrl + '/upload/upload'"
           :before-upload="beforeMusicUpload"
           :on-exceed="handleMusicExceed"
           :on-success="handleMusicSuccess"
@@ -78,7 +78,7 @@ export default {
       this.$toast('只能上传一个文件')
     },
     handleMusicSuccess(res, file) {
-      this.music = 'http://localhost:3000/images/upload/' + res[0].filename
+      this.music = this.customConfig.baseUrl + '/images/upload/' + res[0].filename
     },
     handleMusicError() {
       this.$toast('上传失败')
@@ -91,6 +91,7 @@ export default {
         this.currentDate =  formatTimeToStr( date, "yyyy-MM-dd hh:mm" )
         param.append('type', 'music') 
         param.append('author_id', this.$store.state.idData)
+        param.append('author_phone', this.$store.state.userIdData)
         param.append('author', '') 
         param.append('author_img', '')
         param.append('idea_title', this.valueTitle) 

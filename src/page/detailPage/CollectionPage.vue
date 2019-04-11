@@ -22,18 +22,18 @@
               <div class="recommend-collection-foot">
                 <div>
                   <img src="../../assets/images/like3.png">
-                  <span>111</span>
+                  <span>{{cellCollection.like_num}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/comment.png">
-                  <span>111</span>
+                  <span>{{cellCollection.comments.length}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/look.png">
-                  <span>111</span>
+                  <span>{{cellCollection.read_num}}</span>
                 </div>
-                <div class="foot-time">
-                  <span>{{cellCollection.idea_time}}</span>
+                <div class="foot-right" @click.stop="onDelete(cellCollection._id)">
+                  <img src="../../assets/images/close.png">
                 </div>
               </div>
             </div>
@@ -46,6 +46,7 @@
 
 <script>
 import { postFindArrayIdea } from "@/api/index"
+import { postDelCollection } from "@/api/index"
 export default {
   name: 'collectionPage',
   data() {
@@ -74,6 +75,23 @@ export default {
           this.titleTop = '收藏' + '（' + this.collectionNum + ')'
         }
       })
+    },
+    onDelete(collection_id) {
+      this.$dialog.confirm({
+        title: '确定删除吗'
+      }).then(() => {
+        postDelCollection({
+          user_id: this.$store.state.idData,
+          collection_id: collection_id
+        }).then(res => {
+          if(res.success) {
+            this.$store.state.collectionData = res.resultList.collection_id
+            this.getCollectionIdea()
+            this.$toast('已删除')
+          }
+        })
+      }).catch(() => {
+      });
     },
     toDetailPage(type, idea_id) {
       if(type == 'article') {
@@ -177,7 +195,7 @@ export default {
               color: rgb(128, 128, 128);
               vertical-align: middle;
             }
-            .foot-time {
+            .foot-right {
               float: right;
               margin-right: 0px;
             }

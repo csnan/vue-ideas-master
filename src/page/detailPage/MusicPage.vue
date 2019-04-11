@@ -55,7 +55,7 @@
         >+ 关注</van-button>
       </van-cell>
       <div class="music-detail">
-        <span>1142次播放</span>
+        <span>{{readNum}}次播放</span>
         <span>{{music.idea_time}}</span>
         <transition name="van-fade">
           <div v-show="visible">{{music.idea_content}}</div>
@@ -80,7 +80,7 @@
         <van-col span="8">
           <div>
             <img src="../../assets/images/share2.png">
-          </div>{{readNum}}
+          </div>
         </van-col>
       </van-row>
       <div class="gray-block"></div>
@@ -173,8 +173,8 @@ export default {
             }
           })
 
-          //当作者为用户本身或者已经关注该作者则隐藏关注按钮
-          if(this.author_id == this.$store.state.idData) {
+          //当作者为用户本身或者已经关注该作者或未登录则隐藏关注按钮
+          if(this.author_id == this.$store.state.idData || !this.$store.state.memberData) {
             this.showFocus = false
           }
           for(let i = 0; i < this.$store.state.focusData.length; i++) {
@@ -183,8 +183,8 @@ export default {
             }
           }
 
-          //当作者为用户本身或者已经收藏该作者则隐藏收藏按钮
-          if(this.author_id == this.$store.state.idData) {
+          //当作者为用户本身或者已经收藏该作者或未登录则隐藏收藏按钮
+          if(this.author_id == this.$store.state.idData || !this.$store.state.memberData) {
             this.collectionShow = false
           }
           for(let i = 0; i < this.$store.state.collectionData.length; i++) {

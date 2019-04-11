@@ -31,11 +31,11 @@
               <div class="recommend-music-foot">
                 <div>
                   <img src="../../assets/images/play2.png">
-                  <span>123</span>
+                  <span>{{cellMusic.read_num}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/comment.png">
-                  <span>123</span>
+                  <span>{{cellMusic.comments.length}}</span>
                 </div>
                 <div class="foot-time">
                   <span>{{cellMusic.idea_time}}</span>

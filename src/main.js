@@ -30,6 +30,13 @@ Vue.component('right-dialog', rightDialog)
 import loadingImage from './components/LoadingImage'
 Vue.component('loading-image', loadingImage)
 
+// 自定义公共变量
+Vue.prototype.customConfig = {
+
+  // 测试服务器
+  baseUrl: 'http://192.168.43.202:8080'
+}
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

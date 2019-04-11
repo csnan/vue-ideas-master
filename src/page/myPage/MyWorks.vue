@@ -14,7 +14,11 @@
           </div>
           <div class="recommend-video-text">
             <div class="recommend-video-title">{{cell.idea_title}}</div>
-            <div class="recommend-video-name">111</div>
+            <div class="recommend-video-name">
+              <img src="../../assets/images/look.png">
+              <span>{{cell.read_num}}</span>
+              <img class="close-icon" src="../../assets/images/close.png" @click.stop="onDelete(cell._id)">
+            </div>
           </div>
         </div>
       </div>
@@ -23,6 +27,7 @@
 
 <script>
 import { postFindAuthorIdea } from "@/api/index"
+import { postDelIdea } from "@/api/index"
 export default {
   name: 'myWorks',
   props: ['author_id'],
@@ -66,6 +71,21 @@ export default {
           }
         }
       })
+    },
+    onDelete(idea_id) {
+      this.$dialog.confirm({
+        title: '确定删除此作品吗'
+      }).then(() => {
+        postDelIdea({
+          idea_id: idea_id
+        }).then(res => {
+          if(res.status == 'ok') {
+            this.getAuthorIdea()
+            this.$toast('已删除')
+          }
+        })
+      }).catch(() => {
+      });
     },
     toDetailPage(type, idea_id) {
       if(type == 'article') {
@@ -158,6 +178,16 @@ export default {
           text-overflow:ellipsis;
           white-space: nowrap;
           color: rgb(128, 128, 128);
+          img {
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+          }
+          .close-icon {
+            float: right;
+            margin-top: 3px;
+            margin-right: 0;
+          }
         }
       }
     }
@@ -172,7 +202,7 @@ export default {
         border-radius: 5px;
         overflow: hidden;
         .video-cover {
-          width: 100%;
+          width: 120%;
           position: absolute;
           top: 50%;
           left: 50%;
@@ -209,6 +239,16 @@ export default {
           text-overflow:ellipsis;
           white-space: nowrap;
           color: rgb(128, 128, 128);
+          img {
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+          }
+          .close-icon {
+            float: right;
+            margin-top: 3px;
+            margin-right: 0;
+          }
         }
       }
     }

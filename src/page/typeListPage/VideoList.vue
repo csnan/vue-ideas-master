@@ -23,7 +23,7 @@
               <img class="video-cover" :src="cellVideo.idea_img">
               <div class="video-cover-icon">
                 <img src="../../assets/images/video2.png">
-                <span>111</span>
+                <span>{{cellVideo.read_num}}</span>
               </div>
               <div class="video-cover-time">{{cellVideo.idea_time}}</div>
             </div>

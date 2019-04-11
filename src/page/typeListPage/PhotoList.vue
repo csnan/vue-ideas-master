@@ -35,15 +35,15 @@
             <div class="recommend-photo-foot">
               <div>
                 <img src="../../assets/images/like3.png">
-                <span>111</span>
+                <span>{{cellPhoto.like_num}}</span>
               </div>
               <div>
                 <img src="../../assets/images/comment.png">
-                <span>111</span>
+                <span>{{cellPhoto.comments.length}}</span>
               </div>
               <div>
                 <img src="../../assets/images/look.png">
-                <span>111</span>
+                <span>{{cellPhoto.read_num}}</span>
               </div>
               <div class="foot-time">
                 <span>{{cellPhoto.idea_time}}</span>

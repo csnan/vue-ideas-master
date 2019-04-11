@@ -20,15 +20,15 @@
               <div class="recommend-article-foot">
                 <div>
                   <img src="../../assets/images/like3.png">
-                  <span>111</span>
+                  <span>{{cellArticle.like_num}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/comment.png">
-                  <span>111</span>
+                  <span>{{cellArticle.comments.length}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/look.png">
-                  <span>111</span>
+                  <span>{{cellArticle.read_num}}</span>
                 </div>
                 <div class="foot-time">
                   <span>{{cellArticle.idea_time}}</span>

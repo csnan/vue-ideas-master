@@ -61,7 +61,7 @@
               </div>
               <div>
                 <img src="../../assets/images/look.png">
-                <span>111</span>
+                <span>{{cellArticle.read_num}}</span>
               </div>
               <div class="close-icon" @click.stop="closeArticle(index)">
                 <img src="../../assets/images/close.png">
@@ -114,7 +114,7 @@
             </div>
             <div>
               <img src="../../assets/images/look.png">
-              <span>111</span>
+              <span>{{cellPhoto.read_num}}</span>
             </div>
             <div class="close-icon" @click.stop="closePhoto(index)">
               <img src="../../assets/images/close.png">
@@ -151,7 +151,7 @@
             <div class="recommend-music-foot">
               <div>
                 <img src="../../assets/images/play2.png">
-                <span>123</span>
+                <span>{{cellMusic.read_num}}</span>
               </div>
               <div>
                 <img src="../../assets/images/comment.png">
@@ -191,7 +191,7 @@
             <img class="video-cover" :src="cellVideo.idea_img">
             <div class="video-cover-icon">
               <img src="../../assets/images/video2.png">
-              <span>111</span>
+              <span>{{cellVideo.read_num}}</span>
             </div>
             <div class="video-cover-time">{{cellVideo.idea_time}}</div>
           </div>

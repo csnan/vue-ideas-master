@@ -20,7 +20,7 @@
             <img class="sex-icon" :src="cell.sex | toImage" alt="">
           </van-cell>
         </van-cell-group>
-        <span slot="right" @click="onDeleteFirst(index)">取关</span>
+        <span slot="right" @click="onDeleteFirst(cell._id)">取关</span>
       </van-swipe-cell>
     </div>
   </div>
@@ -28,6 +28,7 @@
 
 <script>
 import { postFindArrayIdUser } from "@/api/index"
+import { postDelFocus } from "@/api/index"
 export default {
   name: 'focusPage',
   data() {
@@ -75,11 +76,21 @@ export default {
         }
       })
     },
-    onDeleteFirst(index) {
+    onDeleteFirst(focus_id) {
       this.$dialog.confirm({
         message: '确定取消关注吗？'
       }).then(() => {
-        this.cellListFocus.splice(index, 1)
+        postDelFocus({
+          _id: this.$store.state.idData,
+          focus_id: focus_id
+        }).then(res => {
+          if(res.success) {
+            this.$store.state.focusNumData = res.resultList.focus_id.length
+            this.$store.state.focusData = res.resultList.focus_id
+            this.getUserFocus()
+            this.$toast('已取消关注')
+          }
+        })
       }).catch(() => {
       })
     },
@@ -121,6 +132,11 @@ export default {
   }
   .van-cell__title {
     font-size: 16px;
+  }
+  .van-cell__label {
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

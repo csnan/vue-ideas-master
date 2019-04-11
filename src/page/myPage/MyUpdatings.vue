@@ -30,7 +30,7 @@
             <span>{{cell.like_num}}</span>
           </van-col>
           <van-col class="foot-more" span="6">
-            <img src="../../assets/images/close.png" alt="" @click.stop="onDelete(index)">
+            <img src="../../assets/images/close.png" alt="" @click.stop="onDelete(cell._id)">
           </van-col>
         </van-row>
       </div>
@@ -41,6 +41,7 @@
 <script>
 import { postFindAuthorIdea } from "@/api/index"
 import { postFindArrayIdUser } from "@/api/index"
+import { postDelIdea } from "@/api/index"
 export default {
   name: 'myUpdatings',
   props: ['author_id'],
@@ -84,11 +85,18 @@ export default {
         }
       })
     },
-    onDelete(index) {
+    onDelete(idea_id) {
       this.$dialog.confirm({
-        title: '确定删除吗'
+        title: '确定删除此动态吗'
       }).then(() => {
-        this.cellListCircle.splice(index, 1)
+        postDelIdea({
+          idea_id: idea_id
+        }).then(res => {
+          if(res.status == 'ok') {
+            this.getAuthorIdea()
+            this.$toast('已删除')
+          }
+        })
       }).catch(() => {
       });
     },
