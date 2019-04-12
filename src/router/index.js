@@ -130,6 +130,12 @@ export default new Router({
       name: 'chatPage',
       component: _import('detailPage/ChatPage')
     },
+    //聊天2
+    {
+      path: '/chatPage2',
+      name: 'chatPage2',
+      component: _import('detailPage/ChatPage2')
+    },
     //登录
     {
       path: '/login',

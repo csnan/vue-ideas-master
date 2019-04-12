@@ -6,7 +6,7 @@
     <div class="main-content" @click="onCloseDialog"> 
       <div class="article-title">{{article.idea_title}}</div>
       <van-cell class="article-author" :title="author.username" :label="article.idea_time" :border="false" center>
-        <div class="head-image" slot="icon">
+        <div class="head-image" slot="icon" @click="toUserCenter">
           <img :src="author.headImg">
         </div>
         <van-button 
@@ -129,6 +129,14 @@ export default {
               this.likeStatus = require('@/assets/images/like2.png')
             }
           }
+        }
+      })
+    },
+    toUserCenter() {
+      this.$router.push({
+        name: 'userCenter',
+        query: {
+          author_id: this.author_id
         }
       })
     },

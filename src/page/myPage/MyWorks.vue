@@ -1,5 +1,7 @@
 <template>
   <div class="myWorks">
+    <van-loading class="loading-image" v-if="loadingShow" type="spinner" />
+    <div class="nothing-tag" v-if="showNoSearch">这个人很懒，什么都没有~</div>
     <div class="recommend-video-content">
         <div 
           v-for="(cell, index) in cellListIdea"
@@ -33,6 +35,8 @@ export default {
   props: ['author_id'],
   data() {
     return {
+      loadingShow: false,
+      showNoSearch:false,
       cellListIdea: []
     }
   },
@@ -61,10 +65,15 @@ export default {
   },
   methods: {
     getAuthorIdea() {
+      this.loadingShow = true
       postFindAuthorIdea({
         author_id: this.author_id
       }).then(res => {
+        this.loadingShow = false
         this.cellListIdea = res.resultList.reverse()
+        if(this.cellListIdea.length == 0) {
+          this.showNoSearch = true
+        }
         for(let i = 0; i < this.cellListIdea.length; i++){
           if(this.cellListIdea[i].type == 'photo') {
             this.cellListIdea[i].idea_img = this.cellListIdea[i].idea_images[0]
@@ -127,6 +136,15 @@ export default {
 
 <style lang="less" scoped>
 .myWorks {
+  .loading-image {
+    margin: 0 auto;
+  }
+  .nothing-tag {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: rgb(202, 202, 202);
+  }
   .recommend-video-content {
     padding: 10px 15px;
     .recommend-video-cell {

@@ -65,7 +65,9 @@ export default {
 
     //查找所有搜索历史
     findAllHistory() {
-      postFindAllHistory().then(res => {
+      postFindAllHistory({
+        user_id: this.$store.state.idData
+      }).then(res => {
         if(res.success) {
           this.recordSearchList = res.resultList.reverse()
         }
@@ -76,6 +78,7 @@ export default {
       if(this.searchValue != ''){
         //添加历史记录
         postAddHistory({
+          user_id: this.$store.state.idData,
           history_content: this.searchValue
         }).then(res => {
           if(res.success) {
@@ -137,7 +140,7 @@ export default {
       }
     }
     .search-box {
-      width: 87%;
+      width: 85%;
       position: absolute;
       right: 8px;
     }
@@ -181,3 +184,11 @@ export default {
   }
 }
 </style>
+<style lang="less">
+.search {
+  .van-search {
+    padding: 7px 0;
+  }
+}
+</style>
+

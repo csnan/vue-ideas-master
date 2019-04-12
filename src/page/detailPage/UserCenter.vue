@@ -24,8 +24,8 @@
         <div class="content-two">
           <van-row class="interact-number">
             <van-col span="8">{{focusNum}}</van-col>
-            <van-col span="8">1</van-col>
-            <van-col span="8">1</van-col>
+            <van-col span="8">0</van-col>
+            <van-col span="8">0</van-col>
           </van-row>
           <van-row class="interact-name">
             <van-col span="8">关注</van-col>
@@ -105,7 +105,11 @@ export default {
   },
   methods: {
     toBack() {
-      this.$router.push('/my')
+      if(this.$route.query.author_id == this.$store.state.idData) {
+        this.$router.push('/my')
+      } else {
+        this.$router.go(-1)
+      }
     },
     //滚动时顶部导航背景透明度变化
     onHandleScroll() {
@@ -126,7 +130,7 @@ export default {
 
     //根据用户id获取用户个人信息
     getUserInformation() {
-      if(!this.$route.query.author_id) {
+      if(!this.$route.query.author_id || this.$route.query.author_id == this.$store.state.idData) {
         this.showEdit = true
         this.author_id = this.$store.state.idData
         postObtainUserInfo({

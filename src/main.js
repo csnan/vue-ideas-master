@@ -30,6 +30,9 @@ Vue.component('right-dialog', rightDialog)
 import loadingImage from './components/LoadingImage'
 Vue.component('loading-image', loadingImage)
 
+import nothingImage from './components/NothingImage'
+Vue.component('nothing-image', nothingImage)
+
 // 自定义公共变量
 Vue.prototype.customConfig = {
 

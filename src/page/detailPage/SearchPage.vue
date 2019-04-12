@@ -8,10 +8,7 @@
       @goBack="toBack"
     ></base-header>
     <div class="main-content">
-      <div class="noSearch-icon" v-if="showNoSearch">
-        <img src="../../assets/images/noSearch.png" alt="">
-        <div>呜呜呜啥都没有~</div>
-      </div>
+      <nothing-image :showNoSearch="showNoSearch"></nothing-image>
       <div class="recommend-history">
         <div class="recommend-history-content">
           <div 
@@ -122,22 +119,6 @@ export default {
 
 <style lang="less" scoped>
 .searchPage {
-  .noSearch-icon {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -30%);
-    text-align: center;
-    img {
-      width: 100px;
-      height: 100px;
-    }
-    div {
-      font-size: 20px;
-      font-weight: bold;
-      color: rgb(202, 202, 202);
-    }
-  }
   .recommend-history {
     .recommend-history-content {
       padding: 0px 15px;

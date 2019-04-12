@@ -41,7 +41,7 @@
         <van-icon :class="[rotate?'down-icon-rotate':'down-icon']" name="arrow-down" color="gray" @click="onRotate"/>
       </div>
       <van-cell class="music-author" :title="author.username" :border="false" center>
-        <div class="head-image" slot="icon">
+        <div class="head-image" slot="icon"  @click="toUserCenter">
           <img :src="author.headImg">
         </div>
         <van-button 
@@ -199,6 +199,15 @@ export default {
               this.likeStatus = require('@/assets/images/like44.png')
             }
           }
+        }
+      })
+    },
+
+    toUserCenter() {
+      this.$router.push({
+        name: 'userCenter',
+        query: {
+          author_id: this.author_id
         }
       })
     },
@@ -473,7 +482,7 @@ export default {
         border-radius: 50px;
         overflow: hidden;
         img {
-          width: 100%;
+          width: 120%;
           position: absolute;
           top: 50%;
           left: 50%;

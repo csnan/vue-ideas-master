@@ -8,6 +8,7 @@
       @goBack="toBack"
     ></base-header>
     <div class="main-content">
+      <nothing-image :showNoSearch="showNoSearch"></nothing-image>
       <div class="recommend-collection">
         <div class="recommend-collection-content">
           <div 
@@ -51,9 +52,10 @@ export default {
   name: 'collectionPage',
   data() {
     return {
-      titleTop: '',
+      titleTop: '收藏（0）',
       backIcon: require('@/assets/images/back2.png'),
       loadingShow: false,
+      showNoSearch: false,
       cellCollectionList: [],
       collectionNum: 0
     }
@@ -66,15 +68,24 @@ export default {
       this.$router.go(-1)
     },
     getCollectionIdea() {
-      postFindArrayIdea({
-        _ids: this.$store.state.collectionData
-      }).then(res => {
-        if(res.success) {
-          this.cellCollectionList = res.resultList
-          this.collectionNum = this.cellCollectionList.length
-          this.titleTop = '收藏' + '（' + this.collectionNum + ')'
-        }
-      })
+      if(!this.$store.state.memberData) {
+        this.showNoSearch = true
+      } else {
+        this.loadingShow = true
+        postFindArrayIdea({
+          _ids: this.$store.state.collectionData
+        }).then(res => {
+          if(res.success) {
+            this.loadingShow = false
+            this.cellCollectionList = res.resultList
+            this.collectionNum = this.cellCollectionList.length
+            this.titleTop = '收藏' + '（' + this.collectionNum + '）'
+            if(this.cellCollectionList.length == 0) {
+              this.showNoSearch = true
+            }
+          }
+        })
+      }
     },
     onDelete(collection_id) {
       this.$dialog.confirm({

@@ -1,25 +1,34 @@
 <template>
-  <div class="chatPage">
+  <div class="chatPage2">
     <base-header :titleTop="titleName" :leftLogo="false" :leftIcon="backIcon" @goBack="toBack" ></base-header>
     <div class="main-content">
 
       <div class="opposite-user">
         <div class="chat-detail">
           <div class="head-image">
-            <img src="../../assets/images/1.jpeg" alt="">
+            <img src="../../assets/images/2.jpeg" alt="">
           </div>
           <div class="chat-content">
             <div class="triangle-box"></div>
-            哈哈哈
+            你好啊
           </div>
         </div>
         <div class="chat-detail">
           <div class="head-image">
-            <img src="../../assets/images/1.jpeg" alt="">
+            <img src="../../assets/images/2.jpeg" alt="">
           </div>
           <div class="chat-content">
             <div class="triangle-box"></div>
-            你那篇文章真的是太好了，我要做你粉丝！！！
+            很高兴能看到你的作品
+          </div>
+        </div>
+        <div class="chat-detail">
+          <div class="head-image">
+            <img src="../../assets/images/2.jpeg" alt="">
+          </div>
+          <div class="chat-content">
+            <div class="triangle-box"></div>
+            希望你能一直更新去，期待你的下个作品
           </div>
         </div>
       </div>
@@ -57,10 +66,10 @@
 
 <script>
 export default {
-  name: 'chatPage',
+  name: 'chatPage2',
   data() {
     return {
-      titleName: '向真',
+      titleName: '贝贝',
       backIcon: require('@/assets/images/back2.png'),
       chatValue: '',
       chatValueList: []
@@ -82,7 +91,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.chatPage {
+.chatPage2 {
   .main-content {
     .opposite-user {
       padding: 15px;
@@ -195,7 +204,7 @@ export default {
 }
 </style>
 <style lang="less">
-.chatPage {
+.chatPage2 {
   .van-icon, .van-icon::before {
     display: none;
   }

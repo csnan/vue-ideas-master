@@ -1,5 +1,6 @@
 <template>
   <div class="homeFocus">
+    <nothing-image :showNoSearch="showNoSearch"></nothing-image>
     <div 
       :class="index == 0 ? 'home-first-cell-wrap':'home-cell-wrap'"
       v-for="(cell, index) in cellListCircle"
@@ -42,6 +43,7 @@ export default {
   name: 'homeFocus',
   data() {
     return {
+      showNoSearch: false,
       cellListCircle: []
     }
   },
@@ -50,37 +52,44 @@ export default {
   },
   methods: {
     findFocusIdea() {
-      postFindArrayIdIdea({
-        _ids: this.$store.state.focusData
-      }).then(res => {
-        if(res.success) {
-          this.cellListCircle = res.resultList.reverse()
-          let author_ids = []
-          for(let i = 0; i < this.cellListCircle.length; i++) {
-            author_ids.push(this.cellListCircle[i].author_id)
-          }
-          postFindArrayIdUser({
-            _ids: author_ids
-          }).then(res => {
-            if(res.success) {
-              let authorList = res.resultList
-              for(let i = 0; i < this.cellListCircle.length; i++) {
-                for(let j = 0; j < authorList.length; j++) {
-                  if(this.cellListCircle[i].author_id == authorList[j]._id) {
-                    this.cellListCircle[i].author = authorList[j].username
-                    this.cellListCircle[i].author_img = authorList[j].headImg
+      if(!this.$store.state.memberData) {
+        this.showNoSearch = true
+      } else {
+        postFindArrayIdIdea({
+          _ids: this.$store.state.focusData
+        }).then(res => {
+          if(res.success) {
+            this.cellListCircle = res.resultList.reverse()
+            if(this.cellListCircle.length == 0) {
+              this.showNoSearch = true
+            }
+            let author_ids = []
+            for(let i = 0; i < this.cellListCircle.length; i++) {
+              author_ids.push(this.cellListCircle[i].author_id)
+            }
+            postFindArrayIdUser({
+              _ids: author_ids
+            }).then(res => {
+              if(res.success) {
+                let authorList = res.resultList
+                for(let i = 0; i < this.cellListCircle.length; i++) {
+                  for(let j = 0; j < authorList.length; j++) {
+                    if(this.cellListCircle[i].author_id == authorList[j]._id) {
+                      this.cellListCircle[i].author = authorList[j].username
+                      this.cellListCircle[i].author_img = authorList[j].headImg
+                    }
                   }
                 }
               }
-            }
-          })
-          for(let i = 0; i < this.cellListCircle.length; i++){
-            if(this.cellListCircle[i].type == 'photo') {
-              this.cellListCircle[i].idea_img = this.cellListCircle[i].idea_images[0]
+            })
+            for(let i = 0; i < this.cellListCircle.length; i++){
+              if(this.cellListCircle[i].type == 'photo') {
+                this.cellListCircle[i].idea_img = this.cellListCircle[i].idea_images[0]
+              }
             }
           }
-        }
-      })
+        })
+      }
     },
     toDetailPage(type, idea_id) {
       if(type == 'article') {

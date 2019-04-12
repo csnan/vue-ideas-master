@@ -1,5 +1,7 @@
 <template>
   <div class="myUpdatings">
+    <van-loading class="loading-image" v-if="loadingShow" type="spinner" />
+    <div class="nothing-tag" v-if="showNoSearch">这个人很懒，什么都没有~</div>
     <div 
       :class="index == 0 ? 'home-first-cell-wrap':'home-cell-wrap'"
       v-for="(cell, index) in cellListCircle"
@@ -47,6 +49,8 @@ export default {
   props: ['author_id'],
   data() {
     return {
+      loadingShow: false,
+      showNoSearch: false,
       cellListCircle: []
     }
   },
@@ -55,10 +59,15 @@ export default {
   },
   methods: {
     getAuthorIdea() {
+      this.loadingShow = true
       postFindAuthorIdea({
         author_id: this.author_id
       }).then(res => {
+        this.loadingShow = false
         this.cellListCircle = res.resultList.reverse()
+        if(this.cellListCircle.length == 0) {
+          this.showNoSearch = true
+        }
         let author_ids = []
         for(let i = 0; i < this.cellListCircle.length; i++) {
           author_ids.push(this.cellListCircle[i].author_id)
@@ -140,6 +149,15 @@ export default {
 
 <style lang="less" scoped>
 .myUpdatings {
+  .loading-image {
+    margin: 0 auto;
+  }
+  .nothing-tag {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: rgb(202, 202, 202);
+  }
   .home-first-cell-wrap {
     margin-bottom: 10px;
     .home-cell-top {

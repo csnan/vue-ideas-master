@@ -1,96 +1,99 @@
 <template>
   <div class="news">
-    <base-header titleTop="消息" :rightIcon="addFriendIcon"></base-header>
-    <div class="tab-box-wrap">
-      <div class="tab-box">
-        <div
-          class="tab-item"
-          v-for="(tab, index) in tabs"
-          :key="index"
-          @click="onTabsSwitch(index)"
-          v-bind:class="{active:index==nowTabIndex}"
-        >{{tab}}</div>
+    <base-header titleTop="消息" :rightIcon="addFriendIcon" @toPage="toAddFriend"></base-header>
+    <nothing-image :showNoSearch="showNoSearch"></nothing-image>
+    <div v-if="!showNoSearch">
+      <div class="tab-box-wrap">
+        <div class="tab-box">
+          <div
+            class="tab-item"
+            v-for="(tab, index) in tabs"
+            :key="index"
+            @click="onTabsSwitch(index)"
+            v-bind:class="{active:index==nowTabIndex}"
+          >{{tab}}</div>
+        </div>
       </div>
-    </div>
-    <div class="content-news">
-      <div class="tab-first" v-show="nowTabIndex===0">
-        <van-swipe-cell 
-          v-for="(cell, index) in cellListFirst" 
-          :key="index" 
-          :right-width="65"
-        >
-          <van-cell-group>
-            <van-cell :title="cell.titleText" :label="cell.labelText" @click="toChatPage">
-              <div class="head-image" slot="icon">
-                <img :src="cell.headImg">
-              </div>
-              <div>{{cell.valueText}}</div>
-              <van-tag class="tag-number" type="danger" round>{{cell.num}}</van-tag>
-            </van-cell>
-          </van-cell-group>
-          <span slot="right" @click="onDeleteFirst(index)">删除</span>
-        </van-swipe-cell>
-      </div>
-      <div class="tab-second" v-show="nowTabIndex===1">
-        <div
-          class="cell-warp"
-          v-for="(cell, index) in cellListSecond" 
-          :key="index"
-        >
-          <div class="head-image">
-            <img :src="cell.headImg">
-          </div>
-          <div class="text-right">
-            <div class="text-name">
-              <span class="text-name-main">{{cell.titleText}}</span>
-              <span class="text-name-detail">评论了：</span>
-              <span class="text-name-detail">暗室逢灯sad</span>
+      <div class="content-news">
+        <div class="tab-first" v-show="nowTabIndex===0">
+          <van-swipe-cell 
+            v-for="(cell, index) in cellListFirst" 
+            :key="index" 
+            :right-width="65"
+          >
+            <van-cell-group>
+              <van-cell :title="cell.titleText" :label="cell.labelText" @click="toChatPage(cell.titleText)">
+                <div class="head-image" slot="icon">
+                  <img :src="cell.headImg">
+                </div>
+                <div>{{cell.valueText}}</div>
+                <van-tag class="tag-number" type="danger" round>{{cell.num}}</van-tag>
+              </van-cell>
+            </van-cell-group>
+            <span slot="right" @click="onDeleteFirst(index)">删除</span>
+          </van-swipe-cell>
+        </div>
+        <div class="tab-second" v-show="nowTabIndex===1">
+          <div
+            class="cell-warp"
+            v-for="(cell, index) in cellListSecond" 
+            :key="index"
+          >
+            <div class="head-image">
+              <img :src="cell.headImg">
             </div>
-            <div class="text-comment">{{cell.labelText}}</div>
-            <div class="text-time">{{cell.valueText}}</div>
-            <div class="foot-button">
-              <img src="../assets/images/comment.png">
-              <span>回复</span>
+            <div class="text-right">
+              <div class="text-name">
+                <span class="text-name-main">{{cell.titleText}}</span>
+                <span class="text-name-detail">评论了：</span>
+                <span class="text-name-detail">{{cell.ideaTitle}}</span>
+              </div>
+              <div class="text-comment">{{cell.labelText}}</div>
+              <div class="text-time">{{cell.valueText}}</div>
+              <div class="foot-button">
+                <img src="../assets/images/comment.png">
+                <span>回复</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="tab-third" v-show="nowTabIndex===2">
-        <div
-          class="cell-warp"
-          v-for="(cell, index) in cellListThird" 
-          :key="index"
-        >
-          <div class="head-image">
-            <img :src="cell.headImg">
-          </div>
-          <div class="text-right">
-            <div class="text-name">
-              <span class="text-name-main">{{cell.titleText}}</span>
-              <span class="text-name-detail">赞了：</span>
-              <span class="text-name-detail">暗室逢灯sad</span>
+        <div class="tab-third" v-show="nowTabIndex===2">
+          <div
+            class="cell-warp"
+            v-for="(cell, index) in cellListThird" 
+            :key="index"
+          >
+            <div class="head-image">
+              <img :src="cell.headImg">
             </div>
-            <div class="text-time">{{cell.valueText}}</div>
+            <div class="text-right">
+              <div class="text-name">
+                <span class="text-name-main">{{cell.titleText}}</span>
+                <span class="text-name-detail">赞了：</span>
+                <span class="text-name-detail">{{cell.ideaTitle}}</span>
+              </div>
+              <div class="text-time">{{cell.valueText}}</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tab-fourth" v-show="nowTabIndex===3">
-        <van-swipe-cell 
-          v-for="(cell, index) in cellListFourth" 
-          :key="index" 
-          :right-width="65"
-        >
-          <van-cell-group>
-            <van-cell :title="cell.titleText" :label="cell.labelText">
-              <div class="head-image" slot="icon">
-                <img :src="cell.headImg">
-              </div>
-              <div>{{cell.valueText}}</div>
-              <van-tag class="tag-number" type="danger" round>{{cell.num}}</van-tag>
-            </van-cell>
-          </van-cell-group>
-          <span slot="right" @click="onDeleteFourth(index)">删除</span>
-        </van-swipe-cell>
+        <div class="tab-fourth" v-show="nowTabIndex===3">
+          <van-swipe-cell 
+            v-for="(cell, index) in cellListFourth" 
+            :key="index" 
+            :right-width="65"
+          >
+            <van-cell-group>
+              <van-cell :title="cell.titleText" :label="cell.labelText">
+                <div class="head-image" slot="icon">
+                  <img :src="cell.headImg">
+                </div>
+                <div>{{cell.valueText}}</div>
+                <van-tag class="tag-number" type="danger" round>{{cell.num}}</van-tag>
+              </van-cell>
+            </van-cell-group>
+            <span slot="right" @click="onDeleteFourth(index)">删除</span>
+          </van-swipe-cell>
+        </div>
       </div>
     </div>
   </div>
@@ -102,296 +105,76 @@ export default {
   data() {
     return {
       addFriendIcon: require('@/assets/images/addFriend.png'),
+      showNoSearch: false,
       nowTabIndex: 0,
       tabs: ["私信","评论","赞我","通知"],
       cellListFirst: [
         {
-          titleText: 'OKOer', 
-          labelText: '1111111111111',
-          valueText: '16:11',
-          num: '11',
+          titleText: '向真', 
+          labelText: '你那篇文章真的是太好了，我要做你粉丝！！！',
+          valueText: '14:13',
+          num: '2',
           headImg: require('@/assets/images/1.jpeg')
         },
         {
-          titleText: '321', 
-          labelText: '1111111111111',
-          valueText: '10:22',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '213', 
-          labelText: '1111111111111',
-          valueText: '03:11',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '555',
-          labelText: '1111111111111',
-          valueText: '05:55',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
+          titleText: '贝贝', 
+          labelText: '希望你能一直更新去，期待你的下个作品',
+          valueText: '15:22',
+          num: '3',
+          headImg: require('@/assets/images/2.jpeg')
+        }
       ],
       cellListSecond: [
         {
-          titleText: 'OKOer', 
-          labelText: '1111111111111',
+          titleText: '向真', 
+          labelText: '太好了太感动了呜呜呜',
           valueText: '16:11',
-          num: '11',
+          ideaTitle: '《青春斗》',
           headImg: require('@/assets/images/1.jpeg')
         },
         {
-          titleText: '321', 
-          labelText: '1111111111111',
+          titleText: '贝贝', 
+          labelText: '写的很好，引人入胜',
           valueText: '10:22',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '213', 
-          labelText: '1111111111111',
-          valueText: '03:11',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '555',
-          labelText: '1111111111111',
-          valueText: '05:55',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
+          ideaTitle: '《青春斗》',
+          headImg: require('@/assets/images/2.jpeg')
+        }
       ],
       cellListThird: [
         {
-          titleText: 'OKOer', 
-          labelText: '1111111111111',
+          titleText: '向真', 
           valueText: '16:11',
-          num: '11',
+          ideaTitle: '《青春斗》',
           headImg: require('@/assets/images/1.jpeg')
         },
         {
-          titleText: '321', 
-          labelText: '1111111111111',
+          titleText: '贝贝', 
           valueText: '10:22',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '213', 
-          labelText: '1111111111111',
-          valueText: '03:11',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '555',
-          labelText: '1111111111111',
-          valueText: '05:55',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
+          ideaTitle: '《青春斗》',
+          headImg: require('@/assets/images/2.jpeg')
+        }
       ],
       cellListFourth: [
         {
-          titleText: 'OKOer', 
-          labelText: '1111111111111',
-          valueText: '16:11',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
+          titleText: 'IDEAS小秘', 
+          labelText: '欢迎加入IDEAS大家庭！！！',
+          valueText: '15:00',
+          num: '2',
+          headImg: require('@/assets/images/custom.png')
         },
         {
-          titleText: '321', 
-          labelText: '1111111111111',
+          titleText: 'IDEAS官方活动', 
+          labelText: '劲爆大奖等你来拿！！！',
           valueText: '10:22',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '213', 
-          labelText: '1111111111111',
-          valueText: '03:11',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '555',
-          labelText: '1111111111111',
-          valueText: '05:55',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
-        {
-          titleText: '333', 
-          labelText: '1111111111111',
-          valueText: '06:44',
-          num: '11',
-          headImg: require('@/assets/images/1.jpeg')
-        },
+          num: '6',
+          headImg: require('@/assets/images/official.png')
+        }
       ]
+    }
+  },
+  mounted() {
+    if(!this.$store.state.memberData) {
+      this.showNoSearch = true
     }
   },
   methods: {
@@ -414,8 +197,15 @@ export default {
       }).catch(() => {
       })
     },
-    toChatPage() {
-      this.$router.push('/chatPage')
+    toChatPage(username) {
+      if(username == '向真') {
+        this.$router.push('/chatPage')
+      } else {
+        this.$router.push('/chatPage2')
+      }
+    },
+    toAddFriend() {
+      this.$toast('暂未开放')
     }
   },
 }
@@ -604,6 +394,12 @@ export default {
   }
   .van-cell__title {
     font-size: 16px;
+  }
+  .van-cell__label {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
   }
 }
 </style>

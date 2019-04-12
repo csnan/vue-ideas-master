@@ -1,5 +1,6 @@
 <template>
   <div class="focusPage">
+    <loading-image :loadingShow="loadingShow"></loading-image>
     <base-header 
       :titleTop="titleTop" 
       :leftLogo="false" 
@@ -7,6 +8,7 @@
       @goBack="toBack"
     ></base-header>
     <div class="main-content">
+      <nothing-image :showNoSearch="showNoSearch"></nothing-image>
       <van-swipe-cell 
         v-for="(cell, index) in cellListFocus" 
         :key="index" 
@@ -33,8 +35,10 @@ export default {
   name: 'focusPage',
   data() {
     return {
-      titleTop: '',
+      titleTop: '关注（0）',
       backIcon: require('@/assets/images/back2.png'),
+      loadingShow: false,
+      showNoSearch: false,
       cellListFocus: [],
       focusNum: 0
     }
@@ -58,13 +62,18 @@ export default {
       this.$router.go(-1)
     },
     getUserFocus() {
+      this.loadingShow = true
       postFindArrayIdUser({
         _ids: this.$store.state.focusData
       }).then(res => {
         if(res.success) {
+          this.loadingShow = false
           this.cellListFocus = res.resultList
           this.focusNum = this.cellListFocus.length
-          this.titleTop = '关注' + '（' + this.focusNum + ')'
+          this.titleTop = '关注' + '（' + this.focusNum + '）'
+          if(this.cellListFocus.length == 0) {
+            this.showNoSearch = true
+          }
         }
       })
     },
@@ -134,9 +143,10 @@ export default {
     font-size: 16px;
   }
   .van-cell__label {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
   }
 }
 </style>
