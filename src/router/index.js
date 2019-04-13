@@ -219,6 +219,12 @@ export default new Router({
       path: '/reportPage',
       name: 'reportPage',
       component: _import('detailPage/ReportPage')
+    },
+    //足迹
+    {
+      path: '/footprintPage',
+      name: 'footprintPage',
+      component: _import('detailPage/FootprintPage')
     }
   ]
 })

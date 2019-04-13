@@ -296,3 +296,30 @@ export function postUpdateReadNum(data = {}) {
     data: data
   }))
 }
+
+//添加足迹
+export function postAddFootprint(data = {}) {
+  return fetch(Object.assign({
+    url: '/users/addFootprint',
+    method: 'post',
+    data: data
+  }))
+}
+
+//删除足迹
+export function postDelFootprint(data = {}) {
+  return fetch(Object.assign({
+    url: '/users/delFootprint',
+    method: 'post',
+    data: data
+  }))
+}
+
+//上传举报
+export function postAddReport(data = {}) {
+  return fetch(Object.assign({
+    url: '/report_list/addReport',
+    method: 'post',
+    data: data
+  }))
+}

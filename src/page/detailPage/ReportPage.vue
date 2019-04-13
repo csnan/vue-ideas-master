@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { formatTimeToStr } from '@/utils/date'
+import { postAddReport } from "@/api/index"
 export default {
   name: 'reportPage',
   data() {
@@ -39,7 +41,8 @@ export default {
       completeIcon: require('@/assets/images/complete.png'),
       radio: '1',
       placeholderContent: '请输入举报具体原因',
-      reportContent: ''
+      reportContent: '',
+      currentDate: ''
     }
   },
   methods: {
@@ -58,8 +61,21 @@ export default {
       if(this.reportContent == '') {
         this.$toast('请输入举报具体原因')
       } else {
-        this.$toast('感谢您的举报，我们会尽快处理！')
-        this.$router.go(-1)
+        let date = new Date()
+        this.currentDate =  formatTimeToStr( date, "yyyy-MM-dd hh:mm" )
+        postAddReport({
+          user_phone: this.$store.state.userIdData,
+          idea_id: this.$route.query.idea_id,
+          idea_title: this.$route.query.idea_title,
+          report_type: this.radio,
+          report_content: this.reportContent,
+          report_time: this.currentDate
+        }).then(res => {
+          if(res.success) {
+            this.$toast('感谢您的举报，我们会尽快处理！')
+            this.$router.go(-1)
+          }
+        })
       }
     }
   }

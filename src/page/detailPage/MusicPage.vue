@@ -104,6 +104,7 @@ import { postAddLikeUser } from "@/api/index"
 import { postReduceLikeUser } from "@/api/index"
 import { postAddCollection } from "@/api/index"
 import { postUpdateReadNum } from "@/api/index"
+import { postAddFootprint } from "@/api/index"
 export default {
   name: 'musicPage',
   data() {
@@ -176,6 +177,16 @@ export default {
             read_num: this.readNum
           }).then(res => {
             if(res.success) {
+            }
+          })
+
+          //足迹
+          postAddFootprint({
+            user_id: this.$store.state.idData,
+            footprint_id: this.$route.query.music_id
+          }).then(res => {
+            if(res.success) {
+              this.$store.state.footprintData = res.resultList.footprint_id
             }
           })
 
@@ -285,7 +296,13 @@ export default {
     },
     onReport() {
       this.showDialog = false
-      this.$router.push('/reportPage')
+      this.$router.push({
+        name: 'reportPage',
+        query: {
+          idea_id: this.$route.query.music_id,
+          idea_title: this.music.idea_title
+        }
+      })
     },
 
     getCommentNum(data) {

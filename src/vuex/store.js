@@ -16,13 +16,14 @@ export default new Vuex.Store({
     focusData: [],  //关注
     focusNumData: 0,  //关注数
     collectionData: [],  //收藏
+    footprintData: []  //足迹
+
   },
   mutations: {
     loginMemberData (state) {
       state.memberData = true
     },
     quitMemberData (state) {
-      state.memberData = false,
       state.idData = '',
       state.userIdData = '',
       state.passwordData = '',
@@ -33,7 +34,9 @@ export default new Vuex.Store({
       state.sexData = '',
       state.introductionData = '',
       state.focusData = [],
-      state.focusNumData = 0
+      state.focusNumData = 0,
+      state.collectionData = [],
+      state.footprintData = []
     }
   }
 })

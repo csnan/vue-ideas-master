@@ -54,7 +54,7 @@
             <div>服务</div>
           </van-col>
           <van-col span="6">
-            <div>
+            <div @click="toFootprintPage">
               <img src="../assets/images/history.png">
             </div>
             <div>足迹</div>
@@ -153,6 +153,9 @@ export default {
     },
     toCollectionPage() {
       this.$router.push('/collectionPage')
+    },
+    toFootprintPage() {
+      this.$router.push('/footprintPage')
     }
   },
 }
