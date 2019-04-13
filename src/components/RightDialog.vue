@@ -5,11 +5,11 @@
         <img src="../assets/images/dialogImg/collection.png" alt="">
         <span>收藏</span>
       </div>
-      <div class="dialog-content">
+      <div class="dialog-content" @click="onShare">
         <img src="../assets/images/dialogImg/share.png" alt="">
         <span>分享</span>
       </div>
-      <div class="dialog-content">
+      <div class="dialog-content" @click="onReport">
         <img src="../assets/images/dialogImg/bell.png" alt="">
         <span>举报</span>
       </div>
@@ -33,6 +33,12 @@ export default {
   methods: {
     onCollection() {
       this.$emit('collection')
+    },
+    onShare() {
+      this.$emit('share')
+    },
+    onReport() {
+      this.$emit('report')
     }
   }
 }

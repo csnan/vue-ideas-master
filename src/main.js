@@ -8,10 +8,12 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 Vue.use(Vant)
 
-import { Button, Upload, Dialog } from 'element-ui'
+import { Button, Upload, Dialog, RadioGroup, RadioButton } from 'element-ui'
 Vue.use(Button)
 Vue.use(Upload)
 Vue.use(Dialog)
+Vue.use(RadioGroup)
+Vue.use(RadioButton)
 
 import VueParticles from 'vue-particles'    
 Vue.use(VueParticles)

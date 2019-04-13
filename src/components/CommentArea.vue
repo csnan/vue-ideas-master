@@ -4,7 +4,7 @@
       <div class="comment-header">
         <img class="line-icon" src="../assets/images/lineIcon.png">评论
         <span>（{{commentNum}}）</span>
-        <img class="comment-icon" src="../assets/images/comment.png" @click="openCommentBox">
+        <img class="comment-icon" v-show="showCommentIcon" src="../assets/images/comment.png" @click="openCommentBox">
       </div>
       <div class="comment-edit clearfix" v-show="showCommentBox">
         <van-cell-group>
@@ -62,6 +62,7 @@ export default {
     return {
       showCommentBox: false,
       commentNum: 0,
+      showCommentIcon: false,
       likeIcon: require('@/assets/images/like3.png'),
       commentContent: '',
       commentList: [],
@@ -76,6 +77,9 @@ export default {
       this.showCommentBox = !this.showCommentBox
     },
     updateComment() {
+      if(this.$store.state.memberData) {
+        this.showCommentIcon = true
+      }
       postFindOneIdea({
         _id: this.idea_id,
       }).then(res => {

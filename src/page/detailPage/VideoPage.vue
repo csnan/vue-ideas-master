@@ -1,7 +1,13 @@
 <template>
   <div class="videoPage">
     <loading-image :loadingShow="loadingShow"></loading-image>
-    <right-dialog v-show="showDialog" :collectionShow="collectionShow" @collection="onCollection"></right-dialog>
+    <right-dialog 
+      v-show="showDialog" 
+      :collectionShow="collectionShow" 
+      @collection="onCollection"
+      @share="onShare"
+      @report="onReport"
+    ></right-dialog>
     <base-header :leftLogo="false" :leftIcon="backIcon" :rightIcon="moreIcon" @goBack="toBack" @toPage="onOpenDialog"></base-header>
     <div class="main-content" @click="onCloseDialog">
       <video
@@ -243,6 +249,14 @@ export default {
           this.$toast('已收藏此作品')
         }
       })
+    },
+    onShare() {
+      this.showDialog = false
+      this.$toast('暂未开放')
+    },
+    onReport() {
+      this.showDialog = false
+      this.$router.push('/reportPage')
     },
     getCommentNum(data) {
       this.commentNum = data

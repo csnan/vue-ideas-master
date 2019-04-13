@@ -195,6 +195,30 @@ export default new Router({
       path: '/searchPage',
       name: 'searchPage',
       component: _import('detailPage/SearchPage')
+    },
+    //排行榜
+    {
+      path: '/rankingList',
+      name: 'rankingList',
+      component: _import('detailPage/RankingList')
+    },
+    //评分
+    {
+      path: '/ratePage',
+      name: 'ratePage',
+      component: _import('detailPage/RatePage')
+    },
+    //关于
+    {
+      path: '/aboutPage',
+      name: 'aboutPage',
+      component: _import('detailPage/AboutPage')
+    },
+    //举报
+    {
+      path: '/reportPage',
+      name: 'reportPage',
+      component: _import('detailPage/ReportPage')
     }
   ]
 })

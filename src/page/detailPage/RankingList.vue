@@ -1,40 +1,43 @@
 <template>
-  <div class="searchPage">
-    <loading-image :loadingShow="loadingShow"></loading-image>
-    <base-header 
-      titleTop="搜索内容" 
-      :leftLogo="false" 
-      :leftIcon="backIcon" 
-      @goBack="toBack"
-    ></base-header>
+  <div class="rankingList">
+    <base-header :titleTop="titleName" :leftLogo="false" :leftIcon="backIcon" @goBack="toBack" ></base-header>
     <div class="main-content">
-      <nothing-image :showNoSearch="showNoSearch"></nothing-image>
-      <div class="recommend-history">
-        <div class="recommend-history-content">
+      <div class="radio-top">
+        <el-radio-group v-model="checked" size="mini" @change="switchRanking">
+          <el-radio-button label="点赞量"></el-radio-button>
+          <el-radio-button label="评论量"></el-radio-button>
+          <el-radio-button label="阅读量"></el-radio-button>
+        </el-radio-group>
+      </div>
+      <div class="ranking-idea">
+        <div class="ranking-idea-content">
           <div 
-          class="recommend-history-cell" 
-          v-for="(cellHistory, index) in cellHistoryList"
-          :key="index"
-          @click="toHistoryPage(cellHistory.type, cellHistory._id)"
+            class="ranking-idea-cell" 
+            v-for="(cellIdea, index) in cellIdeaList"
+            :key="index"
+            @click="toIdeaPage(cellIdea.type, cellIdea._id)"
           >
-            <div class="recommend-history-text">
-              <div class="recommend-article-title">{{cellHistory.idea_title}}</div>
-              <div class="recommend-history-summary">{{cellHistory.idea_content}}</div>
-              <div class="recommend-history-foot">
+            <div class="ranking-num">
+              {{index+1}}
+            </div>
+            <div class="ranking-idea-text">
+              <div class="ranking-article-title">{{cellIdea.idea_title}}</div>
+              <div class="ranking-idea-summary">{{cellIdea.idea_content}}</div>
+              <div class="ranking-idea-foot">
                 <div>
                   <img src="../../assets/images/like3.png">
-                  <span>{{cellHistory.like_num}}</span>
+                  <span>{{cellIdea.like_num}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/comment.png">
-                  <span>{{cellHistory.comments.length}}</span>
+                  <span>{{cellIdea.comments.length}}</span>
                 </div>
                 <div>
                   <img src="../../assets/images/look.png">
-                  <span>{{cellHistory.read_num}}</span>
+                  <span>{{cellIdea.read_num}}</span>
                 </div>
                 <div class="foot-type">
-                  <span>{{cellHistory.type | typeFormat}}</span>
+                  <span>{{cellIdea.type | typeFormat}}</span>
                 </div>
               </div>
             </div>
@@ -46,15 +49,15 @@
 </template>
 
 <script>
-import { postFindIdeaName } from "@/api/index"
+import { postFindAllIdea } from "@/api/index"
 export default {
-  name: 'searchPage',
+  name: 'rankingList',
   data() {
     return {
+      titleName: '排行榜',
       backIcon: require('@/assets/images/back2.png'),
-      loadingShow: false,
-      showNoSearch: false,
-      cellHistoryList: []
+      checked: '点赞量',
+      cellIdeaList: []
     }
   },
   filters: {
@@ -78,28 +81,60 @@ export default {
     }
   },
   mounted() {
-    this.findIdeaName()
+    this.getRankingList()
   },
   methods: {
     toBack() {
       this.$router.go(-1)
     },
-    findIdeaName() {
-      this.loadingShow = true
-      //通过标题进行模糊搜索
-      postFindIdeaName({
-        idea_title: this.$route.query.idea_title
-      }).then(res => {
+    getRankingList() {
+      postFindAllIdea().then(res => {
         if(res.success) {
-          this.loadingShow = false
-          this.cellHistoryList = res.resultList.reverse()
-          if(this.cellHistoryList.length == 0) {
-            this.showNoSearch = true
+          this.cellIdeaList = res.resultList
+          if(this.cellIdeaList.length > 50) {
+            this.cellIdeaList.length = 50
+          }
+          if(this.checked == '点赞量') {
+            let type = 'like_num'
+            this.cellIdeaList.sort(this.compare(type));
           }
         }
       })
     },
-    toHistoryPage(type, idea_id) {
+    switchRanking() {
+      let type = ''
+      switch(this.checked) {
+        case '点赞量':
+          type = 'like_num'
+          this.cellIdeaList.sort(this.compare(type));
+          break;
+
+        case '评论量':
+          type = 'comments'
+          this.cellIdeaList.sort(this.compare2(type));
+          break;
+
+        case '阅读量':
+          type = 'read_num'
+          this.cellIdeaList.sort(this.compare(type));
+          break;
+      }
+    },
+    compare(attr) {
+      return function(a,b){
+        var val1 = a[attr];
+        var val2 = b[attr];
+        return val2 - val1;
+      }
+    },
+    compare2(attr) {
+      return function(a,b){
+        var val1 = a[attr].length;
+        var val2 = b[attr].length;
+        return val2 - val1;
+      }
+    },
+    toIdeaPage(type, idea_id) {
       if(type == 'article') {
         this.$router.push({
           name: 'articlePage',
@@ -138,38 +173,52 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.searchPage {
-  .recommend-history {
-    .recommend-history-content {
+.rankingList {
+  .radio-top {
+    padding: 6px 15px;
+  }
+  .ranking-idea {
+    .ranking-idea-content {
       padding: 0px 15px;
       margin-top: -5px;
-      .recommend-history-cell {
+      .ranking-idea-cell {
+        text-align: right;
         height: 115px;
         position: relative;
         padding-top: 10px;
         border-bottom: 1px solid rgb(240, 240, 240);
-        .recommend-history-text {
-          width: 100%;
+        .ranking-num{
+          float: left;
+          vertical-align: top;
+          font-size: 20px;
+          font-weight: bold;
+          color: red;
+        }
+        .ranking-idea-text {
+          width: 90%;
           display: inline-block;
-          .recommend-article-title {
+          .ranking-article-title {
             font-size: 16px;
+            text-align: left;
             overflow: hidden;
             text-overflow:ellipsis;
             white-space: nowrap;
           }
-          .recommend-history-summary {
+          .ranking-idea-summary {
             margin-top: 5px;
             font-size: 12px;
             color: rgb(133, 133, 133);
+            text-align: left;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             overflow: hidden;
           }
-          .recommend-history-foot {
-            width: 100%;
+          .ranking-idea-foot {
+            width: 90%;
             position: absolute;
             bottom: 5px;
+            text-align: left;
             div {
               display: inline-block;
               margin-right: 10px;

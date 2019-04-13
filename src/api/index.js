@@ -81,6 +81,15 @@ export function postAddPhoto(data = {}) {
   }))
 }
 
+//获取所有审核通过的作品
+export function postFindAllIdea(data = {}) {
+  return fetch(Object.assign({
+    url: '/idea/findAllIdea',
+    method: 'post',
+    data: data
+  }))
+}
+
 //删除作品
 export function postDelIdea(data = {}) {
   return fetch(Object.assign({
@@ -94,6 +103,15 @@ export function postDelIdea(data = {}) {
 export function postFindSwipeImages(data = {}) {
   return fetch(Object.assign({
     url: '/swipe_list/findAllSwipe',
+    method: 'post',
+    data: data
+  }))
+}
+
+//获取所有推荐作品
+export function postFindAllRecommend(data = {}) {
+  return fetch(Object.assign({
+    url: '/recommend_list/findAllRecommend',
     method: 'post',
     data: data
   }))
