@@ -21,7 +21,7 @@
         <van-row class="home-cell-bottom-foot">
           <van-col span="6">
             <img src="../../assets/images/share.png">
-            <span>123</span>
+            <span>0</span>
           </van-col>
           <van-col span="6">
             <img src="../../assets/images/comment2.png">

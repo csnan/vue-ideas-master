@@ -20,7 +20,7 @@
         <van-row class="home-cell-bottom-foot">
           <van-col span="8">
             <img src="../../assets/images/share.png">
-            <span>111</span>
+            <span>0</span>
           </van-col>
           <van-col span="8">
             <img src="../../assets/images/comment2.png">

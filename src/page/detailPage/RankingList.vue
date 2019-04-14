@@ -1,5 +1,6 @@
 <template>
   <div class="rankingList">
+    <loading-image :loadingShow="loadingShow"></loading-image>
     <base-header :titleTop="titleName" :leftLogo="false" :leftIcon="backIcon" @goBack="toBack" ></base-header>
     <div class="main-content">
       <div class="radio-top">
@@ -56,6 +57,7 @@ export default {
     return {
       titleName: '排行榜',
       backIcon: require('@/assets/images/back2.png'),
+      loadingShow: false,
       checked: '点赞量',
       cellIdeaList: []
     }
@@ -88,8 +90,10 @@ export default {
       this.$router.go(-1)
     },
     getRankingList() {
+      this.loadingShow = true
       postFindAllIdea().then(res => {
         if(res.success) {
+          this.loadingShow = false
           this.cellIdeaList = res.resultList
           if(this.cellIdeaList.length > 50) {
             this.cellIdeaList.length = 50

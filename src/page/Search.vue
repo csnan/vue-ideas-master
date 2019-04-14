@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       searchValue: '',
-      hotSearchList: ['遇见晴天', '叫我宫主大人', '知否知否', '沙漠骆驼', '往后余生', '琵琶行'],
+      hotSearchList: ['猫', '霸王别姬', '陪我度过浪漫岁月', '花', '陶然亭', '你不是一个人'],
       recordSearchList: [],
     }
   },
