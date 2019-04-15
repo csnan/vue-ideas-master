@@ -40,7 +40,7 @@
             {{cell}}
           </div>
           <div class="head-image">
-            <img src="../../assets/images/1.jpeg" alt="">
+            <img :src="headImg" alt="">
           </div>
         </div>
       </div>
@@ -72,7 +72,8 @@ export default {
       titleName: '贝贝',
       backIcon: require('@/assets/images/back2.png'),
       chatValue: '',
-      chatValueList: []
+      chatValueList: [],
+      headImg: this.$store.state.headImgData
     }
   },
   methods: {
